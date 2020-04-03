@@ -375,8 +375,11 @@ const getMoreBtnTmpl = () => {
 };
 
 const getBoardTmpl = () => {
-  const cardsMarkupList = CARDS_MODS
-    .map((classList) => getCardTmpl(classList));
+  const cardsMarkup = CARDS_MODS
+    .reduce((prev, classList) => {
+      prev += getCardTmpl(classList);
+      return prev;
+    }, ``);
 
   return (
     `<section class="board container">
@@ -384,7 +387,7 @@ const getBoardTmpl = () => {
 
       <div class="board__tasks">
         ${getCardFormTmpl()}
-        ${cardsMarkupList.join(``)}
+        ${cardsMarkup}
       </div>
 
       ${getMoreBtnTmpl()}
