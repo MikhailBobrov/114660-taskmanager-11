@@ -357,8 +357,7 @@ const getCardFormTmpl = () => {
 
 const getClass = ({base, mods}) => {
   return mods.reduce((prev, mod) => {
-    prev += ` ${base}--${mod}`;
-    return prev;
+    return `${prev} ${base}--${mod}`;
   }, base);
 };
 
@@ -429,8 +428,7 @@ const getMoreBtnTmpl = () => {
 const getBoardTmpl = () => {
   const cardsMarkup = cardsData
     .reduce((prev, data) => {
-      prev += getCardTmpl(data);
-      return prev;
+      return prev + getCardTmpl(data);
     }, ``);
 
   return (
