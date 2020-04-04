@@ -320,9 +320,16 @@ const getCardFormTmpl = () => {
   );
 };
 
-const getCardTmpl = (classList = [`black`]) => {
+const getClass = ({base, modsList}) => {
+  return modsList.reduce((prev, mod) => {
+    prev += ` ${base}--${mod}`;
+    return prev;
+  }, base);
+};
+
+const getCardTmpl = (modsList = [`black`]) => {
   return (
-    `<article class="card card--${classList.join(` `)}">
+    `<article class="${getClass({base: `card`, modsList})}">
       <div class="card__form">
         <div class="card__inner">
           <div class="card__control">
