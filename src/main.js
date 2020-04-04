@@ -3,14 +3,49 @@
 const controlElem = document.querySelector(`.control`);
 const mainElem = document.querySelector(`.main`);
 
-const CARDS_MODS = [
-  [`black`],
-  [`blue`],
-  [`yellow`],
-  [`green`],
-  [`black`],
-  [`pink`, `repeat`],
-  [`red`, `deadline`]
+const cardsData = [
+  {
+    text: `Example task with default color.`,
+    date: `23 September`,
+    time: `16:15`,
+    mods: [`black`]
+  },
+  {
+    text: `Example task with custom color.`,
+    date: `23 September`,
+    time: `16:15`,
+    mods: [`blue`]
+  },
+  {
+    text: `Example task with custom color and without date.`,
+    mods: [`yellow`]
+  },
+  {
+    text: `Example task with custom color.`,
+    date: `23 September`,
+    time: `16:15`,
+    mods: [`green`]
+  },
+  {
+    text: `Example task without date.`,
+    mods: [`black`]
+  },
+  {
+    text: `It is example of repeating task. It marks by wave.`,
+    date: `23 September`,
+    time: `16:15`,
+    mods: [`pink`, `repeat`]
+  },
+  {
+    text: `This is task with missing deadline.`,
+    mods: [`red`, `deadline`]
+  },
+  {
+    text: `This is task with missing deadline. Deadline always marked by red line.`,
+    date: `23 September`,
+    time: `16:15`,
+    mods: [`black`, `deadline`]
+  }
 ];
 
 const getMenuTmpl = () => {
@@ -320,16 +355,33 @@ const getCardFormTmpl = () => {
   );
 };
 
-const getClass = ({base, modsList}) => {
-  return modsList.reduce((prev, mod) => {
+const getClass = ({base, mods}) => {
+  return mods.reduce((prev, mod) => {
     prev += ` ${base}--${mod}`;
     return prev;
   }, base);
 };
 
-const getCardTmpl = (modsList = [`black`]) => {
+const getCardDates = (date, time) => {
+  if (!date || !time) {
+    return ``;
+  }
+
   return (
-    `<article class="${getClass({base: `card`, modsList})}">
+    `<div class="card__dates">
+      <div class="card__date-deadline">
+        <p class="card__input-deadline-wrap">
+          <span class="card__date">${date}</span>
+          <span class="card__time">${time}</span>
+        </p>
+      </div>
+    </div>`
+  );
+};
+
+const getCardTmpl = ({text, mods, date, time}) => {
+  return (
+    `<article class="${getClass({base: `card`, mods})}">
       <div class="card__form">
         <div class="card__inner">
           <div class="card__control">
@@ -354,19 +406,12 @@ const getCardTmpl = (modsList = [`black`]) => {
           </div>
 
           <div class="card__textarea-wrap">
-            <p class="card__text">Example task with default color.</p>
+            <p class="card__text">${text}</p>
           </div>
 
           <div class="card__settings">
             <div class="card__details">
-              <div class="card__dates">
-                <div class="card__date-deadline">
-                  <p class="card__input-deadline-wrap">
-                    <span class="card__date">23 September</span>
-                    <span class="card__time">16:15</span>
-                  </p>
-                </div>
-              </div>
+              ${getCardDates(date, time)}
             </div>
           </div>
         </div>
@@ -382,9 +427,9 @@ const getMoreBtnTmpl = () => {
 };
 
 const getBoardTmpl = () => {
-  const cardsMarkup = CARDS_MODS
-    .reduce((prev, classList) => {
-      prev += getCardTmpl(classList);
+  const cardsMarkup = cardsData
+    .reduce((prev, data) => {
+      prev += getCardTmpl(data);
       return prev;
     }, ``);
 
