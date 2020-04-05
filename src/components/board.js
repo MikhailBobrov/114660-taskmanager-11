@@ -47,6 +47,13 @@ const cardsData = [
   }
 ];
 
+const formCardData = {
+  text: `Here is a card with filled data`,
+  date: `23 September`,
+  time: `16:15`,
+  mods: [`edit`, `yellow`, `repeat`]
+};
+
 export default class Board {
   getMoreBtn() {
     return (
@@ -67,7 +74,7 @@ export default class Board {
         ${new Sort().getTmpl()}
 
         <div class="board__tasks">
-          ${new CardForm().getTmpl()}
+          ${new CardForm().getTmpl(formCardData)}
           ${this.getCards()}
         </div>
 
