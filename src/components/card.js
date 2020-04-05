@@ -1,3 +1,5 @@
+import {getClass} from '../helpers/getClass';
+
 export default class Card {
   getDatesTmpl(date, time) {
     if (!date || !time) {
@@ -16,16 +18,9 @@ export default class Card {
     );
   }
 
-  // позже уедет в helpers
-  getClass({base, mods}) {
-    return mods.reduce((prev, mod) => {
-      return `${prev} ${base}--${mod}`;
-    }, base);
-  }
-
   getTmpl({text, mods, date, time}) {
     return (
-      `<article class="${this.getClass({base: `card`, mods})}">
+      `<article class="${getClass({base: `card`, mods})}">
         <div class="card__form">
           <div class="card__inner">
             <div class="card__control">
