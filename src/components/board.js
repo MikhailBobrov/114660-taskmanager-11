@@ -2,6 +2,8 @@ import Sort from './sort';
 import CardForm from './card-form';
 import Card from './card';
 
+const MAX_CARDS = 3;
+
 const cardsData = [
   {
     text: `Example task with default color.`,
@@ -62,7 +64,9 @@ export default class Board {
   }
 
   getCards() {
-    return cardsData
+    const cardsDataToShow = cardsData.slice(0, MAX_CARDS);
+
+    return cardsDataToShow
       .reduce((prev, data) => {
         return prev + new Card().getTmpl(data);
       }, ``);
