@@ -55,7 +55,7 @@ export default class Card {
             </div>
           </div>
         </div>
-      </article>
-    `);
+      </article>`
+    );
   }
 }
