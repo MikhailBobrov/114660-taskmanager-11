@@ -7,9 +7,33 @@ const filterTypes = [
   `archive`,
 ];
 
-const getFilterItems = () => {
+const getFilterItems = (cardsData) => {
+  const quantityByType = filterTypes.reduce((prev, type) => {
+    let list = [];
+
+    if (type === `all`) {
+      list = cardsData;
+    } else if (type === `overdue`) {
+      list = cardsData.filter((item) => item.dateTime < new Date());
+    } else if (type === `today`) {
+      list = cardsData.filter((item) => {
+        return (item.dateTime).toLocaleDateString() === (new Date()).toLocaleDateString();
+      });
+    } else if (type === `favorites`) {
+      list = cardsData.filter((item) => item.isFavourite);
+    } else if (type === `repeating`) {
+      list = cardsData.filter((item) => item.isRepeat);
+    } else if (type === `archive`) {
+      list = cardsData.filter((item) => item.isArchive);
+    }
+
+    prev[type] = list.length;
+
+    return prev;
+  }, {});
+
   return filterTypes.map((name, index) => {
-    const count = index === 3 ? 0 : Math.floor(Math.random() * 20);
+    const count = quantityByType[name] || 0;
 
     return {
       name,
