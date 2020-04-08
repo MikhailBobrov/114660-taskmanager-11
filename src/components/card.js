@@ -1,5 +1,6 @@
 import {getClass} from '../helpers/getClass';
 import {getDate, getTime} from '../helpers/getDateTime';
+import {COLORSNAMES} from '../const.js';
 
 export default class Card {
   constructor({
@@ -8,7 +9,6 @@ export default class Card {
     dueDate,
     weekDays,
     color,
-    colorControls,
     isRepeat,
     isDeadline,
     isEdit
@@ -18,7 +18,6 @@ export default class Card {
     this.date = getDate(dueDate);
     this.time = getTime(dueDate);
     this.weekDays = weekDays;
-    this.colorsControls = colorControls;
     this.color = color;
     this.isRepeat = isRepeat;
     this.isDeadline = isDeadline;
@@ -94,8 +93,8 @@ export default class Card {
     </fieldset>`;
   }
 
-  getColorMarkup({name, isChecked}) {
-    const checkedAttr = isChecked ? `checked` : ``;
+  getColorMarkup(name) {
+    const checkedAttr = name === this.color ? `checked` : ``;
 
     return (
       `<input
@@ -119,11 +118,7 @@ export default class Card {
       return ``;
     }
 
-    if (!this.colorsControls || this.colorsControls.length === 0) {
-      return ``;
-    }
-
-    const colorsMarkupList = this.colorsControls.map((color) => {
+    const colorsMarkupList = COLORSNAMES.map((color) => {
       return this.getColorMarkup(color);
     });
 

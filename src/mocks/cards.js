@@ -37,17 +37,6 @@ const getWeekDays = (hasChecked = true) => {
   }, {});
 };
 
-const getColors = (currentColor) => {
-  return COLORSNAMES.map((color) => {
-    const isChecked = color === currentColor;
-
-    return {
-      name: color,
-      isChecked
-    };
-  });
-};
-
 const getCardsData = (quantity) => {
   const data = [];
 
@@ -60,7 +49,6 @@ const getCardsData = (quantity) => {
 
     const description = isCreate ? `` : getRandomItem(DESCRIPTIONS);
     const color = isCreate ? `` : getRandomItem(COLORSNAMES);
-    const colorControls = isEdit ? getColors(color) : [];
     const dueDate = isCreate ? null : getRandomDate();
     const isDeadline = dueDate < new Date();
 
@@ -77,7 +65,6 @@ const getCardsData = (quantity) => {
       dueDate,
       weekDays,
       color,
-      colorControls,
       isRepeat,
       isFavorite,
       isArchive,
