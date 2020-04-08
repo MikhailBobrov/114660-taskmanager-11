@@ -5,13 +5,12 @@ import Filter from './components/filter';
 import Board from './components/board';
 
 import {getCardsData} from './mocks/cards';
-
-const cardsData = getCardsData(MAX_CARDS);
-
 import {getFilterItems} from './mocks/filter';
 
 const controlElem = document.querySelector(`.control`);
 const mainElem = document.querySelector(`.main`);
+
+const cardsData = getCardsData(MAX_CARDS);
 
 const menu = new Menu();
 const filter = new Filter(getFilterItems(cardsData));
