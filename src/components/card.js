@@ -136,7 +136,7 @@ export default class Card {
     let value = ``;
 
     if (this.isRepeat) {
-      return ``;
+      return value;
     }
 
     if (this.date && this.time) {
