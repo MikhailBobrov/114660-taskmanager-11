@@ -1,6 +1,10 @@
 import {MONTH_NAMES} from '../const.js';
 
 const getDate = (date) => {
+  if (!date) {
+    return ``;
+  }
+
   const day = date.getDate();
   const monthNum = date.getMonth();
 
@@ -8,6 +12,10 @@ const getDate = (date) => {
 };
 
 const getTime = (date) => {
+  if (!date) {
+    return ``;
+  }
+
   let timeParts = [
     date.getHours(),
     date.getMinutes()

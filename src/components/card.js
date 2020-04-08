@@ -1,5 +1,5 @@
 import {getClass} from '../helpers/getClass';
-import {getDate, getTime} from '../helpers/dateTime';
+import {getDate, getTime} from '../helpers/getDateTime';
 
 export default class Card {
   constructor({
