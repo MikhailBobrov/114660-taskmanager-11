@@ -173,11 +173,7 @@ export default class Card {
   }
 
   getYesNo(value) {
-    if (value) {
-      return `yes`;
-    }
-
-    return `no`;
+    return value ? `yes` : 'no';
   }
 
   getDatesEdit() {
