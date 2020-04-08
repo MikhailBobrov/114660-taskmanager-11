@@ -14,13 +14,13 @@ const getFilterItems = (cardsData) => {
     if (type === `all`) {
       list = cardsData;
     } else if (type === `overdue`) {
-      list = cardsData.filter((item) => item.dateTime < new Date());
+      list = cardsData.filter((item) => item.dueDate < new Date());
     } else if (type === `today`) {
       list = cardsData.filter((item) => {
-        return (item.dateTime).toLocaleDateString() === (new Date()).toLocaleDateString();
+        return (item.dueDate).toLocaleDateString() === (new Date()).toLocaleDateString();
       });
     } else if (type === `favorites`) {
-      list = cardsData.filter((item) => item.isFavourite);
+      list = cardsData.filter((item) => item.isFavorite);
     } else if (type === `repeating`) {
       list = cardsData.filter((item) => item.isRepeat);
     } else if (type === `archive`) {

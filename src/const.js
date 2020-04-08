@@ -34,10 +34,17 @@ const MONTH_NAMES = [
   `December`,
 ];
 
+const DESCRIPTIONS = [
+  `Изучить теорию`,
+  `Сделать домашку`,
+  `Пройти интенсив на соточку`
+];
+
 export {
+  COLORSNAMES,
+  DESCRIPTIONS,
   MAX_CARDS,
   MAX_CARDS_SHOW,
-  COLORSNAMES,
+  MONTH_NAMES,
   WEEKDAYSNAMES,
-  MONTH_NAMES
 };

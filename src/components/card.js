@@ -3,22 +3,23 @@ import {getDate, getTime} from '../helpers/dateTime';
 
 export default class Card {
   constructor({
-    text,
+    description,
     mods,
-    dateTime,
+    dueDate,
     weekDays,
-    colors,
+    color,
+    colorControls,
     isRepeat,
     isDeadline,
     isEdit
   }) {
-    this.text = text;
+    this.description = description;
     this.mods = mods;
-    this.date = getDate(dateTime);
-    this.time = getTime(dateTime);
+    this.date = getDate(dueDate);
+    this.time = getTime(dueDate);
     this.weekDays = weekDays;
-    this.colorsControls = colors.controls;
-    this.currentColor = colors.current;
+    this.colorsControls = colorControls;
+    this.color = color;
     this.isRepeat = isRepeat;
     this.isDeadline = isDeadline;
     this.isEdit = isEdit;
@@ -44,8 +45,8 @@ export default class Card {
       mods.push(`edit`);
     }
 
-    if (this.currentColor) {
-      mods.push(this.currentColor);
+    if (this.color) {
+      mods.push(this.color);
     }
 
     return mods;
@@ -81,10 +82,10 @@ export default class Card {
     if (!this.weekDays || this.weekDays.length === 0) {
       return ``;
     }
-
-    const weekDaysMarkupList = this.weekDays.map((weekDay) => {
-      return this.getDayMarkup(weekDay);
-    });
+    const weekDaysMarkupList = Object.entries(this.weekDays)
+      .map(([name, isChecked]) => {
+        return this.getDayMarkup({name, isChecked});
+      });
 
     return `<fieldset class="card__repeat-days">
       <div class="card__repeat-days-inner">
@@ -163,15 +164,15 @@ export default class Card {
   }
 
   getText() {
-    const text = this.text || ``;
+    const description = this.description || ``;
 
     return (
       `<label>
         <textarea
           class="card__text"
           placeholder="Start typing your text here..."
-          name="text"
-        >${text}</textarea>
+          name="description"
+        >${description}</textarea>
       </label>`
     );
   }

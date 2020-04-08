@@ -1,10 +1,16 @@
-import {COLORSNAMES, WEEKDAYSNAMES} from '../const.js';
+import {COLORSNAMES, WEEKDAYSNAMES, DESCRIPTIONS} from '../const.js';
 
-const texts = [
-  `Изучить теорию`,
-  `Сделать домашку`,
-  `Пройти интенсив на соточку`
-];
+const week = 7;
+
+const getWeekdaysObj = () => {
+  return WEEKDAYSNAMES.reduce((prev, item) => {
+    prev[item] = false;
+
+    return prev;
+  }, {});
+};
+
+const weekdaysInitial = getWeekdaysObj();
 
 const getRandomItem = (list) => {
   return list[Math.floor(Math.random() * list.length)];
@@ -13,60 +19,29 @@ const getRandomItem = (list) => {
 const getRandomDate = () => {
   const now = new Date();
   const direction = Math.random() > 0.5 ? 1 : -1;
-  const offset = Math.floor(Math.random() * 7);
+  const offset = Math.floor(Math.random() * week);
 
   now.setDate(now.getDate() + offset * direction);
 
   return now;
 };
 
-const getCardsData = (quantity) => {
-  const data = [];
+const getFutureDate = () => {
+  const now = new Date();
+  now.setDate(now.getDate() + week);
 
-  for (let i = 0; i < quantity; i++) {
-    const text = getRandomItem(texts);
-    const color = getRandomItem(COLORSNAMES);
-    const isEdit = i === 0;
-    const isRepeat = Math.random() > 0.5;
-    const isFavourite = Math.random() > 0.5;
-    const isArchive = Math.random() > 0.5;
-    const weekDays = isEdit ? getDays() : [];
-    const colorControls = isEdit ? getColors(color) : [];
-    const dateTime = getRandomDate();
-    const isDeadline = dateTime < new Date();
-
-    data.push({
-      text,
-      dateTime,
-      weekDays,
-      colors: {
-        controls: colorControls,
-        current: color
-      },
-      isRepeat,
-      isFavourite,
-      isArchive,
-      isDeadline,
-      isEdit,
-    });
-  }
-
-  return data;
+  return now;
 };
 
-const getDays = (hasChecked = true) => {
-  return WEEKDAYSNAMES.map((day) => {
-    let isChecked = false;
+const getWeekDays = (hasChecked = true) => {
+  if (!hasChecked) {
+    return weekdaysInitial;
+  }
 
-    if (hasChecked) {
-      isChecked = Math.random() > 0.5;
-    }
-
-    return {
-      name: day,
-      isChecked
-    };
-  });
+  return Object.entries(weekdaysInitial).reduce((prev, [name]) => {
+    prev[name] = Math.random() > 0.5;
+    return prev;
+  }, {});
 };
 
 const getColors = (currentColor) => {
@@ -78,6 +53,47 @@ const getColors = (currentColor) => {
       isChecked
     };
   });
+};
+
+const getCardsData = (quantity) => {
+  const data = [];
+
+  for (let i = 0; i < quantity; i++) {
+    const isEdit = i <= 1; // 0 edit, 1 create
+    const isCreate = i === 1;
+    const isRepeat = Math.random() > 0.5;
+    const isFavorite = Math.random() > 0.5;
+    const isArchive = Math.random() > 0.5;
+
+    const description = isCreate ? `` : getRandomItem(DESCRIPTIONS);
+    const color = isCreate ? `` : getRandomItem(COLORSNAMES);
+    const colorControls = isEdit ? getColors(color) : [];
+    const dueDate = isCreate ? getFutureDate() : getRandomDate();
+    const isDeadline = dueDate < new Date();
+
+    let weekDays = [];
+
+    if (isCreate) {
+      weekDays = getWeekDays(false);
+    } else if (isEdit) {
+      weekDays = getWeekDays();
+    }
+
+    data.push({
+      description,
+      dueDate,
+      weekDays,
+      color,
+      colorControls,
+      isRepeat,
+      isFavorite,
+      isArchive,
+      isDeadline,
+      isEdit,
+    });
+  }
+
+  return data;
 };
 
 export {getCardsData};
