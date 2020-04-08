@@ -35,11 +35,11 @@ const getFilterItems = (cardsData) => {
     return prev;
   }, {});
 
-  return filterTypes.map((name, index) => {
-    const count = quantityByType[name] || 0;
+  return filterTypes.map((title, index) => {
+    const count = quantityByType[title] || 0;
 
     return {
-      name,
+      title,
       count,
       isChecked: index === 0
     };
