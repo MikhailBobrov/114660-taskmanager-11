@@ -26,13 +26,6 @@ const getRandomDate = () => {
   return now;
 };
 
-const getFutureDate = () => {
-  const now = new Date();
-  now.setDate(now.getDate() + week);
-
-  return now;
-};
-
 const getWeekDays = (hasChecked = true) => {
   if (!hasChecked) {
     return weekdaysInitial;
@@ -68,7 +61,7 @@ const getCardsData = (quantity) => {
     const description = isCreate ? `` : getRandomItem(DESCRIPTIONS);
     const color = isCreate ? `` : getRandomItem(COLORSNAMES);
     const colorControls = isEdit ? getColors(color) : [];
-    const dueDate = isCreate ? getFutureDate() : getRandomDate();
+    const dueDate = isCreate ? null : getRandomDate();
     const isDeadline = dueDate < new Date();
 
     let weekDays = [];

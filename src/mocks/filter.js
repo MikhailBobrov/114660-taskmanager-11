@@ -17,6 +17,9 @@ const getFilterItems = (cardsData) => {
       list = cardsData.filter((item) => item.dueDate < new Date());
     } else if (type === `today`) {
       list = cardsData.filter((item) => {
+        if (!item.dueDate) {
+          return false;
+        }
         return (item.dueDate).toLocaleDateString() === (new Date()).toLocaleDateString();
       });
     } else if (type === `favorites`) {
