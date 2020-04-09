@@ -1,5 +1,4 @@
-import {getClass} from '../helpers/getClass';
-import {getDate, getTime} from '../helpers/getDateTime';
+import {getClass, getDate, getTime} from '../helpers';
 import {COLORSNAMES} from '../const.js';
 
 export default class Card {

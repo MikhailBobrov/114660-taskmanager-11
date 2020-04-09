@@ -1,6 +1,6 @@
 import {MAX_CARDS_SHOW} from '../const.js';
 
-import {createElement} from '../helpers/createElement';
+import {createElement} from '../helpers';
 
 import Sort from './sort';
 import Card from './card';
