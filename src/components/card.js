@@ -160,6 +160,10 @@ export default class Card {
   getText() {
     const description = this.description || ``;
 
+    if (!this.isEdit) {
+      return `<p class="card__text">${description}</p>`;
+    }
+
     return (
       `<label>
         <textarea
@@ -252,10 +256,28 @@ export default class Card {
     );
   }
 
+  getContainerTag() {
+    const className = `card__form`;
+
+    if (this.isEdit) {
+      return {
+        open: `<form class="${className}" method="get">`,
+        close: `</form>`
+      };
+    }
+
+    return {
+      open: `<div class="${className}">`,
+      close: `</div>`
+    };
+  }
+
   render() {
+    const containerTag = this.getContainerTag();
+
     return (
       `<article class="${this.className}">
-        <form class="card__form" method="get">
+        ${containerTag.open}
           <div class="card__inner">
             ${this.getCardControls()}
 
@@ -281,7 +303,7 @@ export default class Card {
 
             ${this.getFormActionsControls()}
           </div>
-        </form>
+        ${containerTag.close}
       </article>`
     );
   }
