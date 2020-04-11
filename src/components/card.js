@@ -70,16 +70,12 @@ export default class Card {
   }
 
   getWeekDays() {
-    if (!this.isEdit) {
-      return ``;
-    }
-    if (!this.isRepeat) {
+    if (!this.isEdit ||
+        !this.isRepeat ||
+        (!this.weekDays || this.weekDays.length === 0)) {
       return ``;
     }
 
-    if (!this.weekDays || this.weekDays.length === 0) {
-      return ``;
-    }
     const weekDaysMarkupList = Object.entries(this.weekDays)
       .map(([name, isChecked]) => {
         return this.getDayMarkup({name, isChecked});
@@ -175,20 +171,24 @@ export default class Card {
     );
   }
 
-  getYesNo(value) {
+  getToggleStatus(value) {
     return value ? `yes` : `no`;
   }
 
   getDatesEdit() {
     return (
       `<button class="card__date-deadline-toggle" type="button">
-        date: <span class="card__date-status">${this.getYesNo(this.isDeadline)}</span>
+        date: <span class="card__date-status">
+          ${this.getToggleStatus(this.isDeadline)}
+        </span>
       </button>
 
       ${this.getDeadlineInput()}
 
       <button class="card__repeat-toggle" type="button">
-        repeat: <span class="card__repeat-status">${this.getYesNo(this.isRepeat)}</span>
+        repeat: <span class="card__repeat-status">
+          ${this.getToggleStatus(this.isRepeat)}
+        </span>
       </button>
 
       ${this.getWeekDays()}`
