@@ -1,4 +1,4 @@
-import {MAX_CARDS, MAX_CARDS_SHOW} from './const.js';
+import {MAX_CARDS, MAX_CARDS_SHOW} from './constants.js';
 
 import Menu from './components/menu';
 import Filter from './components/filter';

@@ -1,9 +1,9 @@
-import {COLORSNAMES, WEEKDAYSNAMES, DESCRIPTIONS} from '../const.js';
+import {COLORS_NAMES, WEEKDAYS_NAMES, DESCRIPTIONS} from '../constants.js';
 
 const week = 7;
 
 const getWeekdaysObj = () => {
-  return WEEKDAYSNAMES.reduce((prev, item) => {
+  return WEEKDAYS_NAMES.reduce((prev, item) => {
     prev[item] = false;
 
     return prev;
@@ -48,7 +48,7 @@ const getCardsData = (quantity) => {
     const isArchive = Math.random() > 0.5;
 
     const description = isCreate ? `` : getRandomItem(DESCRIPTIONS);
-    const color = isCreate ? `` : getRandomItem(COLORSNAMES);
+    const color = isCreate ? `` : getRandomItem(COLORS_NAMES);
     const dueDate = isCreate ? null : getRandomDate();
     let isDeadline = isCreate ? false : dueDate < new Date();
 

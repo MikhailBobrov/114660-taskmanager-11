@@ -1,5 +1,5 @@
 import {getClass, getDate, getTime} from '../helpers';
-import {COLORSNAMES} from '../const.js';
+import {COLORS_NAMES} from '../constants.js';
 
 export default class Card {
   constructor({
@@ -117,7 +117,7 @@ export default class Card {
       return ``;
     }
 
-    const colorsMarkupList = COLORSNAMES.map((color) => {
+    const colorsMarkupList = COLORS_NAMES.map((color) => {
       return this.getColorMarkup(color);
     });
 

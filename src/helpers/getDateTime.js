@@ -1,4 +1,4 @@
-import {MONTH_NAMES} from '../const.js';
+import {MONTH_NAMES} from '../constants.js';
 
 const getDate = (date) => {
   if (!date) {

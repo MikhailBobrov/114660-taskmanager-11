@@ -1,7 +1,7 @@
 const MAX_CARDS = 23;
 const MAX_CARDS_SHOW = 8;
 
-const COLORSNAMES = [
+const COLORS_NAMES = [
   `black`,
   `yellow`,
   `blue`,
@@ -9,7 +9,7 @@ const COLORSNAMES = [
   `pink`,
 ];
 
-const WEEKDAYSNAMES = [
+const WEEKDAYS_NAMES = [
   `mo`,
   `tu`,
   `we`,
@@ -41,10 +41,10 @@ const DESCRIPTIONS = [
 ];
 
 export {
-  COLORSNAMES,
+  COLORS_NAMES,
   DESCRIPTIONS,
   MAX_CARDS,
   MAX_CARDS_SHOW,
   MONTH_NAMES,
-  WEEKDAYSNAMES,
+  WEEKDAYS_NAMES,
 };
