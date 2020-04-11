@@ -1,6 +1,6 @@
 import {COLORS_NAMES, WEEKDAYS_NAMES, DESCRIPTIONS} from '../constants.js';
 
-const week = 7;
+const WEEK = 7;
 
 const getWeekdaysObj = () => {
   return WEEKDAYS_NAMES.reduce((prev, item) => {
@@ -19,7 +19,7 @@ const getRandomItem = (list) => {
 const getRandomDate = () => {
   const now = new Date();
   const direction = Math.random() > 0.5 ? 1 : -1;
-  const offset = Math.floor(Math.random() * week);
+  const offset = Math.floor(Math.random() * WEEK);
 
   now.setDate(now.getDate() + offset * direction);
 
