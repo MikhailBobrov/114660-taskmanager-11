@@ -7,30 +7,27 @@ const filterTypes = [
   `archive`,
 ];
 
-const getFilterItems = (cardsData) => {
-  const quantityByType = filterTypes.reduce((prev, type) => {
-    let list = [];
-
-    if (type === `all`) {
-      list = cardsData;
-    } else if (type === `overdue`) {
-      list = cardsData.filter((item) => item.dueDate < new Date());
-    } else if (type === `today`) {
-      list = cardsData.filter((item) => {
-        if (!item.dueDate) {
-          return false;
-        }
-        return (item.dueDate).toLocaleDateString() === (new Date()).toLocaleDateString();
-      });
-    } else if (type === `favorites`) {
-      list = cardsData.filter((item) => item.isFavorite);
-    } else if (type === `repeating`) {
-      list = cardsData.filter((item) => item.isRepeat);
-    } else if (type === `archive`) {
-      list = cardsData.filter((item) => item.isArchive);
+const getTodayItems = (items) => {
+  return items.filter((item) => {
+    if (!item.dueDate) {
+      return false;
     }
+    return (item.dueDate).toLocaleDateString() === (new Date()).toLocaleDateString();
+  });
+};
 
-    prev[type] = list.length;
+const getFilterItems = (cardsData) => {
+  const contentByType = {
+    all: cardsData,
+    overdue: cardsData.filter((item) => item.dueDate < new Date()),
+    today: getTodayItems(cardsData),
+    favorites: cardsData.filter((item) => item.isFavorite),
+    repeating: cardsData.filter((item) => item.isRepeat),
+    archive: cardsData.filter((item) => item.isArchive),
+  };
+
+  const quantityByType = filterTypes.reduce((prev, type) => {
+    prev[type] = contentByType[type].length;
 
     return prev;
   }, {});
