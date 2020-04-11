@@ -5,14 +5,12 @@ import {createElement} from '../helpers';
 import Sort from './sort';
 import Card from './card';
 
-let quantityLoaded = 0;
-
 export default class Board {
   constructor(cardsData) {
     this.cardsData = cardsData;
+    this.quantityLoaded = 0;
     this.section = createElement(this.getTmpl());
     this.tasksElem = this.section.querySelector(`.board__tasks`);
-
     this.moreBtn = this.section.querySelector(`.load-more`);
 
     this.addCards = this.addCards.bind(this);
@@ -20,11 +18,12 @@ export default class Board {
   }
 
   getCards() {
-    const cardsDataToShow = this.cardsData.slice(quantityLoaded, quantityLoaded + MAX_CARDS_SHOW);
+    const nextLoadStart = this.quantityLoaded + MAX_CARDS_SHOW;
+    const cardsDataToShow = this.cardsData.slice(this.quantityLoaded, nextLoadStart);
 
-    quantityLoaded += MAX_CARDS_SHOW;
+    this.quantityLoaded = nextLoadStart;
 
-    if (quantityLoaded >= this.cardsData.length) {
+    if (this.quantityLoaded >= this.cardsData.length) {
       this.moreBtn.remove();
     }
 
