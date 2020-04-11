@@ -1,4 +1,4 @@
-import {MAX_CARDS, MAX_CARDS_SHOW} from './constants';
+import {MAX_CARDS} from './constants';
 
 import Menu from './components/menu';
 import Filter from './components/filter';
