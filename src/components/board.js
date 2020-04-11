@@ -1,4 +1,4 @@
-import {MAX_CARDS_SHOW} from '../constants.js';
+import {MAX_CARDS_SHOW} from '../constants';
 
 import {createElement} from '../helpers';
 

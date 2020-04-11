@@ -1,4 +1,4 @@
-import {COLORS_NAMES, WEEKDAYS_NAMES, DESCRIPTIONS} from '../constants.js';
+import {COLORS_NAMES, WEEKDAYS_NAMES, DESCRIPTIONS} from '../constants';
 
 const WEEK = 7;
 

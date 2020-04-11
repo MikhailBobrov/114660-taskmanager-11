@@ -1,4 +1,4 @@
-import {MONTH_NAMES} from '../constants.js';
+import {MONTH_NAMES} from '../constants';
 
 const isDate = (date) => {
   return date instanceof Date;

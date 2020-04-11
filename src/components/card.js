@@ -1,5 +1,5 @@
 import {getClass, getDate, getTime} from '../helpers';
-import {COLORS_NAMES} from '../constants.js';
+import {COLORS_NAMES} from '../constants';
 
 export default class Card {
   constructor({
