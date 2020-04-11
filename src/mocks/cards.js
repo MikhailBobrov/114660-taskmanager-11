@@ -50,7 +50,7 @@ const getCardsData = (quantity) => {
     const description = isCreate ? `` : getRandomItem(DESCRIPTIONS);
     const color = isCreate ? `` : getRandomItem(COLORS_NAMES);
     const dueDate = isCreate ? null : getRandomDate();
-    let isDeadline = isCreate ? false : dueDate < new Date();
+    const isDeadline = isCreate ? false : dueDate < new Date();
 
     let weekDays = [];
 

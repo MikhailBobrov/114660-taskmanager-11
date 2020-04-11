@@ -20,7 +20,7 @@ const getTime = (date) => {
     return ``;
   }
 
-  let timeParts = [
+  const timeParts = [
     date.getHours(),
     date.getMinutes()
   ];
