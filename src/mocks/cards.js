@@ -1,3 +1,4 @@
+import {getRandomBool} from '../helpers';
 import {COLORS_NAMES, WEEKDAYS_NAMES, DESCRIPTIONS} from '../constants';
 
 const WEEK = 7;
@@ -18,7 +19,7 @@ const getRandomItem = (list) => {
 
 const getRandomDate = () => {
   const now = new Date();
-  const direction = Math.random() > 0.5 ? 1 : -1;
+  const direction = getRandomBool() ? 1 : -1;
   const offset = Math.floor(Math.random() * WEEK);
 
   now.setDate(now.getDate() + offset * direction);
@@ -32,7 +33,7 @@ const getWeekDays = (hasChecked = true) => {
   }
 
   return Object.entries(weekdaysInitial).reduce((prev, [name]) => {
-    prev[name] = Math.random() > 0.5;
+    prev[name] = getRandomBool();
     return prev;
   }, {});
 };
@@ -43,9 +44,9 @@ const getCardsData = (quantity) => {
   for (let i = 0; i < quantity; i++) {
     const isEdit = i <= 1; // 0 edit, 1 create
     const isCreate = i === 1;
-    const isRepeat = Math.random() > 0.5;
-    const isFavorite = Math.random() > 0.5;
-    const isArchive = Math.random() > 0.5;
+    const isRepeat = getRandomBool();
+    const isFavorite = getRandomBool();
+    const isArchive = getRandomBool();
 
     const description = isCreate ? `` : getRandomItem(DESCRIPTIONS);
     const color = isCreate ? `` : getRandomItem(COLORS_NAMES);
