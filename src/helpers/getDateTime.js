@@ -1,7 +1,11 @@
 import {MONTH_NAMES} from '../constants.js';
 
+const isDate = (date) => {
+  return date instanceof Date;
+};
+
 const getDate = (date) => {
-  if (!date) {
+  if (!date || !isDate(date)) {
     return ``;
   }
 
@@ -12,7 +16,7 @@ const getDate = (date) => {
 };
 
 const getTime = (date) => {
-  if (!date) {
+  if (!date || !isDate(date)) {
     return ``;
   }
 
