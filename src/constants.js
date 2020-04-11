@@ -9,16 +9,6 @@ const COLORS_NAMES = [
   `pink`,
 ];
 
-const WEEKDAYS_NAMES = [
-  `mo`,
-  `tu`,
-  `we`,
-  `th`,
-  `fr`,
-  `sa`,
-  `su`,
-];
-
 const MONTH_NAMES = [
   `January`,
   `February`,
@@ -34,17 +24,9 @@ const MONTH_NAMES = [
   `December`,
 ];
 
-const DESCRIPTIONS = [
-  `Изучить теорию`,
-  `Сделать домашку`,
-  `Пройти интенсив на соточку`
-];
-
 export {
   COLORS_NAMES,
-  DESCRIPTIONS,
   MAX_CARDS,
   MAX_CARDS_SHOW,
   MONTH_NAMES,
-  WEEKDAYS_NAMES,
 };

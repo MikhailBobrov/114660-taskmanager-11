@@ -1,17 +1,8 @@
 import {getRandomBool} from '../helpers';
-import {COLORS_NAMES, WEEKDAYS_NAMES, DESCRIPTIONS} from '../constants';
+import {COLORS_NAMES} from '../constants';
+import {WEEKDAYS, DESCRIPTIONS} from './constants';
 
 const WEEK = 7;
-
-const getWeekdaysObj = () => {
-  return WEEKDAYS_NAMES.reduce((prev, item) => {
-    prev[item] = false;
-
-    return prev;
-  }, {});
-};
-
-const weekdaysInitial = getWeekdaysObj();
 
 const getRandomItem = (list) => {
   return list[Math.floor(Math.random() * list.length)];
@@ -29,10 +20,10 @@ const getRandomDate = () => {
 
 const getWeekDays = (hasChecked = true) => {
   if (!hasChecked) {
-    return weekdaysInitial;
+    return WEEKDAYS;
   }
 
-  return Object.entries(weekdaysInitial).reduce((prev, [name]) => {
+  return Object.entries(WEEKDAYS).reduce((prev, [name]) => {
     prev[name] = getRandomBool();
     return prev;
   }, {});
