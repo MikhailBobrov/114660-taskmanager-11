@@ -128,14 +128,10 @@ export default class Card {
   }
 
   getDeadlineInput() {
-    let value = ``;
+    const value = this.date && this.time ? `${this.date} ${this.time}` : ``;
 
     if (this.isRepeat) {
-      return value;
-    }
-
-    if (this.date && this.time) {
-      value = `${this.date} ${this.time}`;
+      return ``;
     }
 
     return (
