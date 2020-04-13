@@ -1,46 +1,58 @@
-const filterTypes = [
-  `all`,
-  `overdue`,
-  `today`,
-  `favorites`,
-  `repeating`,
-  `archive`,
-];
-
-const getTodayItems = (items) => {
-  return items.filter((item) => {
+const getTodayListLength = (items) => {
+  const list = items.filter((item) => {
     if (!item.dueDate) {
       return false;
     }
     return (item.dueDate).toLocaleDateString() === (new Date()).toLocaleDateString();
   });
+
+  return list.length;
+};
+
+const getOverdueListLength = (items) => {
+  const list = items.filter((item) => {
+    if (!item.dueDate) {
+      return false;
+    }
+    return item.dueDate < new Date();
+  });
+
+  return list.length;
+};
+
+const getListLength = (items, filterBy) => {
+  const list = items.filter((item) => item[filterBy]);
+
+  return list.length;
 };
 
 const getFilterItems = (cardsData) => {
-  const contentByType = {
-    all: cardsData,
-    overdue: cardsData.filter((item) => item.dueDate < new Date()),
-    today: getTodayItems(cardsData),
-    favorites: cardsData.filter((item) => item.isFavorite),
-    repeating: cardsData.filter((item) => item.isRepeat),
-    archive: cardsData.filter((item) => item.isArchive),
-  };
-
-  const quantityByType = filterTypes.reduce((prev, type) => {
-    prev[type] = contentByType[type].length;
-
-    return prev;
-  }, {});
-
-  return filterTypes.map((title, index) => {
-    const count = quantityByType[title] || 0;
-
-    return {
-      title,
-      count,
-      isChecked: index === 0
-    };
-  });
+  return [
+    {
+      title: `all`,
+      count: cardsData.length
+    },
+    {
+      title: `overdue`,
+      count: getOverdueListLength(cardsData)
+    },
+    {
+      title: `today`,
+      count: getTodayListLength(cardsData)
+    },
+    {
+      title: `favorites`,
+      count: getListLength(cardsData, `isFavorite`)
+    },
+    {
+      title: `repeating`,
+      count: getListLength(cardsData, `isRepeat`)
+    },
+    {
+      title: `archive`,
+      count: getListLength(cardsData, `isArchive`)
+    },
+  ];
 };
 
 export {getFilterItems};

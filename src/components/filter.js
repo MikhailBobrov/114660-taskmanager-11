@@ -1,11 +1,13 @@
 import {createElement} from '../helpers';
 
 export default class Filter {
-  constructor(items) {
+  constructor({items, currentFilter}) {
     this.items = items;
+    this.currentFilter = currentFilter;
   }
-  getInputMarkup({title, count, isChecked}) {
-    const checkedAttr = isChecked ? `checked` : ``;
+
+  getInputMarkup({title, count}) {
+    const checkedAttr = title === this.currentFilter ? `checked` : ``;
     const disabledAttr = !count ? `disabled` : ``;
 
     return (
