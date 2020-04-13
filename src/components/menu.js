@@ -1,3 +1,5 @@
+import {createElement} from '../helpers';
+
 export default class Menu {
   getTmpl() {
     return (
@@ -30,5 +32,9 @@ export default class Menu {
         >
       </section>`
     );
+  }
+
+  render() {
+    return createElement(this.getTmpl());
   }
 }
