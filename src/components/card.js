@@ -128,11 +128,11 @@ export default class Card {
   }
 
   getDeadlineInput() {
-    const value = this.date && this.time ? `${this.date} ${this.time}` : ``;
-
     if (this.isRepeat) {
       return ``;
     }
+
+    const value = this.date && this.time ? `${this.date} ${this.time}` : ``;
 
     return (
       `<fieldset class="card__date-deadline">
@@ -232,7 +232,7 @@ export default class Card {
         </button>
 
         <button type="button"
-          class="card__btn card__btn--favorites ">
+          class="card__btn card__btn--favorites">
           favorites
         </button>
       </div>`
@@ -253,17 +253,15 @@ export default class Card {
   }
 
   getContainerTag() {
-    const className = `card__form`;
-
     if (this.isEdit) {
       return {
-        open: `<form class="${className}" method="get">`,
+        open: `<form class="card__form" method="get">`,
         close: `</form>`
       };
     }
 
     return {
-      open: `<div class="${className}">`,
+      open: `<div class="card__form">`,
       close: `</div>`
     };
   }
