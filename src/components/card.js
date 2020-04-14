@@ -24,6 +24,8 @@ export default class Card {
       base: `card`,
       mods: this._getMods()
     });
+
+    this._element = createElement(this._getTmpl());
   }
 
   _getMods() {
@@ -301,6 +303,6 @@ export default class Card {
   }
 
   getElement() {
-    return createElement(this._getTmpl());
+    return this._element;
   }
 }
