@@ -7,54 +7,54 @@ import Card from './card';
 
 export default class Board {
   constructor(cardsData) {
-    this.cardsData = cardsData;
-    this.quantityLoaded = 0;
-    this.section = this.createSectionElement();
-    this.tasksElem = this.createTasksElement();
-    this.sortElem = new Sort().getElement();
-    this.moreBtn = this.createMoreBtnElement();
+    this._cardsData = cardsData;
+    this._quantityLoaded = 0;
+    this._sort = new Sort();
+    this._sectionElem = this._createSectionElem();
+    this._tasksElem = this._createTasksElem();
+    this._moreBtn = this._createMoreBtnElem();
 
-    this.fillSection();
+    this._fillSection();
 
-    this.addCards = this.addCards.bind(this);
-    this.moreBtn.addEventListener(`click`, this.addCards);
+    this._addCards = this._addCards.bind(this);
+    this._moreBtn.addEventListener(`click`, this._addCards);
   }
 
-  addCards() {
-    const nextLoadStart = this.quantityLoaded + MAX_CARDS_SHOW;
-    const cardsDataToShow = this.cardsData.slice(this.quantityLoaded, nextLoadStart);
+  _addCards() {
+    const nextLoadStart = this._quantityLoaded + MAX_CARDS_SHOW;
+    const cardsDataToShow = this._cardsData.slice(this._quantityLoaded, nextLoadStart);
 
-    this.quantityLoaded = nextLoadStart;
+    this._quantityLoaded = nextLoadStart;
 
-    if (this.quantityLoaded >= this.cardsData.length) {
-      this.moreBtn.remove();
+    if (this._quantityLoaded >= this._cardsData.length) {
+      this._moreBtn.remove();
     }
 
     for (const data of cardsDataToShow) {
-      this.tasksElem.append(new Card(data).getElement());
+      this._tasksElem.append(new Card(data).getElement());
     }
   }
 
-  createSectionElement() {
+  _createSectionElem() {
     return createElement(`<section class="board container"></section>`);
   }
 
-  createTasksElement() {
+  _createTasksElem() {
     return createElement(`<div class="board__tasks"></div>`);
   }
 
-  createMoreBtnElement() {
+  _createMoreBtnElem() {
     return createElement(`<button class="load-more" type="button">load more</button>`);
   }
 
-  fillSection() {
-    this.section.append(this.sortElem);
-    this.section.append(this.tasksElem);
-    this.addCards();
-    this.section.append(this.moreBtn);
+  _fillSection() {
+    this._sectionElem.append(this._sort.getElement());
+    this._sectionElem.append(this._tasksElem);
+    this._addCards();
+    this._sectionElem.append(this._moreBtn);
   }
 
   getElement() {
-    return this.section;
+    return this._sectionElem;
   }
 }
