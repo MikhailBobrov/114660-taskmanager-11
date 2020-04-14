@@ -2,7 +2,7 @@ import {createElement} from '../helpers';
 
 export default class Sort {
   constructor() {
-    this.itemsData = [
+    this._itemsData = [
       {
         id: `default`,
         name: `SORT BY DEFAULT`
@@ -18,8 +18,8 @@ export default class Sort {
     ];
   }
 
-  getItems() {
-    return this.itemsData.reduce((prev, item) => {
+  _getItems() {
+    return this._itemsData.reduce((prev, item) => {
       const {id, name} = item;
       return (
         `${prev}<a
@@ -33,15 +33,15 @@ export default class Sort {
     }, ``);
   }
 
-  getTmpl() {
+  _getTmpl() {
     return (
       `<div class="board__filter-list">
-        ${this.getItems()}
+        ${this._getItems()}
       </div>`
     );
   }
 
   getElement() {
-    return createElement(this.getTmpl());
+    return createElement(this._getTmpl());
   }
 }
