@@ -2,7 +2,7 @@ import {createElement} from '../helpers';
 
 export default class Menu {
   constructor() {
-    this.itemsData = [
+    this._itemsData = [
       {
         id: `new-task`,
         name: `+ ADD NEW TASK`,
@@ -18,8 +18,8 @@ export default class Menu {
     ];
   }
 
-  getItems() {
-    return this.itemsData.reduce((prev, item) => {
+  _getItems() {
+    return this._itemsData.reduce((prev, item) => {
       const {id, name} = item;
       return (
         `${prev}<input
@@ -36,15 +36,15 @@ export default class Menu {
     }, ``);
   }
 
-  getTmpl() {
+  _getTmpl() {
     return (
       `<section class="control__btn-wrap">
-        ${this.getItems()}
+        ${this._getItems()}
       </section>`
     );
   }
 
   getElement() {
-    return createElement(this.getTmpl());
+    return createElement(this._getTmpl());
   }
 }
