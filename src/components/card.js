@@ -20,12 +20,9 @@ export default class Card {
     this._isDeadline = isDeadline;
     this._isEdit = isEdit;
 
-    this._className = getClass({
-      base: `card`,
-      mods: this._getMods()
-    });
+    this._element = this.createElement();
 
-    this._element = createElement(this._getTmpl());
+    this.addCardEvents();
   }
 
   _getMods() {
@@ -222,17 +219,20 @@ export default class Card {
     return (
       `<div class="card__control">
         <button type="button"
-          class="card__btn card__btn--edit">
+          class="card__btn card__btn--edit"
+          data-action="_edit">
           edit
         </button>
 
         <button type="button"
-          class="card__btn card__btn--archive">
+          class="card__btn card__btn--archive"
+          data-action="_toggleArchive">
           archive
         </button>
 
         <button type="button"
-          class="card__btn card__btn--favorites">
+          class="card__btn card__btn--favorites"
+          data-action="_toggleFavorites">
           favorites
         </button>
       </div>`
@@ -268,9 +268,13 @@ export default class Card {
 
   _getTmpl() {
     const containerTag = this._getContainerTag();
+    const className = getClass({
+      base: `card`,
+      mods: this._getMods()
+    });
 
     return (
-      `<article class="${this._className}">
+      `<article class="${className}">
         ${containerTag.open}
           <div class="card__inner">
             ${this._getCardControls()}
@@ -300,6 +304,60 @@ export default class Card {
         ${containerTag.close}
       </article>`
     );
+  }
+
+  _edit() {
+    this._isEdit = true;
+    this.updateElement();
+    this.addFormEvents();
+  }
+
+  _save() {
+    this._isEdit = false;
+    this.updateElement();
+    this.addCardEvents();
+  }
+
+  addCardEvents() {
+    const cardControls = this._element.querySelector(`.card__control`);
+
+    if (!cardControls) {
+      return;
+    }
+
+    cardControls.addEventListener(`click`, (event) => {
+      const {action} = event.target.dataset;
+
+      if (!action || !this[action]) {
+        return;
+      }
+
+      this[action]();
+    });
+  }
+
+  addFormEvents() {
+    const form = this._element.querySelector(`form`);
+
+    if (!form) {
+      return;
+    }
+
+    form.addEventListener(`submit`, (event) => {
+      event.preventDefault();
+
+      this._save();
+    });
+  }
+
+  createElement() {
+    return createElement(this._getTmpl());
+  }
+
+  updateElement() {
+    const newElement = this.createElement();
+    this._element.replaceWith(newElement);
+    this._element = newElement;
   }
 
   getElement() {

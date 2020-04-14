@@ -33,8 +33,8 @@ const getCardsData = (quantity) => {
   const data = [];
 
   for (let i = 0; i < quantity; i++) {
-    const isEdit = i <= 1; // 0 edit, 1 create
-    const isCreate = i === 1;
+    const isEdit = 0;
+    const isCreate = 0;
     const isRepeat = getRandomBool();
     const isFavorite = getRandomBool();
     const isArchive = getRandomBool();
@@ -44,12 +44,10 @@ const getCardsData = (quantity) => {
     const dueDate = isCreate ? null : getRandomDate();
     const isDeadline = isCreate ? false : dueDate < new Date();
 
-    let weekDays = [];
+    let weekDays = getWeekDays();
 
     if (isCreate) {
       weekDays = getWeekDays(false);
-    } else if (isEdit) {
-      weekDays = getWeekDays();
     }
 
     data.push({
