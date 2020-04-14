@@ -9,15 +9,18 @@ export default class Board {
   constructor(cardsData) {
     this.cardsData = cardsData;
     this.quantityLoaded = 0;
-    this.section = createElement(this.getTmpl());
-    this.tasksElem = this.section.querySelector(`.board__tasks`);
-    this.moreBtn = this.section.querySelector(`.load-more`);
+    this.section = this.createSectionElement();
+    this.tasksElem = this.createTasksElement();
+    this.sortElem = new Sort().getElement();
+    this.moreBtn = this.createMoreBtnElement();
+
+    this.fillSection();
 
     this.addCards = this.addCards.bind(this);
     this.moreBtn.addEventListener(`click`, this.addCards);
   }
 
-  getCards() {
+  addCards() {
     const nextLoadStart = this.quantityLoaded + MAX_CARDS_SHOW;
     const cardsDataToShow = this.cardsData.slice(this.quantityLoaded, nextLoadStart);
 
@@ -27,31 +30,31 @@ export default class Board {
       this.moreBtn.remove();
     }
 
-    return cardsDataToShow
-      .reduce((prev, data) => {
-        return prev + new Card(data).render();
-      }, ``);
+    for (const data of cardsDataToShow) {
+      this.tasksElem.append(new Card(data).getElement());
+    }
   }
 
-  addCards() {
-    this.tasksElem.insertAdjacentHTML(`beforeend`, this.getCards());
+  createSectionElement() {
+    return createElement(`<section class="board container"></section>`);
   }
 
-  getTmpl() {
-    return (
-      `<section class="board container">
-        ${new Sort().getTmpl()}
-
-        <div class="board__tasks">
-          ${this.getCards()}
-        </div>
-
-        <button class="load-more" type="button">load more</button>
-      </section>`
-    );
+  createTasksElement() {
+    return createElement(`<div class="board__tasks"></div>`);
   }
 
-  render() {
+  createMoreBtnElement() {
+    return createElement(`<button class="load-more" type="button">load more</button>`);
+  }
+
+  fillSection() {
+    this.section.append(this.sortElem);
+    this.section.append(this.tasksElem);
+    this.addCards();
+    this.section.append(this.moreBtn);
+  }
+
+  getElement() {
     return this.section;
   }
 }

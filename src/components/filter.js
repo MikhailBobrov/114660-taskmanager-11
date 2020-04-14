@@ -37,7 +37,7 @@ export default class Filter {
     );
   }
 
-  render() {
+  getElement() {
     return createElement(this.getTmpl());
   }
 }

@@ -1,4 +1,4 @@
-import {getClass, getDate, getTime} from '../helpers';
+import {getClass, getDate, getTime, createElement} from '../helpers';
 import {COLORS_NAMES} from '../constants';
 
 export default class Card {
@@ -266,7 +266,7 @@ export default class Card {
     };
   }
 
-  render() {
+  getTmpl() {
     const containerTag = this.getContainerTag();
 
     return (
@@ -300,5 +300,9 @@ export default class Card {
         ${containerTag.close}
       </article>`
     );
+  }
+
+  getElement() {
+    return createElement(this.getTmpl());
   }
 }

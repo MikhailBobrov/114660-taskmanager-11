@@ -34,7 +34,7 @@ export default class Menu {
     );
   }
 
-  render() {
+  getElement() {
     return createElement(this.getTmpl());
   }
 }

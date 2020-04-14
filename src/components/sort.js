@@ -1,3 +1,5 @@
+import {createElement} from '../helpers';
+
 export default class Sort {
   getTmpl() {
     return (
@@ -7,5 +9,9 @@ export default class Sort {
         <a href="#" class="board__filter" data-sort-type="date-down">SORT BY DATE down</a>
       </div>`
     );
+  }
+
+  getElement() {
+    return createElement(this.getTmpl());
   }
 }
