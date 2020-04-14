@@ -16,6 +16,8 @@ export default class Sort {
         name: `SORT BY DATE down`
       },
     ];
+
+    this._element = createElement(this._getTmpl());
   }
 
   _getItems() {
@@ -42,6 +44,6 @@ export default class Sort {
   }
 
   getElement() {
-    return createElement(this._getTmpl());
+    return this._element;
   }
 }
