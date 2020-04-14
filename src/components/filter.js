@@ -4,6 +4,8 @@ export default class Filter {
   constructor({items, currentFilter}) {
     this._items = items;
     this._currentFilter = currentFilter;
+
+    this._element = createElement(this._getTmpl());
   }
 
   _getInputMarkup({title, count}) {
@@ -38,6 +40,6 @@ export default class Filter {
   }
 
   getElement() {
-    return createElement(this._getTmpl());
+    return this._element;
   }
 }
