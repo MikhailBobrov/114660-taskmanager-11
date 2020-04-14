@@ -16,6 +16,8 @@ export default class Menu {
         name: `STATISTICS`
       },
     ];
+
+    this._element = createElement(this._getTmpl());
   }
 
   _getItems() {
@@ -45,6 +47,6 @@ export default class Menu {
   }
 
   getElement() {
-    return createElement(this._getTmpl());
+    return this._element;
   }
 }
