@@ -57,4 +57,8 @@ export default class Board {
   getElement() {
     return this._element;
   }
+
+  removeElement() {
+    this._element = null;
+  }
 }

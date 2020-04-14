@@ -49,4 +49,8 @@ export default class Menu {
   getElement() {
     return this._element;
   }
+
+  removeElement() {
+    this._element = null;
+  }
 }
