@@ -2,12 +2,14 @@ import {createElement} from '../helpers';
 
 export default class Filter {
   constructor({items, currentFilter}) {
-    this.items = items;
-    this.currentFilter = currentFilter;
+    this._items = items;
+    this._currentFilter = currentFilter;
+
+    this._element = createElement(this._getTmpl());
   }
 
-  getInputMarkup({title, count}) {
-    const checkedAttr = title === this.currentFilter ? `checked` : ``;
+  _getInputMarkup({title, count}) {
+    const checkedAttr = title === this._currentFilter ? `checked` : ``;
     const disabledAttr = !count ? `disabled` : ``;
 
     return (
@@ -25,9 +27,9 @@ export default class Filter {
     );
   }
 
-  getTmpl() {
-    const itemsMarkup = this.items.reduce((prev, item) => {
-      return prev + this.getInputMarkup(item);
+  _getTmpl() {
+    const itemsMarkup = this._items.reduce((prev, item) => {
+      return prev + this._getInputMarkup(item);
     }, ``);
 
     return (
@@ -37,7 +39,11 @@ export default class Filter {
     );
   }
 
-  render() {
-    return createElement(this.getTmpl());
+  getElement() {
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
   }
 }

@@ -7,51 +7,58 @@ import Card from './card';
 
 export default class Board {
   constructor(cardsData) {
-    this.cardsData = cardsData;
-    this.quantityLoaded = 0;
-    this.section = createElement(this.getTmpl());
-    this.tasksElem = this.section.querySelector(`.board__tasks`);
-    this.moreBtn = this.section.querySelector(`.load-more`);
+    this._cardsData = cardsData;
+    this._quantityLoaded = 0;
+    this._sort = new Sort();
+    this._element = this._createSectionElement();
+    this._tasksElement = this._createTasksElement();
+    this._moreBtnElement = this._createMoreBtnElement();
 
-    this.addCards = this.addCards.bind(this);
-    this.moreBtn.addEventListener(`click`, this.addCards);
+    this._fillSection();
+
+    this._addCards = this._addCards.bind(this);
+    this._moreBtnElement.addEventListener(`click`, this._addCards);
   }
 
-  getCards() {
-    const nextLoadStart = this.quantityLoaded + MAX_CARDS_SHOW;
-    const cardsDataToShow = this.cardsData.slice(this.quantityLoaded, nextLoadStart);
+  _addCards() {
+    const nextLoadStart = this._quantityLoaded + MAX_CARDS_SHOW;
+    const cardsDataToShow = this._cardsData.slice(this._quantityLoaded, nextLoadStart);
 
-    this.quantityLoaded = nextLoadStart;
+    this._quantityLoaded = nextLoadStart;
 
-    if (this.quantityLoaded >= this.cardsData.length) {
-      this.moreBtn.remove();
+    if (this._quantityLoaded >= this._cardsData.length) {
+      this._moreBtnElement.remove();
     }
 
-    return cardsDataToShow
-      .reduce((prev, data) => {
-        return prev + new Card(data).render();
-      }, ``);
+    for (const data of cardsDataToShow) {
+      this._tasksElement.append(new Card(data).getElement());
+    }
   }
 
-  addCards() {
-    this.tasksElem.insertAdjacentHTML(`beforeend`, this.getCards());
+  _createSectionElement() {
+    return createElement(`<section class="board container"></section>`);
   }
 
-  getTmpl() {
-    return (
-      `<section class="board container">
-        ${new Sort().getTmpl()}
-
-        <div class="board__tasks">
-          ${this.getCards()}
-        </div>
-
-        <button class="load-more" type="button">load more</button>
-      </section>`
-    );
+  _createTasksElement() {
+    return createElement(`<div class="board__tasks"></div>`);
   }
 
-  render() {
-    return this.section;
+  _createMoreBtnElement() {
+    return createElement(`<button class="load-more" type="button">load more</button>`);
+  }
+
+  _fillSection() {
+    this._element.append(this._sort.getElement());
+    this._element.append(this._tasksElement);
+    this._addCards();
+    this._element.append(this._moreBtnElement);
+  }
+
+  getElement() {
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
   }
 }

@@ -21,6 +21,6 @@ const render = (target, elem) => {
   target.append(elem);
 };
 
-render(controlElem, menu.render());
-render(mainElem, filter.render());
-render(mainElem, board.render());
+render(controlElem, menu.getElement());
+render(mainElem, filter.getElement());
+render(mainElem, board.getElement());

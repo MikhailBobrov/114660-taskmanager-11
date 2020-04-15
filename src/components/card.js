@@ -1,10 +1,9 @@
-import {getClass, getDate, getTime} from '../helpers';
+import {getClass, getDate, getTime, createElement} from '../helpers';
 import {COLORS_NAMES} from '../constants';
 
 export default class Card {
   constructor({
     description,
-    mods,
     dueDate,
     weekDays,
     color,
@@ -12,45 +11,43 @@ export default class Card {
     isDeadline,
     isEdit
   }) {
-    this.description = description;
-    this.mods = mods;
-    this.date = getDate(dueDate);
-    this.time = getTime(dueDate);
-    this.weekDays = weekDays;
-    this.color = color;
-    this.isRepeat = isRepeat;
-    this.isDeadline = isDeadline;
-    this.isEdit = isEdit;
+    this._description = description;
+    this._date = getDate(dueDate);
+    this._time = getTime(dueDate);
+    this._weekDays = weekDays;
+    this._color = color;
+    this._isRepeat = isRepeat;
+    this._isDeadline = isDeadline;
+    this._isEdit = isEdit;
 
-    this.className = getClass({
-      base: `card`,
-      mods: this.getMods()
-    });
+    this._element = this.createElement();
+
+    this.addCardEvents();
   }
 
-  getMods() {
+  _getMods() {
     const mods = [];
 
-    if (this.isRepeat) {
+    if (this._isRepeat) {
       mods.push(`repeat`);
     }
 
-    if (this.isDeadline) {
+    if (this._isDeadline) {
       mods.push(`deadline`);
     }
 
-    if (this.isEdit) {
+    if (this._isEdit) {
       mods.push(`edit`);
     }
 
-    if (this.color) {
-      mods.push(this.color);
+    if (this._color) {
+      mods.push(this._color);
     }
 
     return mods;
   }
 
-  getDayMarkup({name, isChecked}) {
+  _getDayMarkup({name, isChecked}) {
     const checkedAttr = isChecked ? `checked` : ``;
 
     return (
@@ -69,16 +66,16 @@ export default class Card {
     );
   }
 
-  getWeekDays() {
-    if (!this.isEdit ||
-        !this.isRepeat ||
-        (!this.weekDays || this.weekDays.length === 0)) {
+  _getWeekDays() {
+    if (!this._isEdit ||
+        !this._isRepeat ||
+        (!this._weekDays || this._weekDays.length === 0)) {
       return ``;
     }
 
-    const weekDaysMarkupList = Object.entries(this.weekDays)
+    const weekDaysMarkupList = Object.entries(this._weekDays)
       .map(([name, isChecked]) => {
-        return this.getDayMarkup({name, isChecked});
+        return this._getDayMarkup({name, isChecked});
       });
 
     return `<fieldset class="card__repeat-days">
@@ -88,8 +85,8 @@ export default class Card {
     </fieldset>`;
   }
 
-  getColorMarkup(name) {
-    const checkedAttr = name === this.color ? `checked` : ``;
+  _getColorMarkup(name) {
+    const checkedAttr = name === this._color ? `checked` : ``;
 
     return (
       `<input
@@ -108,13 +105,13 @@ export default class Card {
     );
   }
 
-  getColors() {
-    if (!this.isEdit) {
+  _getColors() {
+    if (!this._isEdit) {
       return ``;
     }
 
     const colorsMarkupList = COLORS_NAMES.map((color) => {
-      return this.getColorMarkup(color);
+      return this._getColorMarkup(color);
     });
 
     return (
@@ -127,12 +124,12 @@ export default class Card {
     );
   }
 
-  getDeadlineInput() {
-    if (this.isRepeat) {
+  _getDeadlineInput() {
+    if (this._isRepeat) {
       return ``;
     }
 
-    const value = this.date && this.time ? `${this.date} ${this.time}` : ``;
+    const value = this._date && this._time ? `${this._date} ${this._time}` : ``;
 
     return (
       `<fieldset class="card__date-deadline">
@@ -149,10 +146,10 @@ export default class Card {
     );
   }
 
-  getText() {
-    const description = this.description || ``;
+  _getText() {
+    const description = this._description || ``;
 
-    if (!this.isEdit) {
+    if (!this._isEdit) {
       return `<p class="card__text">${description}</p>`;
     }
 
@@ -167,80 +164,83 @@ export default class Card {
     );
   }
 
-  getToggleStatus(value) {
+  _getToggleStatus(value) {
     return value ? `yes` : `no`;
   }
 
-  getDatesEdit() {
+  _getDatesEdit() {
     return (
       `<button class="card__date-deadline-toggle" type="button">
         date: <span class="card__date-status">
-          ${this.getToggleStatus(this.isDeadline)}
+          ${this._getToggleStatus(this._isDeadline)}
         </span>
       </button>
 
-      ${this.getDeadlineInput()}
+      ${this._getDeadlineInput()}
 
       <button class="card__repeat-toggle" type="button">
         repeat: <span class="card__repeat-status">
-          ${this.getToggleStatus(this.isRepeat)}
+          ${this._getToggleStatus(this._isRepeat)}
         </span>
       </button>
 
-      ${this.getWeekDays()}`
+      ${this._getWeekDays()}`
     );
   }
 
-  getDatesShow() {
-    if (!this.date || !this.time) {
+  _getDatesShow() {
+    if (!this._date || !this._time) {
       return ``;
     }
 
     return (
       `<div class="card__date-deadline">
         <p class="card__input-deadline-wrap">
-          <span class="card__date">${this.date}</span>
-          <span class="card__time">${this.time}</span>
+          <span class="card__date">${this._date}</span>
+          <span class="card__time">${this._time}</span>
         </p>
       </div>`
     );
   }
 
-  getDatesContent() {
-    if (this.isEdit) {
-      return this.getDatesEdit();
+  _getDatesContent() {
+    if (this._isEdit) {
+      return this._getDatesEdit();
     }
 
-    return this.getDatesShow();
+    return this._getDatesShow();
   }
 
-  getCardControls() {
-    if (this.isEdit) {
+  _getCardControls() {
+    if (this._isEdit) {
       return ``;
     }
 
     return (
       `<div class="card__control">
         <button type="button"
-          class="card__btn card__btn--edit">
+          class="card__btn card__btn--edit"
+          data-action="_edit">
           edit
         </button>
 
         <button type="button"
-          class="card__btn card__btn--archive">
+          class="card__btn card__btn--archive"
+          data-action="_toggleArchive">
           archive
         </button>
 
         <button type="button"
-          class="card__btn card__btn--favorites">
+          class="card__btn card__btn--favorites"
+          data-action="_toggleFavorites">
           favorites
         </button>
       </div>`
     );
   }
 
-  getFormActionsControls() {
-    if (!this.isEdit) {
+  _getFormActionsControls() {
+    if (!this._isEdit) {
       return ``;
     }
 
@@ -252,8 +252,8 @@ export default class Card {
     );
   }
 
-  getContainerTag() {
-    if (this.isEdit) {
+  _getContainerTag() {
+    if (this._isEdit) {
       return {
         open: `<form class="card__form" method="get">`,
         close: `</form>`
@@ -266,14 +266,18 @@ export default class Card {
     };
   }
 
-  render() {
-    const containerTag = this.getContainerTag();
+  _getTmpl() {
+    const containerTag = this._getContainerTag();
+    const className = getClass({
+      base: `card`,
+      mods: this._getMods()
+    });
 
     return (
-      `<article class="${this.className}">
+      `<article class="${className}">
         ${containerTag.open}
           <div class="card__inner">
-            ${this.getCardControls()}
+            ${this._getCardControls()}
 
             <div class="card__color-bar">
               <svg class="card__color-bar-wave" width="100%" height="10">
@@ -282,23 +286,85 @@ export default class Card {
             </div>
 
             <div class="card__textarea-wrap">
-              ${this.getText()}
+              ${this._getText()}
             </div>
 
             <div class="card__settings">
               <div class="card__details">
                 <div class="card__dates">
-                  ${this.getDatesContent()}
+                  ${this._getDatesContent()}
                 </div>
               </div>
 
-              ${this.getColors()}
+              ${this._getColors()}
             </div>
 
-            ${this.getFormActionsControls()}
+            ${this._getFormActionsControls()}
           </div>
         ${containerTag.close}
       </article>`
     );
+  }
+
+  _edit() {
+    this._isEdit = true;
+    this.updateElement();
+    this.addFormEvents();
+  }
+
+  _save() {
+    this._isEdit = false;
+    this.updateElement();
+    this.addCardEvents();
+  }
+
+  addCardEvents() {
+    const cardControls = this._element.querySelector(`.card__control`);
+
+    if (!cardControls) {
+      return;
+    }
+
+    cardControls.addEventListener(`click`, (event) => {
+      const {action} = event.target.dataset;
+
+      if (!action || !this[action]) {
+        return;
+      }
+
+      this[action]();
+    });
+  }
+
+  addFormEvents() {
+    const form = this._element.querySelector(`form`);
+
+    if (!form) {
+      return;
+    }
+
+    form.addEventListener(`submit`, (event) => {
+      event.preventDefault();
+
+      this._save();
+    });
+  }
+
+  createElement() {
+    return createElement(this._getTmpl());
+  }
+
+  updateElement() {
+    const newElement = this.createElement();
+    this._element.replaceWith(newElement);
+    this._element = newElement;
+  }
+
+  getElement() {
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
   }
 }
