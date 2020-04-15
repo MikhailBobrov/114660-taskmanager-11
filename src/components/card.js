@@ -117,6 +117,7 @@ export default class Card {
     return (
       `<div class="card__colors-inner">
         <h3 class="card__colors-title">Color</h3>
+
         <div class="card__colors-wrap">
           ${colorsMarkupList.join(``)}
         </div>
@@ -197,6 +198,7 @@ export default class Card {
       `<div class="card__date-deadline">
         <p class="card__input-deadline-wrap">
           <span class="card__date">${this._date}</span>
+
           <span class="card__time">${this._time}</span>
         </p>
       </div>`
@@ -247,6 +249,7 @@ export default class Card {
     return (
       `<div class="card__status-btns">
         <button class="card__save" type="submit">save</button>
+
         <button class="card__delete" type="button">delete</button>
       </div>`
     );
