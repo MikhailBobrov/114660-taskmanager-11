@@ -20,9 +20,8 @@ export default class Card {
     this._isDeadline = isDeadline;
     this._isEdit = isEdit;
 
-    this._element = this.createElement();
-
-    this.addCardEvents();
+    this._onControlClick = this._onControlClick.bind(this);
+    this._onFormSubmit = this._onFormSubmit.bind(this);
   }
 
   _getMods() {
@@ -328,15 +327,17 @@ export default class Card {
       return;
     }
 
-    cardControls.addEventListener(`click`, (event) => {
-      const {action} = event.target.dataset;
+    cardControls.addEventListener(`click`, this._onControlClick);
+  }
 
-      if (!action || !this[action]) {
-        return;
-      }
+  _onControlClick(event) {
+    const {action} = event.target.dataset;
 
-      this[action]();
-    });
+    if (!action || !this[action]) {
+      return;
+    }
+
+    this[action]();
   }
 
   addFormEvents() {
@@ -346,11 +347,13 @@ export default class Card {
       return;
     }
 
-    form.addEventListener(`submit`, (event) => {
-      event.preventDefault();
+    form.addEventListener(`submit`, this._onFormSubmit);
+  }
 
-      this._save();
-    });
+  _onFormSubmit(event) {
+    event.preventDefault();
+
+    this._save();
   }
 
   createElement() {
@@ -364,6 +367,12 @@ export default class Card {
   }
 
   getElement() {
+    if (!this._element) {
+      this._element = this.createElement();
+
+      this.addCardEvents();
+    }
+
     return this._element;
   }
 

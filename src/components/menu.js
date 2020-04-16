@@ -16,13 +16,12 @@ export default class Menu {
         name: `STATISTICS`
       },
     ];
-
-    this._element = createElement(this._getTmpl());
   }
 
   _getItems() {
     return this._itemsData.reduce((prev, item) => {
       const {id, name} = item;
+
       return (
         `${prev}<input
           type="radio"
@@ -47,6 +46,10 @@ export default class Menu {
   }
 
   getElement() {
+    if (!this._element) {
+      this._element = createElement(this._getTmpl());
+    }
+
     return this._element;
   }
 
