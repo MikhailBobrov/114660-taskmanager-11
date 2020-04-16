@@ -29,6 +29,7 @@ export default class Board {
 
     if (this._quantityLoaded >= this._cardsData.length) {
       this._moreBtnElement.remove();
+      this._moreBtnElement.removeEventListener(`click`, this._onMoreBtnClick);
     }
 
     for (const data of cardsDataToShow) {
