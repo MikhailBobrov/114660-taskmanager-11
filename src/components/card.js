@@ -221,19 +221,19 @@ export default class Card {
       `<div class="card__control">
         <button type="button"
           class="card__btn card__btn--edit"
-          data-action="_edit">
+          data-handler="_edit">
           edit
         </button>
 
         <button type="button"
           class="card__btn card__btn--archive"
-          data-action="_toggleArchive">
+          data-handler="_toggleArchive">
           archive
         </button>
 
         <button type="button"
           class="card__btn card__btn--favorites"
-          data-action="_toggleFavorites">
+          data-handler="_toggleFavorites">
           favorites
         </button>
       </div>`
@@ -331,13 +331,13 @@ export default class Card {
   }
 
   _onControlClick(event) {
-    const {action} = event.target.dataset;
+    const {handler} = event.target.dataset;
 
-    if (!action || !this[action]) {
+    if (!handler || !this[handler]) {
       return;
     }
 
-    this[action]();
+    this[handler]();
   }
 
   addFormEvents() {
