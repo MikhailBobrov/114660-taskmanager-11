@@ -10,14 +10,15 @@ export default class Board {
     this._cardsData = cardsData;
     this._quantityLoaded = 0;
     this._sort = new Sort();
-    this._element = this._createSectionElement();
     this._tasksElement = this._createTasksElement();
     this._moreBtnElement = this._createMoreBtnElement();
 
-    this._fillSection();
+    this._onMoreBtnClick = this._onMoreBtnClick.bind(this);
+    this._moreBtnElement.addEventListener(`click`, this._onMoreBtnClick);
+  }
 
-    this._addCards = this._addCards.bind(this);
-    this._moreBtnElement.addEventListener(`click`, this._addCards);
+  _onMoreBtnClick() {
+    this._addCards();
   }
 
   _addCards() {
@@ -28,6 +29,7 @@ export default class Board {
 
     if (this._quantityLoaded >= this._cardsData.length) {
       this._moreBtnElement.remove();
+      this._moreBtnElement.removeEventListener(`click`, this._onMoreBtnClick);
     }
 
     for (const data of cardsDataToShow) {
@@ -55,6 +57,11 @@ export default class Board {
   }
 
   getElement() {
+    if (!this._element) {
+      this._element = this._createSectionElement();
+      this._fillSection();
+    }
+
     return this._element;
   }
 

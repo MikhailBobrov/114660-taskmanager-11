@@ -16,13 +16,12 @@ export default class Sort {
         name: `SORT BY DATE down`
       },
     ];
-
-    this._element = createElement(this._getTmpl());
   }
 
   _getItems() {
     return this._itemsData.reduce((prev, item) => {
       const {id, name} = item;
+
       return (
         `${prev}<a
           href="#"
@@ -44,6 +43,10 @@ export default class Sort {
   }
 
   getElement() {
+    if (!this._element) {
+      this._element = createElement(this._getTmpl());
+    }
+
     return this._element;
   }
 

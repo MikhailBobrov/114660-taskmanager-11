@@ -20,9 +20,8 @@ export default class Card {
     this._isDeadline = isDeadline;
     this._isEdit = isEdit;
 
-    this._element = this.createElement();
-
-    this.addCardEvents();
+    this._onControlClick = this._onControlClick.bind(this);
+    this._onFormSubmit = this._onFormSubmit.bind(this);
   }
 
   _getMods() {
@@ -117,6 +116,7 @@ export default class Card {
     return (
       `<div class="card__colors-inner">
         <h3 class="card__colors-title">Color</h3>
+
         <div class="card__colors-wrap">
           ${colorsMarkupList.join(``)}
         </div>
@@ -197,6 +197,7 @@ export default class Card {
       `<div class="card__date-deadline">
         <p class="card__input-deadline-wrap">
           <span class="card__date">${this._date}</span>
+
           <span class="card__time">${this._time}</span>
         </p>
       </div>`
@@ -220,19 +221,19 @@ export default class Card {
       `<div class="card__control">
         <button type="button"
           class="card__btn card__btn--edit"
-          data-action="_edit">
+          data-handler="_edit">
           edit
         </button>
 
         <button type="button"
           class="card__btn card__btn--archive"
-          data-action="_toggleArchive">
+          data-handler="_toggleArchive">
           archive
         </button>
 
         <button type="button"
           class="card__btn card__btn--favorites"
-          data-action="_toggleFavorites">
+          data-handler="_toggleFavorites">
           favorites
         </button>
       </div>`
@@ -247,6 +248,7 @@ export default class Card {
     return (
       `<div class="card__status-btns">
         <button class="card__save" type="submit">save</button>
+
         <button class="card__delete" type="button">delete</button>
       </div>`
     );
@@ -325,15 +327,17 @@ export default class Card {
       return;
     }
 
-    cardControls.addEventListener(`click`, (event) => {
-      const {action} = event.target.dataset;
+    cardControls.addEventListener(`click`, this._onControlClick);
+  }
 
-      if (!action || !this[action]) {
-        return;
-      }
+  _onControlClick(event) {
+    const {handler} = event.target.dataset;
 
-      this[action]();
-    });
+    if (!handler || !this[handler]) {
+      return;
+    }
+
+    this[handler]();
   }
 
   addFormEvents() {
@@ -343,11 +347,13 @@ export default class Card {
       return;
     }
 
-    form.addEventListener(`submit`, (event) => {
-      event.preventDefault();
+    form.addEventListener(`submit`, this._onFormSubmit);
+  }
 
-      this._save();
-    });
+  _onFormSubmit(event) {
+    event.preventDefault();
+
+    this._save();
   }
 
   createElement() {
@@ -361,6 +367,12 @@ export default class Card {
   }
 
   getElement() {
+    if (!this._element) {
+      this._element = this.createElement();
+
+      this.addCardEvents();
+    }
+
     return this._element;
   }
 
