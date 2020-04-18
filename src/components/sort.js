@@ -1,7 +1,9 @@
-import {createElement} from '../helpers';
+import AbstractComponent from './abstract-component';
 
-export default class Sort {
+export default class Sort extends AbstractComponent {
   constructor() {
+    super();
+
     this._itemsData = [
       {
         id: `default`,
@@ -40,17 +42,5 @@ export default class Sort {
         ${this._getItems()}
       </div>`
     );
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTmpl());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
