@@ -1,7 +1,7 @@
 import AbstractComponent from '../abstract-component';
 import Card from '../card';
 import CardEdit from '../card-edit';
-import {renderElement} from '../../helpers';
+import {renderElement, replaceElement} from '../../helpers';
 
 export default class TasksContainer extends AbstractComponent {
   renderTask(element, data) {
@@ -10,10 +10,10 @@ export default class TasksContainer extends AbstractComponent {
     const cardEdit = new CardEdit(data);
 
     function replaceCardToEdit() {
-      card.getElement().replaceWith(cardEdit.getElement());
+      replaceElement(card, cardEdit);
     }
     function replaceEditTocard() {
-      cardEdit.getElement().replaceWith(card.getElement());
+      replaceElement(cardEdit, card);
     }
 
     card.setEditBtnHandler(replaceCardToEdit);
