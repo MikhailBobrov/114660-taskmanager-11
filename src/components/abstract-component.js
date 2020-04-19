@@ -17,10 +17,6 @@ export default class AbstractComponent {
     return createElement(this._getTmpl());
   }
 
-  setClickHandler(handler) {
-    this.getElement().addEventListener(`click`, handler);
-  }
-
   getElement() {
     if (!this._element) {
       this._element = this._createElement();

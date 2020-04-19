@@ -1,7 +1,7 @@
-import AbstractComponent from '../abstract-component';
-import Card from '../card';
-import CardEdit from '../card-edit';
-import {renderElement, replaceElement} from '../../helpers';
+import AbstractComponent from './abstract-component';
+import Card from './card';
+import CardEdit from './card-edit';
+import {renderElement, replaceElement} from '../helpers';
 
 export default class TasksContainer extends AbstractComponent {
   renderTask(element, data) {

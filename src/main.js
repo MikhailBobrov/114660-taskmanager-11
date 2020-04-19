@@ -2,7 +2,7 @@ import {MAX_CARDS} from './constants';
 
 import Menu from './components/menu';
 import Filter from './components/filter';
-import Board from './components/board';
+import BoardController from './controllers/board-controller';
 
 import {getCardsData} from './mocks/cards';
 import {getFilterItems} from './mocks/filter';
@@ -17,8 +17,9 @@ const filterItems = getFilterItems(cardsData);
 
 const menu = new Menu();
 const filter = new Filter({items: filterItems, currentFilter: `all`});
-const board = new Board(cardsData);
+const boardController = new BoardController(mainElem);
 
 renderElement(controlElem, menu);
 renderElement(mainElem, filter);
-renderElement(mainElem, board);
+
+boardController.render(cardsData);

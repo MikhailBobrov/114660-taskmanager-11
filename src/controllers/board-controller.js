@@ -1,21 +1,22 @@
-import AbstractComponent from '../abstract-component';
-import Sort from '../sort';
-import TasksContainer from './tasks-container';
-import MoreBtn from './more-btn';
-import {MAX_CARDS_SHOW} from '../../constants';
-import {createElement, renderElement, removeElement} from '../../helpers';
+import AbstractComponent from '../components/abstract-component';
+import Sort from '../components/sort';
+import TasksContainer from '../components/tasks-container';
+import MoreBtn from '../components/more-btn';
+import {MAX_CARDS_SHOW} from '../constants';
+import {createElement, renderElement, removeElement} from '../helpers';
 
-export default class Board extends AbstractComponent {
-  constructor(cardsData) {
+export default class BoardController extends AbstractComponent {
+  constructor(container) {
     super();
 
-    this._cardsData = cardsData;
+    this._container = container;
     this._quantityLoaded = 0;
     this._sort = new Sort();
     this._tasksContainer = new TasksContainer();
     this._moreBtn = new MoreBtn();
 
     this._moreBtnClickHandler = this._moreBtnClickHandler.bind(this);
+    this._moreBtn.setClickHandler(this._moreBtnClickHandler);
   }
 
   _moreBtnClickHandler() {
@@ -45,12 +46,16 @@ export default class Board extends AbstractComponent {
     const element = createElement(this._getTmpl());
     renderElement(element, this._sort);
     renderElement(element, this._tasksContainer);
+    renderElement(element, this._moreBtn);
 
     this._addCards();
 
-    renderElement(element, this._moreBtn);
-    this._moreBtn.setClickHandler(this._moreBtnClickHandler);
 
     return element;
+  }
+
+  render(cardsData) {
+    this._cardsData = cardsData;
+    renderElement(this._container, this.getElement());
   }
 }
