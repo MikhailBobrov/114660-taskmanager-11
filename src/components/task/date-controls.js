@@ -4,17 +4,17 @@ import WeekDays from './weekdays';
 import {getDate, getTime, createElement, renderElement} from '../../helpers';
 
 export default class DateControls extends AbstractComponent {
-  constructor(data) {
+  constructor(taskData) {
     super();
 
-    const {isEdit, dueDate, isDeadline, isRepeat} = data;
+    const {isEdit, dueDate, isDeadline, isRepeat} = taskData;
     this._isEdit = isEdit;
     this._isDeadline = isDeadline;
     this._isRepeat = isRepeat;
     this._date = getDate(dueDate);
     this._time = getTime(dueDate);
-    this._deadlineInput = new DeadlineInput(data);
-    this._weekDays = new WeekDays(data);
+    this._deadlineInput = new DeadlineInput(taskData);
+    this._weekDays = new WeekDays(taskData);
     this._isShown = this._isEdit;
   }
 

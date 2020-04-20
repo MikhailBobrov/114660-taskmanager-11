@@ -4,10 +4,10 @@ import CardEdit from './card-edit';
 import {renderElement, replaceElement} from '../helpers';
 
 export default class TasksContainer extends AbstractComponent {
-  renderTask(element, data) {
-    const card = new Card(data);
-    data.isEdit = true;
-    const cardEdit = new CardEdit(data);
+  renderTask(element, cardData) {
+    const card = new Card(cardData);
+    cardData.isEdit = true;
+    const cardEdit = new CardEdit(cardData);
 
     function replaceCardToEdit() {
       replaceElement(card, cardEdit);

@@ -7,18 +7,18 @@ import DateControls from './date-controls';
 import {createElement, renderElement} from '../../helpers';
 
 export default class Settings extends AbstractComponent {
-  constructor(data) {
+  constructor(taskData) {
     super();
 
-    const {isEdit} = data;
+    const {isEdit} = taskData;
     this._isEdit = isEdit;
 
     this._date = isEdit
-      ? new DateControls(data)
-      : new DateText(data);
-    this._deadlineInput = new DeadlineInput(data);
-    this._weekDays = new WeekDays(data);
-    this._colorsControls = new ColorsControls(data);
+      ? new DateControls(taskData)
+      : new DateText(taskData);
+    this._deadlineInput = new DeadlineInput(taskData);
+    this._weekDays = new WeekDays(taskData);
+    this._colorsControls = new ColorsControls(taskData);
   }
 
   _getToggleStatus(value) {

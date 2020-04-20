@@ -12,21 +12,21 @@ export default class Task extends AbstractComponent {
     }
   }
 
-  _init(data) {
+  _init(taskData) {
     const {
       color,
       isRepeat,
       isDeadline,
       isEdit
-    } = data;
+    } = taskData;
 
     this._color = color;
     this._isRepeat = isRepeat;
     this._isDeadline = isDeadline;
     this._isEdit = isEdit;
 
-    this._text = new Text(data);
-    this._settings = new Settings(data);
+    this._text = new Text(taskData);
+    this._settings = new Settings(taskData);
   }
 
   _getMods() {
