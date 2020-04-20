@@ -83,9 +83,11 @@ export default class Task extends AbstractComponent {
       renderElement(innerElement, this._cardControls);
     }
 
-    renderElement(innerElement, this._getColorbarElement());
-    renderElement(innerElement, this._text);
-    renderElement(innerElement, this._settings);
+    renderElement(innerElement, [
+      this._getColorbarElement(),
+      this._text,
+      this._settings
+    ]);
 
     if (this._formControls) {
       renderElement(innerElement, this._formControls);

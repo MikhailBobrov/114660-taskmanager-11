@@ -44,12 +44,14 @@ export default class BoardController extends AbstractComponent {
 
   _createElement() {
     const element = createElement(this._getTmpl());
-    renderElement(element, this._sort);
-    renderElement(element, this._tasksContainer);
-    renderElement(element, this._moreBtn);
+
+    renderElement(element, [
+      this._sort,
+      this._tasksContainer,
+      this._moreBtn
+    ]);
 
     this._addCards();
-
 
     return element;
   }

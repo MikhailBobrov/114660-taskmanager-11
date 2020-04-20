@@ -34,19 +34,23 @@ export default class DateControls extends AbstractComponent {
 
   _createElement() {
     const element = createElement(this._getTmpl());
-
-    renderElement(element, this._getBtnElement({
+    const deadlineBtn = this._getBtnElement({
       id: `date-deadline`,
       value: this._isDeadline,
       text: `date`
-    }));
-    renderElement(element, this._deadlineInput);
-    renderElement(element, this._getBtnElement({
+    });
+    const repeatBtn = this._getBtnElement({
       id: `repeat`,
       value: this._isRepeat,
       text: `repeat`
-    }));
-    renderElement(element, this._weekDays);
+    });
+
+    renderElement(element, [
+      deadlineBtn,
+      this._deadlineInput,
+      repeatBtn,
+      this._weekDays
+    ]);
 
     return element;
   }
