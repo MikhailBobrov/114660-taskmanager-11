@@ -1,7 +1,9 @@
-import {createElement} from '../helpers';
+import AbstractComponent from './abstract-component';
 
-export default class Menu {
+export default class Menu extends AbstractComponent {
   constructor() {
+    super();
+
     this._itemsData = [
       {
         id: `new-task`,
@@ -43,17 +45,5 @@ export default class Menu {
         ${this._getItems()}
       </section>`
     );
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTmpl());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
