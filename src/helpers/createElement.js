@@ -2,7 +2,7 @@ const templateElem = document.createElement(`template`);
 
 export const createElement = (str) => {
   if (!str) {
-    return ``;
+    return null;
   }
 
   templateElem.innerHTML = str;
