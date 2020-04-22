@@ -1,5 +1,5 @@
 export const replaceElement = (componentFrom, componentTo) => {
-  if (!componentFrom || componentTo) {
+  if (!componentFrom && !componentTo) {
     return;
   }
 
