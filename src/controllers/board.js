@@ -1,63 +1,69 @@
-import AbstractComponent from '../components/abstract-component';
+import TaskController from './task';
 import Sort from '../components/sort';
-import TasksContainer from '../components/tasks-container';
 import MoreBtn from '../components/more-btn';
 import {MAX_CARDS_SHOW} from '../constants';
 import {createElement, renderElement, removeElement} from '../helpers';
 
-export default class BoardController extends AbstractComponent {
+export default class BoardController {
   constructor(container) {
-    super();
-
     this._container = container;
     this._quantityLoaded = 0;
     this._sort = new Sort();
-    this._tasksContainer = new TasksContainer();
     this._moreBtn = new MoreBtn();
+    this._tasksControllers = [];
 
     this._moreBtnClickHandler = this._moreBtnClickHandler.bind(this);
     this._moreBtn.setClickHandler(this._moreBtnClickHandler);
   }
 
   _moreBtnClickHandler() {
-    this._addCards();
+    this._loadMore();
   }
 
-  _addCards() {
-    const nextLoadStart = this._quantityLoaded + MAX_CARDS_SHOW;
-    const cardsDataToShow = this._cardsData.slice(this._quantityLoaded, nextLoadStart);
+  _loadMore() {
+    const newTasksControllers = this._renderTasks(this._getTasks());
+    this._tasksControllers = this._tasksControllers.concat(newTasksControllers);
+  }
 
+  _getTasksSection() {
+    return createElement(`<div class="board__tasks"></div>`);
+  }
+
+  _getBoardSection() {
+    return createElement(`<section class="board container"></section>`);
+  }
+
+  _renderTasks(tasks) {
+    return tasks.map((taskData) => {
+      const taskController = new TaskController(this._tasksSection);
+      taskController.render(taskData);
+    });
+  }
+
+  _getTasks() {
+    const nextLoadStart = this._quantityLoaded + MAX_CARDS_SHOW;
+    const tasksToShow = this._tasks.slice(this._quantityLoaded, nextLoadStart);
     this._quantityLoaded = nextLoadStart;
 
-    if (this._quantityLoaded >= this._cardsData.length) {
+    if (this._quantityLoaded >= this._tasks.length) {
       removeElement(this._moreBtn);
     }
 
-    this._tasksContainer.addCards(cardsDataToShow);
+    return tasksToShow;
   }
 
-  _getTmpl() {
-    return (
-      `<section class="board container"></section>`
-    );
-  }
-
-  _createElement() {
-    const element = createElement(this._getTmpl());
+  render(tasks) {
+    this._tasks = tasks;
+    const element = this._getBoardSection();
+    this._tasksSection = this._getTasksSection();
+    this._tasksControllers = this._renderTasks(this._getTasks());
 
     renderElement(element, [
       this._sort,
-      this._tasksContainer,
+      this._tasksSection,
       this._moreBtn
     ]);
 
-    this._addCards();
-
-    return element;
-  }
-
-  render(cardsData) {
-    this._cardsData = cardsData;
-    renderElement(this._container, this.getElement());
+    renderElement(this._container, element);
   }
 }
