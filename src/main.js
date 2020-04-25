@@ -2,7 +2,7 @@ import {MAX_CARDS} from './constants';
 
 import Menu from './components/menu';
 import Filter from './components/filter';
-import BoardController from './controllers/board-controller';
+import BoardController from './controllers/board';
 
 import {getCardsData} from './mocks/cards';
 import {getFilterItems} from './mocks/filter';
