@@ -3,11 +3,22 @@ import CardEdit from '../components/card-edit';
 import {renderElement, replaceElement} from '../helpers';
 
 export default class TaskController {
-  constructor(container) {
+  constructor(container, onDataChange) {
     this._container = container;
+    this._onDataChange = onDataChange;
 
+    this._toggleProp = this._toggleProp.bind(this);
     this._replaceCardToEdit = this._replaceCardToEdit.bind(this);
     this._replaceEditTocard = this._replaceEditTocard.bind(this);
+  }
+
+  _toggleProp(prop) {
+    const newTaskData = Object.assign(
+        {},
+        this._taskData,
+        {[prop]: !this._taskData[prop]}
+    );
+    this._onDataChange(this._taskData, newTaskData);
   }
 
   _replaceCardToEdit() {
@@ -19,13 +30,22 @@ export default class TaskController {
   }
 
   render(taskData) {
+    this._taskData = taskData;
+    const oldTaskComponent = this._cardComponent;
+    const oldTaskEditComponent = this._cardEditComponent;
     this._cardComponent = new Card(taskData);
-    taskData.isEdit = true;
-    this._cardEditComponent = new CardEdit(taskData);
+    const taskEditData = Object.assign({}, taskData, {isEdit: true});
+    this._cardEditComponent = new CardEdit(taskEditData);
 
     this._cardComponent.setEditBtnHandler(this._replaceCardToEdit);
+    this._cardComponent.setControlsClickHandler(this._toggleProp);
     this._cardEditComponent.setSubmitHandler(this._replaceEditTocard);
 
-    renderElement(this._container, this._cardComponent);
+    if (oldTaskComponent && oldTaskEditComponent) {
+      replaceElement(oldTaskComponent, this._cardComponent);
+      replaceElement(oldTaskEditComponent, this._cardEditComponent);
+    } else {
+      renderElement(this._container, this._cardComponent);
+    }
   }
 }

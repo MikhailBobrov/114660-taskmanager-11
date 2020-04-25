@@ -10,6 +10,10 @@ export default class Card extends Task {
     this._cardControls = new CardControls(taskData);
   }
 
+  setControlsClickHandler(handler) {
+    this._cardControls.setClickHandler(handler);
+  }
+
   setEditBtnHandler(handler) {
     this._cardControls.setEditBtnHandler(handler);
   }
