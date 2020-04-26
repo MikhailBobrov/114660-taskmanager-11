@@ -5,3 +5,5 @@ export {replaceElement} from './replaceElement';
 export {removeElement} from './removeElement';
 export {getClass} from './getClass';
 export {getRandomBool} from './getRandomBool';
+export {getHandlerWithProp} from './getHandlerWithProp';
+export {getHandlerWithValue} from './getHandlerWithValue';
