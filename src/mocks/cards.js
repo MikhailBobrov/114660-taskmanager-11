@@ -41,7 +41,7 @@ const getCardsData = (quantity) => {
 
     const description = isCreate ? `` : getRandomItem(DESCRIPTIONS);
     const color = isCreate ? `` : getRandomItem(COLORS_NAMES);
-    const dueDate = getRandomBool() ? null : getRandomDate();
+    const dueDate = isRepeat ? null : getRandomDate();
     let isDeadline = false;
 
     if (dueDate && dueDate < new Date()) {

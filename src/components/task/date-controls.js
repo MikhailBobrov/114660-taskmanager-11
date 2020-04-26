@@ -10,6 +10,7 @@ export default class DateControls extends AbstractComponent {
     const {isEdit, dueDate, isDeadline, isRepeat} = taskData;
     this._isEdit = isEdit;
     this._isDeadline = isDeadline;
+    this._hasDate = !!dueDate;
     this._isRepeat = isRepeat;
     this._date = getDate(dueDate);
     this._time = getTime(dueDate);
@@ -36,7 +37,7 @@ export default class DateControls extends AbstractComponent {
     const element = createElement(this._getTmpl());
     const deadlineBtn = this._getBtnElement({
       id: `date-deadline`,
-      value: this._isDeadline,
+      value: this._hasDate,
       text: `date`
     });
     const repeatBtn = this._getBtnElement({
