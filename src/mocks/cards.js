@@ -50,7 +50,7 @@ const getCardsData = (quantity) => {
 
     let weekDays = getWeekDays();
 
-    if (isCreate) {
+    if (isCreate || !isRepeat) {
       weekDays = getWeekDays(false);
     }
 
