@@ -76,10 +76,6 @@ export default class CardControls extends AbstractComponent {
   }
 
   _getTmpl() {
-    if (this._isEdit) {
-      return ``;
-    }
-
     return (
       `<div class="card__control">
         ${this._getControls()}

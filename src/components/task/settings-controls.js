@@ -1,28 +1,14 @@
 import AbstractComponent from '../abstract-component';
 import ColorsControls from './colors-controls';
-import WeekDays from './weekdays';
-import DeadlineInput from './deadline-input';
-import DateText from './date-text';
 import DateControls from './date-controls';
 import {createElement, renderElement} from '../../helpers';
 
-export default class Settings extends AbstractComponent {
+export default class SettingsControls extends AbstractComponent {
   constructor(taskData) {
     super();
 
-    const {isEdit} = taskData;
-    this._isEdit = isEdit;
-
-    this._date = isEdit
-      ? new DateControls(taskData)
-      : new DateText(taskData);
-    this._deadlineInput = new DeadlineInput(taskData);
-    this._weekDays = new WeekDays(taskData);
+    this._dateControls = new DateControls(taskData);
     this._colorsControls = new ColorsControls(taskData);
-  }
-
-  _getToggleStatus(value) {
-    return value ? `yes` : `no`;
   }
 
   _createElement() {
@@ -30,7 +16,7 @@ export default class Settings extends AbstractComponent {
     const datesElement = element.querySelector(`.card__details`);
 
     renderElement(datesElement, [
-      this._date,
+      this._dateControls,
       this._colorsControls
     ]);
 

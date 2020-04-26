@@ -1,14 +1,13 @@
 import AbstractComponent from '../abstract-component';
 
 export default class WeekDays extends AbstractComponent {
-  constructor({weekDays, isEdit, isRepeat}) {
+  constructor({weekDays, isRepeat}) {
     super();
 
     this._weekDays = weekDays;
     this._isShown = true;
 
-    if (!isEdit ||
-        !isRepeat ||
+    if (!isRepeat ||
         (!weekDays || weekDays.length === 0)) {
       this._isShown = false;
     }

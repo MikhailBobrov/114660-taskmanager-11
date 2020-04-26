@@ -7,8 +7,7 @@ export default class DateControls extends AbstractComponent {
   constructor(taskData) {
     super();
 
-    const {isEdit, dueDate, isDeadline, isRepeat} = taskData;
-    this._isEdit = isEdit;
+    const {dueDate, isDeadline, isRepeat} = taskData;
     this._isDeadline = isDeadline;
     this._hasDate = !!dueDate;
     this._isRepeat = isRepeat;
@@ -16,7 +15,12 @@ export default class DateControls extends AbstractComponent {
     this._time = getTime(dueDate);
     this._deadlineInput = new DeadlineInput(taskData);
     this._weekDays = new WeekDays(taskData);
-    this._isShown = this._isEdit;
+  }
+
+  setToggleDateHandler(handler) {
+    const control = this.getElement().querySelector(`.card__date-deadline-toggle`);
+
+    control.addEventListener(`click`, handler);
   }
 
   _getToggleStatus(value) {
@@ -57,10 +61,6 @@ export default class DateControls extends AbstractComponent {
   }
 
   _getTmpl() {
-    if (!this._isShown) {
-      return ``;
-    }
-
     return (
       `<div class="card__dates"></div>`
     );

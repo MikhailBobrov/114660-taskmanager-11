@@ -2,11 +2,10 @@ import AbstractComponent from '../abstract-component';
 import {COLORS_NAMES} from '../../constants';
 
 export default class ColorsControls extends AbstractComponent {
-  constructor({color, isEdit}) {
+  constructor({color}) {
     super();
 
     this._color = color;
-    this._isEdit = isEdit;
   }
 
   _getColorMarkup(name) {
@@ -30,10 +29,6 @@ export default class ColorsControls extends AbstractComponent {
   }
 
   _getTmpl() {
-    if (!this._isEdit) {
-      return ``;
-    }
-
     const colorsMarkupList = COLORS_NAMES.map((color) => {
       return this._getColorMarkup(color);
     });
