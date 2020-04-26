@@ -10,7 +10,7 @@ export default class Card extends Task {
 
     this._init(taskData);
     this._text = new Text(taskData);
-    this._settings = new SettingsText(taskData);
+    this._settingsText = new SettingsText(taskData);
     this._cardControls = new CardControls(taskData);
   }
 
@@ -30,7 +30,7 @@ export default class Card extends Task {
       this._cardControls,
       this._getColorbarElement(),
       this._text,
-      this._settings
+      this._settingsText
     ]);
 
     return element;
