@@ -2,13 +2,14 @@ import AbstractComponent from '../abstract-component';
 import {getDate, getTime} from '../../helpers';
 
 export default class DeadlineInput extends AbstractComponent {
-  constructor({dueDate, isCreate}) {
+  constructor({dueDate, dateIsShown, isCreate, isRepeat}) {
     super();
 
     this._date = getDate(dueDate);
     this._time = getTime(dueDate);
+    this._dateIsShown = dateIsShown;
 
-    this._isShown = isCreate || (this._date && this._time);
+    this._isShown = !isRepeat && (isCreate || dateIsShown);
   }
 
   _getTmpl() {

@@ -1,3 +1,4 @@
+import {getHandlerWithValue} from '../../helpers';
 import AbstractComponent from '../abstract-component';
 
 export default class WeekDays extends AbstractComponent {
@@ -11,6 +12,15 @@ export default class WeekDays extends AbstractComponent {
         (!weekDays || weekDays.length === 0)) {
       this._isShown = false;
     }
+  }
+
+  setClickHandler(handler) {
+    if (!this._isShown) {
+      return;
+    }
+
+    const clickHandler = getHandlerWithValue(`.card__repeat-day-input`, handler);
+    this.getElement().addEventListener(`click`, clickHandler);
   }
 
   _getDayMarkup({name, isChecked}) {

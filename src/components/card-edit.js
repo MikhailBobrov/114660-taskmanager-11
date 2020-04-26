@@ -8,17 +8,34 @@ export default class CardEdit extends Task {
   constructor(taskData) {
     super();
 
-    this._init(taskData);
+    const editTaskData = {dateIsShown: !!taskData.dueDate};
+    this._taskData = Object.assign({}, taskData, editTaskData);
 
-    this._text = new Text(taskData);
-    this._settings = new SettingsControls(taskData);
-    this._formControls = new FormControls(taskData);
+    this._init(this._taskData);
+
+    this._text = new Text(this._taskData);
+    this._settingsControls = new SettingsControls(this._taskData);
+    this._formControls = new FormControls(this._taskData);
+
+    this._toggleProp = this._toggleProp.bind(this);
+    this._changeColor = this._changeColor.bind(this);
+    this._changeWeekDays = this._changeWeekDays.bind(this);
+
+    this._submitHandler = null;
+
+    this._addEvents();
+  }
+
+  _recoveryListeners() {
+    this._addEvents();
+    this.setSubmitHandler(this._submitHandler);
   }
 
   setSubmitHandler(handler) {
     const form = this.getElement().querySelector(`form`);
 
     form.addEventListener(`submit`, handler);
+    this._submitHandler = handler;
   }
 
   _createElement() {
@@ -28,10 +45,53 @@ export default class CardEdit extends Task {
     renderElement(innerElement, [
       this._getColorbarElement(),
       this._text,
-      this._settings,
+      this._settingsControls,
       this._formControls
     ]);
 
     return element;
+  }
+
+  _update() {
+    this._settingsControls = new SettingsControls(this._taskData);
+    this._init(this._taskData);
+    this._formControls = new FormControls(this._taskData);
+
+    this.rerender();
+  }
+
+  _toggleProp(prop) {
+    this._taskData = Object.assign(
+        this._taskData,
+        {[prop]: !this._taskData[prop]}
+    );
+
+    if (this._taskData.isRepeat) {
+      this._taskData.dateIsShown = false;
+    }
+
+    this._update();
+  }
+
+  _changeColor(color) {
+    this._taskData = Object.assign(
+        {},
+        this._taskData,
+        {color}
+    );
+
+    this._update();
+  }
+
+  _changeWeekDays(value) {
+    this._taskData.weekDays[value] = !this._taskData.weekDays[value];
+
+    this._update();
+  }
+
+  _addEvents() {
+    this._settingsControls.setDateControlsClickHandler(this._toggleProp);
+    this._settingsControls.setWeekDaysControlsClickHandler(this._changeWeekDays);
+    this._settingsControls.setColorControlsClickHandler(this._changeColor);
   }
 }

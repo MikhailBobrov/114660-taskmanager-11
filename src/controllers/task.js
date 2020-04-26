@@ -3,13 +3,18 @@ import CardEdit from '../components/card-edit';
 import {renderElement, replaceElement} from '../helpers';
 
 export default class TaskController {
-  constructor(container, onDataChange) {
+  constructor(container, onDataChange, onViewChange) {
     this._container = container;
     this._onDataChange = onDataChange;
+    this._onViewChange = onViewChange;
 
     this._toggleProp = this._toggleProp.bind(this);
     this._replaceCardToEdit = this._replaceCardToEdit.bind(this);
     this._replaceEditTocard = this._replaceEditTocard.bind(this);
+  }
+
+  setDefaultView() {
+    this._replaceEditTocard();
   }
 
   _toggleProp(prop) {
@@ -22,6 +27,7 @@ export default class TaskController {
   }
 
   _replaceCardToEdit() {
+    this._onViewChange();
     replaceElement(this._cardComponent, this._cardEditComponent);
   }
 

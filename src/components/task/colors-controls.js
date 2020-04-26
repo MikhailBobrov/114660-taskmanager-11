@@ -1,4 +1,5 @@
 import AbstractComponent from '../abstract-component';
+import {getHandlerWithValue} from '../../helpers';
 import {COLORS_NAMES} from '../../constants';
 
 export default class ColorsControls extends AbstractComponent {
@@ -6,6 +7,11 @@ export default class ColorsControls extends AbstractComponent {
     super();
 
     this._color = color;
+  }
+
+  setClickHandler(handler) {
+    const clickHandler = getHandlerWithValue(`.card__color-input`, handler);
+    this.getElement().addEventListener(`click`, clickHandler);
   }
 
   _getColorMarkup(name) {

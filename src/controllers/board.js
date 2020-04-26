@@ -16,6 +16,7 @@ export default class BoardController {
     this._moreBtn.setClickHandler(this._moreBtnClickHandler);
 
     this._onDataChange = this._onDataChange.bind(this);
+    this._onViewChange = this._onViewChange.bind(this);
   }
 
   _onDataChange(oldData, newData) {
@@ -23,6 +24,10 @@ export default class BoardController {
 
     this._tasks[taskIndex] = newData;
     this._tasksControllers[taskIndex].render(newData);
+  }
+
+  _onViewChange() {
+    this._tasksControllers.forEach((item) => item.setDefaultView());
   }
 
   _moreBtnClickHandler() {
@@ -44,7 +49,7 @@ export default class BoardController {
 
   _renderTasks(tasks) {
     return tasks.map((taskData) => {
-      const taskController = new TaskController(this._tasksSection, this._onDataChange);
+      const taskController = new TaskController(this._tasksSection, this._onDataChange, this._onViewChange);
       taskController.render(taskData);
 
       return taskController;

@@ -11,6 +11,18 @@ export default class SettingsControls extends AbstractComponent {
     this._colorsControls = new ColorsControls(taskData);
   }
 
+  setDateControlsClickHandler(handler) {
+    this._dateControls.setDateControlsClickHandler(handler);
+  }
+
+  setWeekDaysControlsClickHandler(handler) {
+    this._dateControls.setWeekDaysControlsClickHandler(handler);
+  }
+
+  setColorControlsClickHandler(handler) {
+    this._colorsControls.setClickHandler(handler);
+  }
+
   _createElement() {
     const element = createElement(this._getTmpl());
     const datesElement = element.querySelector(`.card__details`);

@@ -1,7 +1,7 @@
-import AbstractComponent from '../abstract-component';
+import AbstractSmartComponent from '../abstract-smart-component';
 import {getClass, createElement} from '../../helpers';
 
-export default class Task extends AbstractComponent {
+export default class Task extends AbstractSmartComponent {
   constructor() {
     super();
 

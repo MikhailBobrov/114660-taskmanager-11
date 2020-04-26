@@ -1,15 +1,15 @@
 import AbstractComponent from '../abstract-component';
 import DeadlineInput from './deadline-input';
 import WeekDays from './weekdays';
-import {getDate, getTime, createElement, renderElement} from '../../helpers';
+import {getDate, getTime, createElement, renderElement, getHandlerWithProp} from '../../helpers';
 
 export default class DateControls extends AbstractComponent {
   constructor(taskData) {
     super();
 
-    const {dueDate, isDeadline, isRepeat} = taskData;
+    const {dueDate, dateIsShown, isDeadline, isRepeat} = taskData;
     this._isDeadline = isDeadline;
-    this._hasDate = !!dueDate;
+    this._dateIsShown = dateIsShown;
     this._isRepeat = isRepeat;
     this._date = getDate(dueDate);
     this._time = getTime(dueDate);
@@ -17,20 +17,27 @@ export default class DateControls extends AbstractComponent {
     this._weekDays = new WeekDays(taskData);
   }
 
-  setToggleDateHandler(handler) {
-    const control = this.getElement().querySelector(`.card__date-deadline-toggle`);
+  setDateControlsClickHandler(handler) {
+    const clickHandler = getHandlerWithProp(`button`, handler);
+    this.getElement().addEventListener(`click`, clickHandler);
+  }
 
-    control.addEventListener(`click`, handler);
+  setWeekDaysControlsClickHandler(handler) {
+    this._weekDays.setClickHandler(handler);
   }
 
   _getToggleStatus(value) {
     return value ? `yes` : `no`;
   }
 
-  _getBtnElement({id, value, text}) {
-    const markup = `<button class="card__${id}-toggle" type="button">
+  _getBtnElement({id, prop, text}) {
+    const markup = `<button
+      class="card__${id}-toggle"
+      type="button"
+      data-prop="${prop}"
+      >
       ${text}: <span class="card__${id}-status">
-        ${this._getToggleStatus(value)}
+        ${this._getToggleStatus(this[`_${prop}`])}
       </span>
     </button>`;
 
@@ -41,12 +48,12 @@ export default class DateControls extends AbstractComponent {
     const element = createElement(this._getTmpl());
     const deadlineBtn = this._getBtnElement({
       id: `date-deadline`,
-      value: this._hasDate,
+      prop: `dateIsShown`,
       text: `date`
     });
     const repeatBtn = this._getBtnElement({
       id: `repeat`,
-      value: this._isRepeat,
+      prop: `isRepeat`,
       text: `repeat`
     });
 
