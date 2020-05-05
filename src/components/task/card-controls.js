@@ -2,7 +2,8 @@ import AbstractComponent from '../abstract-component';
 
 const classes = {
   default: `card__btn`,
-  disabled: `card__btn--disabled`
+  disabled: `card__btn--disabled`,
+  edit: `card__btn--edit`
 };
 
 const controls = [
@@ -51,7 +52,7 @@ export default class CardControls extends AbstractComponent {
   }
 
   setEditBtnHandler(handler) {
-    const control = this.getElement().querySelector(`.card__btn--edit`);
+    const control = this.getElement().querySelector(`.${classes.edit}`);
 
     control.addEventListener(`click`, handler);
   }
