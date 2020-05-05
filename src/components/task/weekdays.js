@@ -6,16 +6,11 @@ export default class WeekDays extends AbstractComponent {
     super();
 
     this._weekDays = weekDays;
-    this._isShown = true;
-
-    if (!isRepeat ||
-        (!weekDays || weekDays.length === 0)) {
-      this._isShown = false;
-    }
+    this._isRepeat = isRepeat;
   }
 
   setClickHandler(handler) {
-    if (!this._isShown) {
+    if (!this._isRepeat) {
       return;
     }
 
@@ -43,7 +38,7 @@ export default class WeekDays extends AbstractComponent {
   }
 
   _getTmpl() {
-    if (!this._isShown) {
+    if (!this._isRepeat) {
       return ``;
     }
 
