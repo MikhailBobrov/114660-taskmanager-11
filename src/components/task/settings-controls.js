@@ -4,22 +4,26 @@ import DateControls from './date-controls';
 import {createElement, renderElement} from '../../helpers';
 
 export default class SettingsControls extends AbstractComponent {
-  constructor(taskData) {
+  constructor(taskData, params) {
     super();
 
-    this._dateControls = new DateControls(taskData);
-    this._colorsControls = new ColorsControls(taskData);
+    this._dateControls = new DateControls(taskData, params);
+    this._colorsControls = new ColorsControls(taskData, params);
   }
 
-  setDateControlsClickHandler(handler) {
-    this._dateControls.setDateControlsClickHandler(handler);
+  setRepeatClickHandler(handler) {
+    this._dateControls.setRepeatClickHandler(handler);
+  }
+
+  setDateClickHandler(handler) {
+    this._dateControls.setDateClickHandler(handler);
   }
 
   setWeekDaysControlsClickHandler(handler) {
     this._dateControls.setWeekDaysControlsClickHandler(handler);
   }
 
-  setColorControlsClickHandler(handler) {
+  setColorsClickHandler(handler) {
     this._colorsControls.setClickHandler(handler);
   }
 

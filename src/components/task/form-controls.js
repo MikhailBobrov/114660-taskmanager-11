@@ -1,21 +1,31 @@
-import AbstractComponent from '../abstract-component';
+import AbstractSmartComponent from '../abstract-smart-component';
 
-export default class FormControls extends AbstractComponent {
+export default class FormControls extends AbstractSmartComponent {
   constructor(taskData) {
     super();
 
     const isDateCorrect = this._checkDate(taskData);
     const isRepeatCorrect = this._checkRepeat(taskData);
+    const isTextCorrect = taskData.description;
 
-    this._isEnabled = isDateCorrect && isRepeatCorrect;
+    this._isEnabled = isDateCorrect && isRepeatCorrect && isTextCorrect;
   }
 
-  _checkDate({hasDate, dueDate}) {
-    if (!hasDate) {
+  setFormControlsEnabledState(state) {
+    this._isEnabled = state;
+    this.rerender();
+  }
+
+  _recoveryListeners() {
+
+  }
+
+  _checkDate({isRepeat, dueDate}) {
+    if (isRepeat || dueDate) {
       return true;
     }
 
-    return hasDate && dueDate;
+    return false;
   }
 
   _checkRepeat({isRepeat, weekDays}) {

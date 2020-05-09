@@ -4,22 +4,27 @@ import WeekDays from './weekdays';
 import {getDate, getTime, createElement, renderElement, getHandlerWithProp} from '../../helpers';
 
 export default class DateControls extends AbstractComponent {
-  constructor(taskData) {
+  constructor(taskData, params) {
     super();
 
-    const {dueDate, dateIsShown, isDeadline, isRepeat} = taskData;
+    const {dueDate, isDeadline, isRepeat} = taskData;
     this._isDeadline = isDeadline;
-    this._dateIsShown = dateIsShown;
+    this._dateIsShown = params.dateIsShown;
     this._isRepeat = isRepeat;
     this._date = getDate(dueDate);
     this._time = getTime(dueDate);
-    this._deadlineInput = new DeadlineInput(taskData);
+    this._deadlineInput = new DeadlineInput(taskData, params);
     this._weekDays = new WeekDays(taskData);
   }
 
-  setDateControlsClickHandler(handler) {
-    const clickHandler = getHandlerWithProp(`button`, handler);
+  setRepeatClickHandler(handler) {
+    const clickHandler = getHandlerWithProp(`.card__repeat-toggle`, handler);
     this.getElement().addEventListener(`click`, clickHandler);
+  }
+
+  setDateClickHandler(handler) {
+    const control = this.getElement().querySelector(`.card__date-deadline-toggle`);
+    control.addEventListener(`click`, handler);
   }
 
   setWeekDaysControlsClickHandler(handler) {

@@ -2,14 +2,19 @@ import AbstractComponent from '../abstract-component';
 import {getDate, getTime} from '../../helpers';
 
 export default class SettingsText extends AbstractComponent {
-  constructor({dueDate}) {
+  constructor({isRepeat, dueDate}) {
     super();
 
+    this.isRepeat = isRepeat;
     this._date = getDate(dueDate);
     this._time = getTime(dueDate);
   }
 
   _getTmpl() {
+    if (this.isRepeat) {
+      return ``;
+    }
+
     return (
       `<div class="card__settings">
         <div class="card__details">
