@@ -19,7 +19,7 @@ export default class CardEdit extends Task {
 
     this._toggleProp = this._toggleProp.bind(this);
     this._changeColor = this._changeColor.bind(this);
-    this._changeWeekDays = this._changeWeekDays.bind(this);
+    this._toggleWeekDay = this._toggleWeekDay.bind(this);
 
     this._submitHandler = null;
 
@@ -83,7 +83,7 @@ export default class CardEdit extends Task {
     this._update();
   }
 
-  _changeWeekDays(value) {
+  _toggleWeekDay(value) {
     this._taskData.weekDays[value] = !this._taskData.weekDays[value];
 
     this._update();
@@ -91,7 +91,7 @@ export default class CardEdit extends Task {
 
   _addEvents() {
     this._settingsControls.setDateControlsClickHandler(this._toggleProp);
-    this._settingsControls.setWeekDaysControlsClickHandler(this._changeWeekDays);
+    this._settingsControls.setWeekDaysControlsClickHandler(this._toggleWeekDay);
     this._settingsControls.setColorControlsClickHandler(this._changeColor);
   }
 }
