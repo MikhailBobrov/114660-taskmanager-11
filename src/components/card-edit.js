@@ -3,6 +3,7 @@ import TextControl from './task/text-control';
 import SettingsControls from './task/settings-controls';
 import FormControls from './task/form-controls';
 import {createElement, renderElement} from '../helpers';
+import {TaskFlags} from '../constants';
 
 export default class CardEdit extends Task {
   constructor(taskData, toggleProp) {
@@ -55,7 +56,7 @@ export default class CardEdit extends Task {
 
   _toggleDate() {
     this._dateIsShown = !this._dateIsShown;
-    this._toggleProp(`isRepeat`);
+    this._toggleProp(TaskFlags.IS_REPEAT);
   }
 
   _createElement() {
