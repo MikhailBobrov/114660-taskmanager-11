@@ -1,4 +1,5 @@
 import AbstractComponent from '../abstract-component';
+import {getHandlerWithProp} from '../../helpers';
 
 const classes = {
   default: `card__btn`,
@@ -29,26 +30,8 @@ export default class CardControls extends AbstractComponent {
     this._isFavorite = isFavorite;
   }
 
-  _getClickHandler(handler) {
-    return (event) => {
-      const control = event.target.closest(`.${classes.default}`);
-
-      if (!control) {
-        return;
-      }
-
-      const {prop} = control.dataset;
-
-      if (!prop) {
-        return;
-      }
-
-      handler(prop);
-    };
-  }
-
   setClickHandler(handler) {
-    this.getElement().addEventListener(`click`, this._getClickHandler(handler));
+    this.getElement().addEventListener(`click`, getHandlerWithProp(`.${classes.default}`, handler));
   }
 
   setEditBtnHandler(handler) {
