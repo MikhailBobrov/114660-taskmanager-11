@@ -22,10 +22,9 @@ const controls = [
 ];
 
 export default class CardControls extends AbstractComponent {
-  constructor({isEdit, isArchive, isFavorite}) {
+  constructor({isArchive, isFavorite}) {
     super();
 
-    this._isEdit = isEdit;
     this._isArchive = isArchive;
     this._isFavorite = isFavorite;
   }

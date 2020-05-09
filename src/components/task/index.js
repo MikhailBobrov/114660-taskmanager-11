@@ -10,12 +10,11 @@ export default class Task extends AbstractSmartComponent {
     }
   }
 
-  _init(taskData) {
+  _init(taskData, isEdit = false) {
     const {
       color,
       isRepeat,
-      isDeadline,
-      isEdit
+      isDeadline
     } = taskData;
 
     this._color = color;

@@ -40,8 +40,7 @@ export default class TaskController {
     const oldTaskComponent = this._cardComponent;
     const oldTaskEditComponent = this._cardEditComponent;
     this._cardComponent = new Card(taskData);
-    const taskEditData = Object.assign({}, taskData, {isEdit: true});
-    this._cardEditComponent = new CardEdit(taskEditData);
+    this._cardEditComponent = new CardEdit(taskData);
 
     this._cardComponent.setEditBtnHandler(this._replaceCardToEdit);
     this._cardComponent.setControlsClickHandler(this._toggleProp);

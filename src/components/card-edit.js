@@ -8,10 +8,11 @@ export default class CardEdit extends Task {
   constructor(taskData) {
     super();
 
+    this._isEdit = true;
     const editTaskData = {dateIsShown: !!taskData.dueDate};
     this._taskData = Object.assign({}, taskData, editTaskData);
 
-    this._init(this._taskData);
+    this._init(this._taskData, this._isEdit);
 
     this._text = new Text(this._taskData);
     this._settingsControls = new SettingsControls(this._taskData);
@@ -54,7 +55,7 @@ export default class CardEdit extends Task {
 
   _update() {
     this._settingsControls = new SettingsControls(this._taskData);
-    this._init(this._taskData);
+    this._init(this._taskData, this._isEdit);
     this._formControls = new FormControls(this._taskData);
 
     this.rerender();
