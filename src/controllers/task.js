@@ -13,7 +13,6 @@ export default class TaskController {
     this._saveText = this._saveText.bind(this);
     this._updateText = this._updateText.bind(this);
     this._toggleWeekDay = this._toggleWeekDay.bind(this);
-    this._setFormControlsEnabledState = this._setFormControlsEnabledState.bind(this);
     this._replaceCardToEdit = this._replaceCardToEdit.bind(this);
     this._replaceEditTocard = this._replaceEditTocard.bind(this);
   }
@@ -46,7 +45,7 @@ export default class TaskController {
     // Save text without rerendering
     this._taskData.savedDescription = text;
 
-    this._setFormControlsEnabledState(!!text);
+    this._cardEditComponent.setFormControlsEnabledState({isTextCorrect: !!text});
   }
 
   _updateText() {
@@ -60,7 +59,7 @@ export default class TaskController {
         {description: this._taskData.savedDescription}
     );
 
-    this._taskData.savedDescription = ``;
+    this._taskData.savedDescription = null;
     this._onDataChange(this._taskData, newTaskData);
   }
 
@@ -78,10 +77,6 @@ export default class TaskController {
     newTaskData.weekDays[value] = !newTaskData.weekDays[value];
 
     this._onDataChange(this._taskData, newTaskData);
-  }
-
-  _setFormControlsEnabledState(state) {
-    this._cardEditComponent.setFormControlsEnabledState(state);
   }
 
   _replaceCardToEdit() {

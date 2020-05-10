@@ -1,19 +1,25 @@
 import AbstractSmartComponent from '../abstract-smart-component';
+import {getActualDesc} from '../../helpers';
 
 export default class FormControls extends AbstractSmartComponent {
   constructor(taskData) {
     super();
 
-    const isDateCorrect = this._checkDate(taskData);
-    const isRepeatCorrect = this._checkRepeat(taskData);
-    const isTextCorrect = taskData.description;
+    this._isDateCorrect = this._checkDate(taskData);
+    this._isRepeatCorrect = this._checkRepeat(taskData);
+    this._isTextCorrect = getActualDesc(taskData);
 
-    this._isEnabled = isDateCorrect && isRepeatCorrect && isTextCorrect;
+    this._isEnabled = this._checkIsEnabled();
   }
 
-  setFormControlsEnabledState(state) {
-    this._isEnabled = state;
+  setFormControlsEnabledState({isTextCorrect}) {
+    this._isTextCorrect = isTextCorrect;
+    this._isEnabled = this._checkIsEnabled();
     this.rerender();
+  }
+
+  _checkIsEnabled() {
+    return this._isDateCorrect && this._isRepeatCorrect && this._isTextCorrect;
   }
 
   _recoveryListeners() {

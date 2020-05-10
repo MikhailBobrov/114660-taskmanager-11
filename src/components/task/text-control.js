@@ -1,10 +1,11 @@
 import AbstractComponent from '../abstract-component';
+import {getActualDesc} from '../../helpers';
 
 export default class TextControl extends AbstractComponent {
-  constructor({description, savedDescription}) {
+  constructor(taskData) {
     super();
 
-    this._description = savedDescription || description || ``;
+    this._description = getActualDesc(taskData);
   }
 
   setTextInputHandler(handler) {

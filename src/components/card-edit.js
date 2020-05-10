@@ -50,8 +50,8 @@ export default class CardEdit extends Task {
     this._textControl.setTextInputHandler(handler);
   }
 
-  setFormControlsEnabledState(state) {
-    this._formControls.setFormControlsEnabledState(state);
+  setFormControlsEnabledState(params) {
+    this._formControls.setFormControlsEnabledState(params);
   }
 
   _toggleDate() {
