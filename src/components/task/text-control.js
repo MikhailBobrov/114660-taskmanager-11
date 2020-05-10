@@ -1,10 +1,10 @@
 import AbstractComponent from '../abstract-component';
 
 export default class TextControl extends AbstractComponent {
-  constructor({description}) {
+  constructor({description, savedDescription}) {
     super();
 
-    this._description = description || ``;
+    this._description = savedDescription || description || ``;
   }
 
   setTextInputHandler(handler) {

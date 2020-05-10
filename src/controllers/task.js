@@ -44,13 +44,24 @@ export default class TaskController {
 
   _saveText(text) {
     // Save text without rerendering
-    this._taskData.description = text;
+    this._taskData.savedDescription = text;
 
     this._setFormControlsEnabledState(!!text);
   }
 
   _updateText() {
-    this._onDataChange(this._taskData, this._taskData);
+    if (!this._taskData.savedDescription || this._taskData.description === this._taskData.savedDescription) {
+      return;
+    }
+
+    const newTaskData = Object.assign(
+        {},
+        this._taskData,
+        {description: this._taskData.savedDescription}
+    );
+
+    this._taskData.savedDescription = ``;
+    this._onDataChange(this._taskData, newTaskData);
   }
 
   _toggleWeekDay(value) {
