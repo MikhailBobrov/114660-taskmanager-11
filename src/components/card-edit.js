@@ -38,7 +38,7 @@ export default class CardEdit extends Task {
       return;
     }
 
-    this._taskData = taskData;
+    this._taskData = this._copyTaskData(taskData);
     this._isCardChanged = false;
     this.rerender();
   }
