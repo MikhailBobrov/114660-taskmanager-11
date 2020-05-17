@@ -8,7 +8,7 @@ export default class Card extends Task {
   constructor(taskData) {
     super();
 
-    this._init(taskData);
+    this._taskData = taskData;
     this._text = new Text(taskData);
     this._settingsText = new SettingsText(taskData);
     this._cardControls = new CardControls(taskData);

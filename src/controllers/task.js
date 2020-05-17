@@ -9,15 +9,13 @@ export default class TaskController {
     this._onViewChange = onViewChange;
 
     this._toggleProp = this._toggleProp.bind(this);
-    this._changeColor = this._changeColor.bind(this);
-    this._saveText = this._saveText.bind(this);
-    this._updateText = this._updateText.bind(this);
-    this._toggleWeekDay = this._toggleWeekDay.bind(this);
     this._replaceCardToEdit = this._replaceCardToEdit.bind(this);
     this._replaceEditTocard = this._replaceEditTocard.bind(this);
+    this._updateCardOnSave = this._updateCardOnSave.bind(this);
   }
 
   setDefaultView() {
+    this._cardEditComponent.reset(this._taskData);
     this._replaceEditTocard();
   }
 
@@ -28,55 +26,7 @@ export default class TaskController {
         {[prop]: !this._taskData[prop]}
     );
 
-    this._onDataChange(this._taskData, newTaskData);
-  }
-
-  _changeColor(color) {
-    const newTaskData = Object.assign(
-        {},
-        this._taskData,
-        {color}
-    );
-
-    this._onDataChange(this._taskData, newTaskData);
-  }
-
-  _saveText(text) {
-    // Save text without rerendering
-    this._taskData.savedDescription = text;
-
-    this._cardEditComponent.setFormControlsEnabledState({isTextCorrect: !!text});
-  }
-
-  _updateText() {
-    if (!this._taskData.savedDescription || this._taskData.description === this._taskData.savedDescription) {
-      return;
-    }
-
-    const newTaskData = Object.assign(
-        {},
-        this._taskData,
-        {description: this._taskData.savedDescription}
-    );
-
-    this._taskData.savedDescription = null;
-    this._onDataChange(this._taskData, newTaskData);
-  }
-
-  _toggleWeekDay(value) {
-    const newTaskData = Object.assign(
-        {},
-        this._taskData
-    );
-
-    newTaskData.weekDays = Object.assign(
-        {},
-        newTaskData.weekDays
-    );
-
-    newTaskData.weekDays[value] = !newTaskData.weekDays[value];
-
-    this._onDataChange(this._taskData, newTaskData);
+    this._onDataChange(this._taskData.id, newTaskData);
   }
 
   _replaceCardToEdit() {
@@ -85,9 +35,12 @@ export default class TaskController {
   }
 
   _replaceEditTocard() {
-    this._updateText();
-
     replaceElement(this._cardEditComponent, this._cardComponent);
+  }
+
+  _updateCardOnSave(newTaskData) {
+    this._onDataChange(this._taskData.id, newTaskData);
+    this._replaceEditTocard();
   }
 
   _setCardComponentHandlers() {
@@ -96,11 +49,7 @@ export default class TaskController {
   }
 
   _setCardEditComponentHandlers() {
-    this._cardEditComponent.setSubmitHandler(this._replaceEditTocard);
-    this._cardEditComponent.setColorsClickHandler(this._changeColor);
-    this._cardEditComponent.setWeekDaysControlsClickHandler(this._toggleWeekDay);
-    this._cardEditComponent.setRepeatClickHandler(this._toggleProp);
-    this._cardEditComponent.setTextInputHandler(this._saveText);
+    this._cardEditComponent.setSubmitHandler(this._updateCardOnSave);
   }
 
   render(taskData) {
@@ -108,7 +57,7 @@ export default class TaskController {
     const oldTaskComponent = this._cardComponent;
     const oldTaskEditComponent = this._cardEditComponent;
     this._cardComponent = new Card(taskData);
-    this._cardEditComponent = new CardEdit(taskData, this._toggleProp);
+    this._cardEditComponent = new CardEdit(taskData);
 
     this._setCardComponentHandlers();
     this._setCardEditComponentHandlers();

@@ -2,13 +2,13 @@ import AbstractComponent from '../abstract-component';
 import {getHandlerWithProp} from '../../helpers';
 import {TaskFlags} from '../../constants';
 
-const classes = {
-  default: `card__btn`,
-  disabled: `card__btn--disabled`,
-  edit: `card__btn--edit`
+const ClassName = {
+  DEFAULT: `card__btn`,
+  DISABLED: `card__btn--disabled`,
+  EDIT: `card__btn--edit`
 };
 
-const controls = [
+const CONTROLS_DATA = [
   {
     name: `edit`
   },
@@ -23,31 +23,31 @@ const controls = [
 ];
 
 export default class CardControls extends AbstractComponent {
-  constructor({isArchive, isFavorite}) {
+  constructor(taskData) {
     super();
 
-    this._isArchive = isArchive;
-    this._isFavorite = isFavorite;
+    this._taskData = taskData;
   }
 
   setClickHandler(handler) {
-    this.getElement().addEventListener(`click`, getHandlerWithProp(`.${classes.default}`, handler));
+    this.getElement().addEventListener(`click`, getHandlerWithProp(`.${ClassName.DEFAULT}`, handler));
   }
 
   setEditBtnHandler(handler) {
-    const control = this.getElement().querySelector(`.${classes.edit}`);
+    const control = this.getElement().querySelector(`.${ClassName.EDIT}`);
 
     control.addEventListener(`click`, handler);
   }
 
   _getControls() {
-    return controls.reduce((prev, item) => {
+    return CONTROLS_DATA.reduce((prev, item) => {
       const {name, prop} = item;
       const dataAttr = prop ? `data-prop="${prop}"` : ``;
-      let className = `${classes.default} ${classes.default}--${name}`;
+      let className = `${ClassName.DEFAULT} ${ClassName.DEFAULT}--${name}`;
+      const value = this._taskData[prop];
 
-      if (this[`_${prop}`] === false) {
-        className += ` ${classes.disabled}`;
+      if (value === false) {
+        className += ` ${ClassName.DISABLED}`;
       }
 
       return `${prev} <button type="button"

@@ -19,8 +19,12 @@ export default class BoardController {
     this._onViewChange = this._onViewChange.bind(this);
   }
 
-  _onDataChange(oldData, newData) {
-    const taskIndex = this._tasks.findIndex((item) => item === oldData);
+  _onDataChange(id, newData) {
+    const taskIndex = this._tasks.findIndex((item) => item.id === id);
+
+    if (taskIndex < 0) {
+      return;
+    }
 
     this._tasks[taskIndex] = newData;
     this._tasksControllers[taskIndex].render(newData);

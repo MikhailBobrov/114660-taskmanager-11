@@ -2,35 +2,25 @@ import AbstractSmartComponent from '../abstract-smart-component';
 import {getClass, createElement} from '../../helpers';
 
 export default class Task extends AbstractSmartComponent {
-  constructor() {
+  constructor(isEdit = false) {
     super();
+
+    this._isEdit = isEdit;
 
     if (new.target === Task) {
       throw new Error(`Task is not allowed as a constructor`);
     }
   }
 
-  _init(taskData, isEdit = false) {
-    const {
-      color,
-      isRepeat,
-      isDeadline
-    } = taskData;
-
-    this._color = color;
-    this._isRepeat = isRepeat;
-    this._isDeadline = isDeadline;
-    this._isEdit = isEdit;
-  }
-
   _getMods() {
+    const {color, isRepeat, isDeadline} = this._taskData;
     const mods = [];
 
-    if (this._isRepeat) {
+    if (isRepeat) {
       mods.push(`repeat`);
     }
 
-    if (this._isDeadline) {
+    if (isDeadline) {
       mods.push(`deadline`);
     }
 
@@ -38,8 +28,8 @@ export default class Task extends AbstractSmartComponent {
       mods.push(`edit`);
     }
 
-    if (this._color) {
-      mods.push(this._color);
+    if (color) {
+      mods.push(color);
     }
 
     return mods;
