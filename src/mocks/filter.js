@@ -44,7 +44,7 @@ const getFilterItems = (cardsData) => {
     },
     {
       title: `favorites`,
-      count: getListLength(cardsData, TaskFlags.IS_FAVORITES)
+      count: getListLength(cardsData, TaskFlags.IS_FAVORITE)
     },
     {
       title: `repeating`,

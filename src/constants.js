@@ -28,7 +28,7 @@ const TaskFlags = {
   DATE_IS_SHOWN: `dateIsShown`,
   IS_REPEAT: `isRepeat`,
   IS_ARCHIVE: `isArchive`,
-  IS_FAVORITES: `isFavorites`
+  IS_FAVORITE: `isFavorite`
 };
 
 export {

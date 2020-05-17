@@ -18,7 +18,7 @@ const CONTROLS_DATA = [
   },
   {
     name: `favorites`,
-    prop: TaskFlags.IS_FAVORITES
+    prop: TaskFlags.IS_FAVORITE
   }
 ];
 
