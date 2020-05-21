@@ -31,6 +31,7 @@ export default class Filter {
     }
 
     this._currentFilter = newFilter;
+    this.render();
   }
 
   render() {

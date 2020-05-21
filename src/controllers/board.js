@@ -2,7 +2,7 @@ import TaskController from './task';
 import SortController from './sort';
 import BoardComponent from '../components/board';
 import MoreBtn from '../components/more-btn';
-import {MAX_CARDS_SHOW, FiltersFlags} from '../constants';
+import {MAX_CARDS_SHOW, FiltersFlags, FilterType} from '../constants';
 import {createElement, renderElement, replaceElement} from '../helpers';
 
 export default class BoardController {
@@ -66,6 +66,8 @@ export default class BoardController {
     }
 
     this._recoverTaskSection(1);
+
+    this._tasksModel.setFilterType(FilterType.ALL);
 
     this._newTaskController = new TaskController(
         this._tasksSection,
