@@ -1,8 +1,8 @@
-import AbstractComponent from './abstract-component';
+import AbstractSmartComponent from './abstract-smart-component';
 import {getHandlerWithProp} from '../helpers';
 import {SortType} from '../constants';
 
-export default class Sort extends AbstractComponent {
+export default class Sort extends AbstractSmartComponent {
   constructor() {
     super();
 

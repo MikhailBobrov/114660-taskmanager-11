@@ -13,6 +13,14 @@ export default class Sort {
     this._tasksModel.addSortChangeHandler(this._onSortChange);
   }
 
+  hide() {
+    this._SortComponent.hide();
+  }
+
+  show() {
+    this._SortComponent.show();
+  }
+
   _setSortType(sortType) {
     this._tasksModel.setSortType(sortType);
   }
