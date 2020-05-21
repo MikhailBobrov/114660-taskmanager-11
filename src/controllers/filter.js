@@ -5,7 +5,7 @@ export default class Filter {
   constructor(container, tasksModel) {
     this._container = container;
     this._tasksModel = tasksModel;
-    this._currentFilter = this._tasksModel.getFilterType();
+    this._currentFilterType = this._tasksModel.getFilterType();
 
     this._setFilterType = this._setFilterType.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
@@ -16,6 +16,10 @@ export default class Filter {
   }
 
   _setFilterType(filterType) {
+    if (this._currentFilterType === filterType) {
+      return;
+    }
+
     this._tasksModel.setFilterType(filterType);
   }
 
@@ -24,13 +28,9 @@ export default class Filter {
   }
 
   _onFilterChange() {
-    const newFilter = this._tasksModel.getFilterType();
+    const newFilterType = this._tasksModel.getFilterType();
 
-    if (newFilter === this._currentFilter) {
-      return;
-    }
-
-    this._currentFilter = newFilter;
+    this._currentFilterType = newFilterType;
     this.render();
   }
 

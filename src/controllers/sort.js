@@ -5,7 +5,7 @@ export default class Sort {
   constructor(container, tasksModel) {
     this._container = container;
     this._tasksModel = tasksModel;
-    this._currentSort = this._tasksModel.getSortType();
+    this._currentSortType = this._tasksModel.getSortType();
 
     this._setSortType = this._setSortType.bind(this);
     this._onSortChange = this._onSortChange.bind(this);
@@ -22,6 +22,10 @@ export default class Sort {
   }
 
   _setSortType(sortType) {
+    if (sortType === this._currentSortType) {
+      return;
+    }
+
     this._tasksModel.setSortType(sortType);
   }
 
@@ -30,13 +34,9 @@ export default class Sort {
   }
 
   _onSortChange() {
-    const newSort = this._tasksModel.getSortType();
+    const newSortType = this._tasksModel.getSortType();
 
-    if (newSort === this._currentSort) {
-      return;
-    }
-
-    this._currentSort = newSort;
+    this._currentSortType = newSortType;
   }
 
   render() {
