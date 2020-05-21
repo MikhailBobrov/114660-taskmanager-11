@@ -20,12 +20,16 @@ export default class FormControls extends AbstractSmartComponent {
       event.preventDefault();
       handler(this._taskData);
     });
+
+    this._submitClickHandler = handler;
   }
 
   setDeleteClickHandler(handler) {
     const control = this.getElement().querySelector(`.card__delete`);
 
     control.addEventListener(`click`, handler);
+
+    this._deleteClickHandler = handler;
   }
 
   setFormControlsEnabledState({isTextCorrect}) {
@@ -39,7 +43,8 @@ export default class FormControls extends AbstractSmartComponent {
   }
 
   _recoveryListeners() {
-
+    this.setDeleteClickHandler(this._deleteClickHandler);
+    this.setSubmitClickHandler(this._submitClickHandler);
   }
 
   _checkDate({isRepeat, dueDate}) {

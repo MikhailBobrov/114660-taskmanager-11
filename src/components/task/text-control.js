@@ -1,3 +1,4 @@
+import he from 'he';
 import AbstractComponent from '../abstract-component';
 import {getActualDesc} from '../../helpers';
 
@@ -12,7 +13,7 @@ export default class TextControl extends AbstractComponent {
     const control = this.getElement().querySelector(`.card__text`);
 
     control.addEventListener(`input`, () => {
-      handler(control.value);
+      handler(he.encode(control.value));
     });
   }
 
