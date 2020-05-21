@@ -1,4 +1,4 @@
-const MAX_CARDS = 12;
+const MAX_CARDS = 23;
 const MAX_CARDS_SHOW = 8;
 
 const ColorsNames = {

@@ -12,9 +12,12 @@ export default class BoardController {
     this._quantityLoaded = 0;
     this._moreBtn = new MoreBtn();
     this._tasksControllers = [];
+    this._isBoardEmpty = false;
+
+    this._tasksSection = createElement(`<div class="board__tasks"></div>`);
     this._emptyBoardElement = createElement(`<p class="board__no-tasks">
-        Click «ADD NEW TASK» in menu to create your first task
-      </p>`);
+      Click «ADD NEW TASK» in menu to create your first task
+    </p>`);
 
     this._moreBtnClickHandler = this._moreBtnClickHandler.bind(this);
     this._moreBtn.setClickHandler(this._moreBtnClickHandler);
@@ -81,6 +84,8 @@ export default class BoardController {
       return;
     }
 
+    this. _recoverTaskSection(0);
+
     this._newTaskController.destroy();
     this._newTaskController = null;
   }
@@ -105,15 +110,24 @@ export default class BoardController {
     return tasksToShow;
   }
 
+  _recoverTaskSection(quantity) {
+    if (this._isBoardEmpty && quantity > 0) {
+      this._sortController.show();
+      this._tasksSection.hidden = false;
+      this._emptyBoardElement.hidden = true;
+      this._isBoardEmpty = false;
+    } else if (quantity === 0) {
+      this._tasksSection.hidden = true;
+      this._emptyBoardElement.hidden = false;
+      this._sortController.hide();
+      this._isBoardEmpty = true;
+    }
+  }
+
   _renderTasks(quantity) {
     const tasks = this._getTasks(quantity);
 
-    if(tasks.length > 0) {
-      this._emptyBoardElement.replaceWith(this._tasksSection);
-    }
-    else {
-      this._tasksSection.replaceWith(this._emptyBoardElement);
-    }
+    this._recoverTaskSection(tasks.length);
 
     return tasks.map((taskData) => {
       const taskController = new TaskController(
@@ -133,11 +147,6 @@ export default class BoardController {
       return true;
     }
     const currentFilter = this._tasksModel.getFilterType();
-
-    if (currentFilter === FilterType.ALL) {
-      return false;
-    }
-
     const filterPropName = FiltersFlags[currentFilter];
     const isNeedToUpdateFiltered = oldData[filterPropName] !== newData[filterPropName];
     this._isNeedToHideUpdatedCard = isNeedToUpdateFiltered && newData[filterPropName] === false;
@@ -208,18 +217,18 @@ export default class BoardController {
     this._boardComponent = new BoardComponent();
     const boardElement = this._boardComponent.getElement();
     this._sortController = new SortController(boardElement, this._tasksModel);
-    this._tasksSection = createElement(`<div class="board__tasks"></div>`);
-    this._emptyBoardElement = createElement(`<p class="board__no-tasks">
-        Click «ADD NEW TASK» in menu to create your first task
-      </p>`);
 
     this._sortController.render();
 
     if (this._tasksModel.getTasksQuantity() > 0) {
+      this._isBoardEmpty = false;
       this._tasksControllers = this._renderTasks();
+      this._emptyBoardElement.hidden = true;
     } else {
       this._isBoardEmpty = true;
       this._sortController.hide();
+      this._moreBtn.hide();
+      this._tasksSection.hidden = true;
     }
 
     renderElement(boardElement, [
