@@ -19,21 +19,6 @@ const WEEKDAYS = {
   su: false,
 };
 
-const MONTH_NAMES = [
-  `January`,
-  `February`,
-  `March`,
-  `April`,
-  `May`,
-  `June`,
-  `July`,
-  `August`,
-  `September`,
-  `October`,
-  `November`,
-  `December`,
-];
-
 const TaskFlag = {
   DATE_IS_SHOWN: `dateIsShown`,
   IS_REPEAT: `isRepeat`,
@@ -73,7 +58,6 @@ export {
   MAX_CARDS,
   MAX_CARDS_SHOW,
   WEEKDAYS,
-  MONTH_NAMES,
   TaskFlag,
   FilterType,
   FiltersFlags,

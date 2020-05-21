@@ -29,6 +29,10 @@ export default class DeadlineInput extends AbstractComponent {
         altInput: true,
         allowInput: true,
         defaultDate: this._dueDate || `today`,
+        altFormat: `j F H:i`,
+        dateFormat: `Y-m-d H:i`,
+        // This prop enable time inputs, but breaks flatpickr popup
+        // enableTime: true,
       });
     }
   }
