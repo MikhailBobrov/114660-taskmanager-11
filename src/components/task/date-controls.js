@@ -1,7 +1,7 @@
 import AbstractComponent from '../abstract-component';
 import DeadlineInput from './deadline-input';
 import WeekDays from './weekdays';
-import {getDate, getTime, createElement, renderElement, getHandlerWithProp} from '../../helpers';
+import {getDate, getTime, createElement, renderElement} from '../../helpers';
 import {TaskFlag} from '../../constants';
 
 export default class DateControls extends AbstractComponent {
@@ -9,6 +9,7 @@ export default class DateControls extends AbstractComponent {
     super();
 
     const {dueDate, isDeadline, isRepeat} = taskData;
+    this._dueDate = dueDate;
     this._isDeadline = isDeadline;
     this._dateIsShown = params.dateIsShown;
     this._isRepeat = isRepeat;
@@ -19,13 +20,25 @@ export default class DateControls extends AbstractComponent {
   }
 
   setRepeatClickHandler(handler) {
-    const clickHandler = getHandlerWithProp(`.card__repeat-toggle`, handler);
-    this.getElement().addEventListener(`click`, clickHandler);
+    const control = this.getElement().querySelector(`.card__repeat-toggle`);
+    control.addEventListener(`click`, handler);
   }
 
   setDateClickHandler(handler) {
     const control = this.getElement().querySelector(`.card__date-deadline-toggle`);
     control.addEventListener(`click`, handler);
+  }
+
+  setDueDateChangeHandler(handler) {
+    const control = this.getElement().querySelector(`.card__date`);
+
+    if (!control) {
+      return;
+    }
+
+    control.addEventListener(`change`, () => {
+      handler(control.value);
+    });
   }
 
   setWeekDaysControlsClickHandler(handler) {

@@ -3,7 +3,6 @@ import TextControl from './task/text-control';
 import SettingsControls from './task/settings-controls';
 import FormControls from './task/form-controls';
 import {createElement, renderElement} from '../helpers';
-import {TaskFlag} from '../constants';
 
 export default class CardEdit extends Task {
   constructor(taskData) {
@@ -13,10 +12,11 @@ export default class CardEdit extends Task {
     this._taskData = this._copyTaskData(taskData);
     this._isCardChanged = false;
 
-    this._toggleProp = this._toggleProp.bind(this);
+    this._toggleRepeat = this._toggleRepeat.bind(this);
     this._toggleDate = this._toggleDate.bind(this);
     this._toggleWeekDay = this._toggleWeekDay.bind(this);
     this._changeColor = this._changeColor.bind(this);
+    this._changeDueDate = this._changeDueDate.bind(this);
     this._saveText = this._saveText.bind(this);
 
     this._submitClickHandler = null;
@@ -61,8 +61,9 @@ export default class CardEdit extends Task {
     return localTaskData;
   }
 
-  _toggleProp(prop) {
-    this._taskData[prop] = !this._taskData[prop];
+  _toggleRepeat() {
+    this._taskData.isRepeat = !this._taskData.isRepeat;
+    this._taskData.isDeadline = this._getIsDeadline();
     this._isCardChanged = true;
     this.rerender();
   }
@@ -70,7 +71,7 @@ export default class CardEdit extends Task {
   _toggleDate() {
     this._dateIsShown = !this._dateIsShown;
     this._isCardChanged = true;
-    this._toggleProp(TaskFlag.IS_REPEAT);
+    this._toggleRepeat();
   }
 
   _toggleWeekDay(value) {
@@ -81,6 +82,17 @@ export default class CardEdit extends Task {
 
   _changeColor(color) {
     this._taskData.color = color;
+    this._isCardChanged = true;
+    this.rerender();
+  }
+
+  _getIsDeadline() {
+    return !this._taskData.isRepeat && this._taskData.dueDate < new Date();
+  }
+
+  _changeDueDate(date) {
+    this._taskData.dueDate = new Date(date);
+    this._taskData.isDeadline = this._getIsDeadline();
     this._isCardChanged = true;
     this.rerender();
   }
@@ -112,10 +124,11 @@ export default class CardEdit extends Task {
       this._formControls
     ]);
 
-    this._settingsControls.setRepeatClickHandler(this._toggleProp);
+    this._settingsControls.setRepeatClickHandler(this._toggleRepeat);
     this._settingsControls.setDateClickHandler(this._toggleDate);
     this._settingsControls.setWeekDaysControlsClickHandler(this._toggleWeekDay);
     this._settingsControls.setColorsClickHandler(this._changeColor);
+    this._settingsControls.setDueDateChangeHandler(this._changeDueDate);
     this._textControl.setTextInputHandler(this._saveText);
 
     return element;

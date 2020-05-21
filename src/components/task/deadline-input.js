@@ -1,13 +1,36 @@
+import flatpickr from "flatpickr";
 import AbstractComponent from '../abstract-component';
 import {getDate, getTime} from '../../helpers';
+
+import "flatpickr/dist/flatpickr.min.css";
 
 export default class DeadlineInput extends AbstractComponent {
   constructor({dueDate}, {dateIsShown}) {
     super();
 
+    this._dueDate = dueDate;
     this._date = getDate(dueDate);
     this._time = getTime(dueDate);
     this._dateIsShown = dateIsShown;
+    this._flatpickr = null;
+
+    this._addFlatpickr();
+  }
+
+  _addFlatpickr() {
+    if (this._flatpickr) {
+      this._flatpickr.destroy();
+      this._flatpickr = null;
+    }
+
+    if (this._dateIsShown) {
+      const dateElement = this.getElement().querySelector(`.card__date`);
+      this._flatpickr = flatpickr(dateElement, {
+        altInput: true,
+        allowInput: true,
+        defaultDate: this._dueDate || `today`,
+      });
+    }
   }
 
   _getTmpl() {

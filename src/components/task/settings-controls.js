@@ -23,6 +23,10 @@ export default class SettingsControls extends AbstractComponent {
     this._dateControls.setWeekDaysControlsClickHandler(handler);
   }
 
+  setDueDateChangeHandler(handler) {
+    this._dateControls.setDueDateChangeHandler(handler);
+  }
+
   setColorsClickHandler(handler) {
     this._colorsControls.setClickHandler(handler);
   }
