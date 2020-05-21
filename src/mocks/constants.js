@@ -1,14 +1,3 @@
-const WEEKDAYS = {
-  mo: false,
-  tu: false,
-  we: false,
-  th: false,
-  fr: false,
-  sa: false,
-  su: false,
-};
-
-
 const DESCRIPTIONS = [
   `Изучить теорию`,
   `Сделать домашку`,
@@ -16,6 +5,5 @@ const DESCRIPTIONS = [
 ];
 
 export {
-  DESCRIPTIONS,
-  WEEKDAYS,
+  DESCRIPTIONS
 };

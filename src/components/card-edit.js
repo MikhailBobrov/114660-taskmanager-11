@@ -3,7 +3,7 @@ import TextControl from './task/text-control';
 import SettingsControls from './task/settings-controls';
 import FormControls from './task/form-controls';
 import {createElement, renderElement} from '../helpers';
-import {TaskFlags} from '../constants';
+import {TaskFlag} from '../constants';
 
 export default class CardEdit extends Task {
   constructor(taskData) {
@@ -19,18 +19,18 @@ export default class CardEdit extends Task {
     this._changeColor = this._changeColor.bind(this);
     this._saveText = this._saveText.bind(this);
 
-    this._submitHandler = null;
+    this._submitClickHandler = null;
+    this._deleteClickHandler = null;
   }
 
-  setSubmitHandler(handler) {
-    const form = this.getElement().querySelector(`form`);
+  setSubmitClickHandler(handler) {
+    this._formControls.setSubmitClickHandler(handler);
+    this._submitClickHandler = handler;
+  }
 
-    form.addEventListener(`submit`, () => {
-      handler(this._taskData);
-      this._isCardChanged = false;
-    });
-
-    this._submitHandler = handler;
+  setDeleteClickHandler(handler) {
+    this._formControls.setDeleteClickHandler(handler);
+    this._deleteClickHandler = handler;
   }
 
   reset(taskData) {
@@ -70,7 +70,7 @@ export default class CardEdit extends Task {
   _toggleDate() {
     this._dateIsShown = !this._dateIsShown;
     this._isCardChanged = true;
-    this._toggleProp(TaskFlags.IS_REPEAT);
+    this._toggleProp(TaskFlag.IS_REPEAT);
   }
 
   _toggleWeekDay(value) {
@@ -92,7 +92,8 @@ export default class CardEdit extends Task {
   }
 
   _recoveryListeners() {
-    this.setSubmitHandler(this._submitHandler);
+    this.setSubmitClickHandler(this._submitClickHandler);
+    this.setDeleteClickHandler(this._deleteClickHandler);
   }
 
   _createElement() {

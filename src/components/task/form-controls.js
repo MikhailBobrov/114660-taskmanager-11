@@ -5,11 +5,27 @@ export default class FormControls extends AbstractSmartComponent {
   constructor(taskData) {
     super();
 
+    this._taskData = taskData;
     this._isDateCorrect = this._checkDate(taskData);
     this._isRepeatCorrect = this._checkRepeat(taskData);
     this._isTextCorrect = getActualDesc(taskData);
 
     this._isEnabled = this._checkIsEnabled();
+  }
+
+  setSubmitClickHandler(handler) {
+    const control = this.getElement().querySelector(`.card__save`);
+
+    control.addEventListener(`click`, (event) => {
+      event.preventDefault();
+      handler(this._taskData);
+    });
+  }
+
+  setDeleteClickHandler(handler) {
+    const control = this.getElement().querySelector(`.card__delete`);
+
+    control.addEventListener(`click`, handler);
   }
 
   setFormControlsEnabledState({isTextCorrect}) {

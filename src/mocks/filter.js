@@ -1,4 +1,4 @@
-import {TaskFlags} from '../constants';
+import {TaskFlag} from '../constants';
 
 const getTodayListLength = (items) => {
   const list = items.filter((item) => {
@@ -44,15 +44,15 @@ const getFilterItems = (cardsData) => {
     },
     {
       title: `favorites`,
-      count: getListLength(cardsData, TaskFlags.IS_FAVORITE)
+      count: getListLength(cardsData, TaskFlag.IS_FAVORITE)
     },
     {
       title: `repeating`,
-      count: getListLength(cardsData, TaskFlags.IS_REPEAT)
+      count: getListLength(cardsData, TaskFlag.IS_REPEAT)
     },
     {
       title: `archive`,
-      count: getListLength(cardsData, TaskFlags.IS_ARCHIVE)
+      count: getListLength(cardsData, TaskFlag.IS_ARCHIVE)
     },
   ];
 };

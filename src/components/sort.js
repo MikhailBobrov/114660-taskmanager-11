@@ -1,4 +1,6 @@
 import AbstractComponent from './abstract-component';
+import {getHandlerWithProp} from '../helpers';
+import {SortType} from '../constants';
 
 export default class Sort extends AbstractComponent {
   constructor() {
@@ -6,18 +8,24 @@ export default class Sort extends AbstractComponent {
 
     this._itemsData = [
       {
-        id: `default`,
+        id: SortType.DEFAULT,
         name: `SORT BY DEFAULT`
       },
       {
-        id: `date-up`,
+        id: SortType.DATE_UP,
         name: `SORT BY DATE up`
       },
       {
-        id: `date-down`,
+        id: SortType.DATE_DOWN,
         name: `SORT BY DATE down`
       },
     ];
+  }
+
+  setSortItemClickHandler(handler) {
+    const handlerWithProp = getHandlerWithProp(`.board__filter`, handler);
+
+    this.getElement().addEventListener(`click`, handlerWithProp);
   }
 
   _getItems() {
@@ -28,7 +36,7 @@ export default class Sort extends AbstractComponent {
         `${prev}<a
           href="#"
           class="board__filter"
-          data-sort-type="${id}"
+          data-prop="${id}"
         >
           ${name}
         </a>`
