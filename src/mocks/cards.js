@@ -1,5 +1,5 @@
 import {getRandomBool} from '../helpers';
-import { ColorsNames, WEEKDAYS} from '../constants';
+import {ColorsNames, WEEKDAYS} from '../constants';
 import {DESCRIPTIONS} from './constants';
 
 const WEEK = 7;

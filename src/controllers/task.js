@@ -1,19 +1,19 @@
 import Card from '../components/card';
 import CardEdit from '../components/card-edit';
 import {renderElement, replaceElement, removeElement} from '../helpers';
-import { ColorsNames, WEEKDAYS, RenderPositions } from '../constants';
+import {ColorsNames, WEEKDAYS, RenderPositions} from '../constants';
 
 const EMPTY_TASK_DATA = {
   id: null,
-  description: '',
-  dueDate: '',
+  description: ``,
+  dueDate: ``,
   weekDays: Object.assign({}, WEEKDAYS),
   color: ColorsNames.BLACK,
   isRepeat: false,
   isFavorite: false,
   isArchive: false,
   isDeadline: false,
-}
+};
 export default class TaskController {
   constructor(container, updateTask, resetNewTask, updateBoardOnFormSave, onViewChange) {
     this._container = container;
@@ -58,14 +58,14 @@ export default class TaskController {
     this._setCardEditComponentHandlers();
     this.isCardEditOpened = true;
 
-    document.addEventListener('keydown', this._onEscKeyDown);
+    document.addEventListener(`keydown`, this._onEscKeyDown);
   }
 
   _replaceEditToCard() {
     replaceElement(this._cardEditComponent, this._cardComponent);
     this.isCardEditOpened = false;
 
-    document.removeEventListener('keydown', this._onEscKeyDown);
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
   _saveCard(newTaskData) {
@@ -94,8 +94,7 @@ export default class TaskController {
     if (isEscKey) {
       if (this.taskData.id) {
         this.setDefaultView();
-      }
-      else {
+      } else {
         this._resetNewTask();
       }
     }
@@ -105,7 +104,7 @@ export default class TaskController {
     let renderPosition = RenderPositions.END;
     let isCreate = false;
 
-    if(!taskData) {
+    if (!taskData) {
       isCreate = true;
       taskData = Object.assign({}, EMPTY_TASK_DATA);
       renderPosition = RenderPositions.BEGIN;

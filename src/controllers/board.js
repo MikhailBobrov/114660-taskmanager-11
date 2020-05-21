@@ -2,7 +2,7 @@ import TaskController from './task';
 import SortController from './sort';
 import BoardComponent from '../components/board';
 import MoreBtn from '../components/more-btn';
-import {MAX_CARDS_SHOW, FilterType, FiltersFlags} from '../constants';
+import {MAX_CARDS_SHOW, FiltersFlags} from '../constants';
 import {createElement, renderElement, replaceElement} from '../helpers';
 
 export default class BoardController {
@@ -33,7 +33,7 @@ export default class BoardController {
   }
 
   _onViewChange() {
-    const taskIndexToReset = this._tasksControllers.findIndex(item => item === this._newTaskController);
+    const taskIndexToReset = this._tasksControllers.findIndex((item) => item === this._newTaskController);
 
     if (taskIndexToReset > -1) {
       this._tasksControllers.splice(taskIndexToReset, 1);
@@ -62,12 +62,14 @@ export default class BoardController {
       return;
     }
 
+    this._recoverTaskSection(1);
+
     this._newTaskController = new TaskController(
-      this._tasksSection,
-      this._updateTask,
-      this._resetNewTask,
-      this._updateBoardOnFormSave,
-      this._onViewChange
+        this._tasksSection,
+        this._updateTask,
+        this._resetNewTask,
+        this._updateBoardOnFormSave,
+        this._onViewChange
     );
     this._newTaskController.render();
 
@@ -115,11 +117,11 @@ export default class BoardController {
 
     return tasks.map((taskData) => {
       const taskController = new TaskController(
-        this._tasksSection,
-        this._updateTask,
-        this._resetNewTask,
-        this._updateBoardOnFormSave,
-        this._onViewChange
+          this._tasksSection,
+          this._updateTask,
+          this._resetNewTask,
+          this._updateBoardOnFormSave,
+          this._onViewChange
       );
       taskController.render(taskData);
       return taskController;
@@ -148,8 +150,7 @@ export default class BoardController {
 
     if (index > -1 && newData) {
       this._tasksControllers[index].render(newData);
-    }
-    else {
+    } else {
       this._updateBoard(this._quantityLoaded);
     }
 
@@ -163,22 +164,16 @@ export default class BoardController {
   }
 
   _updateTask(oldData, newData) {
-    console.log('\n\n_updateTask');
     let isSuccess = false;
-    console.log('oldData', oldData);
-    console.log('newData', newData);
 
-    if(!newData) {
+    if (!newData) {
       // remove task
       isSuccess = this._tasksModel.removeTask(oldData.id);
-    }
-    else if (!oldData.id) {
+    } else if (!oldData.id) {
       // add task
       isSuccess = this._tasksModel.addTask(newData);
       this._resetNewTask();
-      console.log('this._tasksModel', this._tasksModel);
-    }
-    else {
+    } else {
       // update task
       isSuccess = this._tasksModel.updateTask(oldData.id, newData);
     }
@@ -214,19 +209,24 @@ export default class BoardController {
     const boardElement = this._boardComponent.getElement();
     this._sortController = new SortController(boardElement, this._tasksModel);
     this._tasksSection = createElement(`<div class="board__tasks"></div>`);
+    this._emptyBoardElement = createElement(`<p class="board__no-tasks">
+        Click «ADD NEW TASK» in menu to create your first task
+      </p>`);
+
+    this._sortController.render();
 
     if (this._tasksModel.getTasksQuantity() > 0) {
       this._tasksControllers = this._renderTasks();
-      this._sortController.render();
+    } else {
+      this._isBoardEmpty = true;
+      this._sortController.hide();
+    }
 
-      renderElement(boardElement, [
-        this._tasksSection,
-        this._moreBtn
-      ]);
-    }
-    else {
-      renderElement(boardElement, this._emptyBoardElement);
-    }
+    renderElement(boardElement, [
+      this._tasksSection,
+      this._emptyBoardElement,
+      this._moreBtn
+    ]);
 
     if (oldBoardComponent) {
       replaceElement(oldBoardComponent, this._boardComponent);

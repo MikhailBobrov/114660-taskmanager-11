@@ -1,6 +1,6 @@
 import AbstractComponent from '../abstract-component';
 import {getHandlerWithValue} from '../../helpers';
-import { ColorsNames} from '../../constants';
+import {ColorsNames} from '../../constants';
 
 export default class ColorsControls extends AbstractComponent {
   constructor({color}) {

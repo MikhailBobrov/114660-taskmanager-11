@@ -28,4 +28,4 @@ renderElement(controlElem, menuComponent);
 filterController.render();
 boardController.render();
 
-menuComponent.setAddNewTaskClickHandler(boardController.addNewTask)
+menuComponent.setAddNewTaskClickHandler(boardController.addNewTask);

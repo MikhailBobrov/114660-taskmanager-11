@@ -45,13 +45,14 @@ const FilterType = {
   ALL: `all`,
   OVERDUE: `overdue`,
   TODAY: `today`,
-  FAVORITES: `favorites`,
+  FAVORITE: `favorites`,
   REPEATING: `repeating`,
   ARCHIVE: `archive`,
 };
 
 const FiltersFlags = {
-  [FilterType.FAVORITES]: TaskFlag.IS_FAVORITE,
+  [FilterType.ALL]: TaskFlag.IS_ARCHIVE,
+  [FilterType.FAVORITE]: TaskFlag.IS_FAVORITE,
   [FilterType.REPEATING]: TaskFlag.IS_REPEAT,
   [FilterType.ARCHIVE]: TaskFlag.IS_ARCHIVE,
 };
@@ -63,8 +64,8 @@ const SortType = {
 };
 
 const RenderPositions = {
-  BEGIN: 'begin',
-  END: 'end'
+  BEGIN: `begin`,
+  END: `end`
 };
 
 export {

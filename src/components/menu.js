@@ -21,9 +21,9 @@ export default class Menu extends AbstractComponent {
   }
 
   setAddNewTaskClickHandler(handler) {
-    const control = document.getElementById('control__new-task');
+    const control = document.getElementById(`control__new-task`);
 
-    control.addEventListener('click', handler);
+    control.addEventListener(`click`, handler);
   }
 
   _getItems() {

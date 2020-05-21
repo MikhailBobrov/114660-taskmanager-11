@@ -1,4 +1,4 @@
-import { RenderPositions } from "../constants";
+import {RenderPositions} from "../constants";
 
 const handleComponent = (target, component, place) => {
   let element = component;
@@ -13,8 +13,7 @@ const handleComponent = (target, component, place) => {
 
   if (place === RenderPositions.BEGIN) {
     target.prepend(element);
-  }
-  else {
+  } else {
     target.append(element);
   }
 };
