@@ -49,10 +49,12 @@ export default class BoardController {
   }
 
   _onFilterChange() {
+    this._resetNewTask();
     this._updateBoard();
   }
 
   _onSortChange() {
+    this._resetNewTask();
     this._updateBoard();
   }
 
@@ -86,7 +88,7 @@ export default class BoardController {
       return;
     }
 
-    this. _recoverTaskSection(0);
+    this._recoverTaskSection(this._tasksControllers.length);
 
     this._newTaskController.destroy();
     this._newTaskController = null;
