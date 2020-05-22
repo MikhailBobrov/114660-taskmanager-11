@@ -7,4 +7,3 @@ export {getClass} from './getClass';
 export {getRandomBool} from './getRandomBool';
 export {getHandlerWithProp} from './getHandlerWithProp';
 export {getHandlerWithValue} from './getHandlerWithValue';
-export {getActualDesc} from './getActualDesc';
