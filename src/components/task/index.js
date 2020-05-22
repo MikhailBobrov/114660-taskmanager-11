@@ -2,10 +2,10 @@ import AbstractSmartComponent from '../abstract-smart-component';
 import {getClass, createElement} from '../../helpers';
 
 export default class Task extends AbstractSmartComponent {
-  constructor(isEdit = false) {
+  constructor({isEdit} = {}) {
     super();
 
-    this._isEdit = isEdit;
+    this._isEdit = isEdit || false;
 
     if (new.target === Task) {
       throw new Error(`Task is not allowed as a constructor`);

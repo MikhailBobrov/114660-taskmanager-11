@@ -1,5 +1,4 @@
 import AbstractSmartComponent from '../abstract-smart-component';
-import {getActualDesc} from '../../helpers';
 
 export default class FormControls extends AbstractSmartComponent {
   constructor(taskData) {
@@ -8,7 +7,7 @@ export default class FormControls extends AbstractSmartComponent {
     this._taskData = taskData;
     this._isDateCorrect = this._checkDate(taskData);
     this._isRepeatCorrect = this._checkRepeat(taskData);
-    this._isTextCorrect = getActualDesc(taskData);
+    this._isTextCorrect = taskData.description !== ``;
 
     this._isEnabled = this._checkIsEnabled();
   }

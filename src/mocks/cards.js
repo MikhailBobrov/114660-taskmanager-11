@@ -34,7 +34,7 @@ const getCardsData = (quantity) => {
     const isFavorite = getRandomBool();
     const isArchive = getRandomBool();
 
-    const id = String(new Date() + Math.random());
+    const id = Date.now() + Math.random();
     const description = getRandomItem(DESCRIPTIONS);
     const color = getRandomItem(Object.values(ColorsNames));
     const dueDate = isRepeat ? null : getRandomDate();
