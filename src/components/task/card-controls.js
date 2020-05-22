@@ -1,39 +1,68 @@
 import AbstractComponent from '../abstract-component';
+import {getHandlerWithProp} from '../../helpers';
+import {TaskFlags} from '../../constants';
+
+const ClassName = {
+  DEFAULT: `card__btn`,
+  DISABLED: `card__btn--disabled`,
+  EDIT: `card__btn--edit`
+};
+
+const CONTROLS_DATA = [
+  {
+    name: `edit`
+  },
+  {
+    name: `archive`,
+    prop: TaskFlags.IS_ARCHIVE
+  },
+  {
+    name: `favorites`,
+    prop: TaskFlags.IS_FAVORITE
+  }
+];
 
 export default class CardControls extends AbstractComponent {
-  constructor({isEdit}) {
+  constructor(taskData) {
     super();
 
-    this._isEdit = isEdit;
+    this._taskData = taskData;
+  }
+
+  setClickHandler(handler) {
+    this.getElement().addEventListener(`click`, getHandlerWithProp(`.${ClassName.DEFAULT}`, handler));
   }
 
   setEditBtnHandler(handler) {
-    const control = this.getElement().querySelector(`.card__btn--edit`);
+    const control = this.getElement().querySelector(`.${ClassName.EDIT}`);
 
     control.addEventListener(`click`, handler);
   }
 
-  _getTmpl() {
-    if (this._isEdit) {
-      return ``;
-    }
+  _getControls() {
+    return CONTROLS_DATA.reduce((prev, item) => {
+      const {name, prop} = item;
+      const dataAttr = prop ? `data-prop="${prop}"` : ``;
+      let className = `${ClassName.DEFAULT} ${ClassName.DEFAULT}--${name}`;
+      const value = this._taskData[prop];
 
+      if (value === false) {
+        className += ` ${ClassName.DISABLED}`;
+      }
+
+      return `${prev} <button type="button"
+          class="${className}"
+          ${dataAttr}
+        >
+          ${name}
+        </button>`;
+    }, ``);
+  }
+
+  _getTmpl() {
     return (
       `<div class="card__control">
-        <button type="button"
-          class="card__btn card__btn--edit">
-          edit
-        </button>
-
-        <button type="button"
-          class="card__btn card__btn--archive">
-          archive
-        </button>
-
-        <button type="button"
-          class="card__btn card__btn--favorites">
-          favorites
-        </button>
+        ${this._getControls()}
       </div>`
     );
   }

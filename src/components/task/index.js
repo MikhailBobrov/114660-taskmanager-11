@@ -1,42 +1,26 @@
-import AbstractComponent from '../abstract-component';
-import Text from './text';
-import Settings from './settings';
-import {getClass, createElement, renderElement} from '../../helpers';
+import AbstractSmartComponent from '../abstract-smart-component';
+import {getClass, createElement} from '../../helpers';
 
-export default class Task extends AbstractComponent {
-  constructor() {
+export default class Task extends AbstractSmartComponent {
+  constructor({isEdit} = {}) {
     super();
+
+    this._isEdit = isEdit || false;
 
     if (new.target === Task) {
       throw new Error(`Task is not allowed as a constructor`);
     }
   }
 
-  _init(taskData) {
-    const {
-      color,
-      isRepeat,
-      isDeadline,
-      isEdit
-    } = taskData;
-
-    this._color = color;
-    this._isRepeat = isRepeat;
-    this._isDeadline = isDeadline;
-    this._isEdit = isEdit;
-
-    this._text = new Text(taskData);
-    this._settings = new Settings(taskData);
-  }
-
   _getMods() {
+    const {color, isRepeat, isDeadline} = this._taskData;
     const mods = [];
 
-    if (this._isRepeat) {
+    if (isRepeat) {
       mods.push(`repeat`);
     }
 
-    if (this._isDeadline) {
+    if (isDeadline) {
       mods.push(`deadline`);
     }
 
@@ -44,8 +28,8 @@ export default class Task extends AbstractComponent {
       mods.push(`edit`);
     }
 
-    if (this._color) {
-      mods.push(this._color);
+    if (color) {
+      mods.push(color);
     }
 
     return mods;
@@ -73,27 +57,6 @@ export default class Task extends AbstractComponent {
     </div>`;
 
     return createElement(markup);
-  }
-
-  _createElement() {
-    const element = createElement(this._getTmpl());
-    const innerElement = element.querySelector(`.card__inner`);
-
-    if (this._cardControls) {
-      renderElement(innerElement, this._cardControls);
-    }
-
-    renderElement(innerElement, [
-      this._getColorbarElement(),
-      this._text,
-      this._settings
-    ]);
-
-    if (this._formControls) {
-      renderElement(innerElement, this._formControls);
-    }
-
-    return element;
   }
 
   _getTmpl() {

@@ -24,9 +24,17 @@ const MONTH_NAMES = [
   `December`,
 ];
 
+const TaskFlags = {
+  DATE_IS_SHOWN: `dateIsShown`,
+  IS_REPEAT: `isRepeat`,
+  IS_ARCHIVE: `isArchive`,
+  IS_FAVORITE: `isFavorite`
+};
+
 export {
   COLORS_NAMES,
   MAX_CARDS,
   MAX_CARDS_SHOW,
   MONTH_NAMES,
+  TaskFlags
 };

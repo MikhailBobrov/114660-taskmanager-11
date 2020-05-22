@@ -1,12 +1,17 @@
 import AbstractComponent from '../abstract-component';
+import {getHandlerWithValue} from '../../helpers';
 import {COLORS_NAMES} from '../../constants';
 
 export default class ColorsControls extends AbstractComponent {
-  constructor({color, isEdit}) {
+  constructor({color}) {
     super();
 
     this._color = color;
-    this._isEdit = isEdit;
+  }
+
+  setClickHandler(handler) {
+    const clickHandler = getHandlerWithValue(`.card__color-input`, handler);
+    this.getElement().addEventListener(`click`, clickHandler);
   }
 
   _getColorMarkup(name) {
@@ -30,10 +35,6 @@ export default class ColorsControls extends AbstractComponent {
   }
 
   _getTmpl() {
-    if (!this._isEdit) {
-      return ``;
-    }
-
     const colorsMarkupList = COLORS_NAMES.map((color) => {
       return this._getColorMarkup(color);
     });

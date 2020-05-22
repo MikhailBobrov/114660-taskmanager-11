@@ -1,31 +1,49 @@
 import AbstractComponent from '../abstract-component';
 import DeadlineInput from './deadline-input';
 import WeekDays from './weekdays';
-import {getDate, getTime, createElement, renderElement} from '../../helpers';
+import {getDate, getTime, createElement, renderElement, getHandlerWithProp} from '../../helpers';
+import {TaskFlags} from '../../constants';
 
 export default class DateControls extends AbstractComponent {
-  constructor(taskData) {
+  constructor(taskData, params) {
     super();
 
-    const {isEdit, dueDate, isDeadline, isRepeat} = taskData;
-    this._isEdit = isEdit;
+    const {dueDate, isDeadline, isRepeat} = taskData;
     this._isDeadline = isDeadline;
+    this._dateIsShown = params.dateIsShown;
     this._isRepeat = isRepeat;
     this._date = getDate(dueDate);
     this._time = getTime(dueDate);
-    this._deadlineInput = new DeadlineInput(taskData);
+    this._deadlineInput = new DeadlineInput(taskData, params);
     this._weekDays = new WeekDays(taskData);
-    this._isShown = this._isEdit;
+  }
+
+  setRepeatClickHandler(handler) {
+    const clickHandler = getHandlerWithProp(`.card__repeat-toggle`, handler);
+    this.getElement().addEventListener(`click`, clickHandler);
+  }
+
+  setDateClickHandler(handler) {
+    const control = this.getElement().querySelector(`.card__date-deadline-toggle`);
+    control.addEventListener(`click`, handler);
+  }
+
+  setWeekDaysControlsClickHandler(handler) {
+    this._weekDays.setClickHandler(handler);
   }
 
   _getToggleStatus(value) {
     return value ? `yes` : `no`;
   }
 
-  _getBtnElement({id, value, text}) {
-    const markup = `<button class="card__${id}-toggle" type="button">
+  _getBtnElement({id, prop, state, text}) {
+    const markup = `<button
+      class="card__${id}-toggle"
+      type="button"
+      data-prop="${prop}"
+      >
       ${text}: <span class="card__${id}-status">
-        ${this._getToggleStatus(value)}
+        ${state}
       </span>
     </button>`;
 
@@ -36,12 +54,14 @@ export default class DateControls extends AbstractComponent {
     const element = createElement(this._getTmpl());
     const deadlineBtn = this._getBtnElement({
       id: `date-deadline`,
-      value: this._isDeadline,
+      prop: TaskFlags.DATE_IS_SHOWN,
+      state: this._getToggleStatus(this._dateIsShown),
       text: `date`
     });
     const repeatBtn = this._getBtnElement({
       id: `repeat`,
-      value: this._isRepeat,
+      prop: TaskFlags.IS_REPEAT,
+      state: this._getToggleStatus(this._isRepeat),
       text: `repeat`
     });
 
@@ -56,10 +76,6 @@ export default class DateControls extends AbstractComponent {
   }
 
   _getTmpl() {
-    if (!this._isShown) {
-      return ``;
-    }
-
     return (
       `<div class="card__dates"></div>`
     );
