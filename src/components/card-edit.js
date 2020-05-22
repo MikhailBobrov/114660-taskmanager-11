@@ -7,7 +7,7 @@ import {TaskFlags} from '../constants';
 
 export default class CardEdit extends Task {
   constructor(taskData) {
-    super(true);
+    super({isEdit: true});
 
     this._isEdit = true;
     this._taskData = this._copyTaskData(taskData);
