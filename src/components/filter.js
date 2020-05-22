@@ -11,8 +11,8 @@ export default class Filter extends AbstractComponent {
   }
 
   setFilterItemClickHandler(handler) {
-    const handlerWihProp = getHandlerWithValue(`.filter__input`, handler);
-    this.getElement().addEventListener(`click`, handlerWihProp);
+    const handlerWihValue = getHandlerWithValue(`.filter__input`, handler);
+    this.getElement().addEventListener(`click`, handlerWihValue);
   }
 
   _getInputMarkup({type, count}) {
