@@ -1,5 +1,5 @@
 import AbstractComponent from './abstract-component';
-import {getFilteredTasks, getHandlerWithValue} from '../helpers';
+import {getFilteredTasks, getHandlerWithValue, getSimpleHandler} from '../helpers';
 import {FilterType} from '../constants';
 
 export default class Filter extends AbstractComponent {
@@ -11,6 +11,11 @@ export default class Filter extends AbstractComponent {
   }
 
   setFilterItemClickHandler(handler) {
+    const simpleHandler = getSimpleHandler(`.filter__input`, handler);
+    this.getElement().addEventListener(`click`, simpleHandler);
+  }
+
+  setFilterItemClickHandlerWithValue(handler) {
     const handlerWihValue = getHandlerWithValue(`.filter__input`, handler);
     this.getElement().addEventListener(`click`, handlerWihValue);
   }

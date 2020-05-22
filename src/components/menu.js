@@ -10,7 +10,7 @@ export default class Menu extends AbstractComponent {
         name: `+ ADD NEW TASK`,
       },
       {
-        id: `task`,
+        id: `tasks`,
         name: `TASKS`
       },
       {
@@ -22,6 +22,18 @@ export default class Menu extends AbstractComponent {
 
   setAddNewTaskClickHandler(handler) {
     const control = document.getElementById(`control__new-task`);
+
+    control.addEventListener(`click`, handler);
+  }
+
+  setTasksClickHandler(handler) {
+    const control = document.getElementById(`control__tasks`);
+
+    control.addEventListener(`click`, handler);
+  }
+
+  setStatisticClickHandler(handler) {
+    const control = document.getElementById(`control__statistic`);
 
     control.addEventListener(`click`, handler);
   }
