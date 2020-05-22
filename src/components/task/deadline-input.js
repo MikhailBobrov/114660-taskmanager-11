@@ -1,8 +1,8 @@
-import flatpickr from "flatpickr";
+import flatpickr from 'flatpickr';
 import AbstractComponent from '../abstract-component';
 import {getDate, getTime} from '../../helpers';
 
-import "flatpickr/dist/flatpickr.min.css";
+import 'flatpickr/dist/flatpickr.min.css';
 
 export default class DeadlineInput extends AbstractComponent {
   constructor({dueDate}, {dateIsShown}) {
