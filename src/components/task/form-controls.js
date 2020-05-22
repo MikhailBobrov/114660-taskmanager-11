@@ -22,7 +22,7 @@ export default class FormControls extends AbstractSmartComponent {
   }
 
   _recoveryListeners() {
-
+    // Will be done in the next task
   }
 
   _checkDate({isRepeat, dueDate}) {
