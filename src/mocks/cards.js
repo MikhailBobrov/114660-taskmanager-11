@@ -30,7 +30,7 @@ const getCardsData = (quantity) => {
   const data = [];
 
   for (let i = 0; i < quantity; i++) {
-    const id = new Date() + Math.random();
+    const id = Date.now() + Math.random();
     const isRepeat = getRandomBool();
     const isFavorite = getRandomBool();
     const isArchive = getRandomBool();
