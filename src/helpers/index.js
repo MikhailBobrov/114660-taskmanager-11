@@ -11,3 +11,4 @@ export {getSimpleHandler} from './getSimpleHandler';
 export {getHandlerWithProp} from './getHandlerWithProp';
 export {getHandlerWithValue} from './getHandlerWithValue';
 export {getTasksQuantityByColor, getTasksQuantityByDay, getArchivedTasksBetweenFromTo, getDaysBetweenFromTo} from './statistic';
+export {getPlurals} from './getPlurals';

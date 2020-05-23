@@ -3,7 +3,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import flatpickr from 'flatpickr';
 import AbstractSmartComponent from '../abstract-smart-component';
 import {COLORS_HEX, PIE_CHART_OPTIONS, LINE_CHART_OPTIONS} from './constants';
-import {getTasksQuantityByColor, getTasksQuantityByDay, getArchivedTasksBetweenFromTo, getDaysBetweenFromTo, getPeriod} from '../../helpers/';
+import {getTasksQuantityByColor, getTasksQuantityByDay, getArchivedTasksBetweenFromTo, getDaysBetweenFromTo, getPeriod, getPlurals} from '../../helpers/';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -132,6 +132,9 @@ export default class Statistic extends AbstractSmartComponent {
   }
 
   _getTmpl() {
+    const tasksQuantity = this._tasks.length;
+    const tasksPlurals = getPlurals(tasksQuantity, [`task was`, `tasks were`]);
+
     return (
       `<section class="statistic container">
         <div class="statistic__line">
@@ -148,7 +151,9 @@ export default class Statistic extends AbstractSmartComponent {
 
             <p class="statistic__period-result">
               In total for the specified period
-              <span class="statistic__task-found">0</span> tasks were fulfilled.
+              <span class="statistic__task-found">
+                ${this._tasks.length}
+              </span> ${tasksPlurals} fulfilled.
             </p>
           </div>
           <div class="statistic__line-graphic">
