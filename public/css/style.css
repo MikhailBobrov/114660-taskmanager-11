@@ -159,6 +159,10 @@ body {
   color: #000;
 }
 
+.board__filter--current {
+  font-weight: 500;
+}
+
 .board__filter:hover,
 .board__filter:focus {
   opacity: 0.7;

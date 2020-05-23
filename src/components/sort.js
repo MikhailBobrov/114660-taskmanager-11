@@ -2,9 +2,16 @@ import AbstractSmartComponent from './abstract-smart-component';
 import {getHandlerWithProp} from '../helpers';
 import {SortType} from '../constants';
 
+const ClassName = {
+  DEFAULT: `board__filter`,
+  CURRENT: `board__filter--current`
+};
+
 export default class Sort extends AbstractSmartComponent {
-  constructor() {
+  constructor({currentSort}) {
     super();
+
+    this._currentSort = currentSort;
 
     this._itemsData = [
       {
@@ -31,11 +38,16 @@ export default class Sort extends AbstractSmartComponent {
   _getItems() {
     return this._itemsData.reduce((prev, item) => {
       const {id, name} = item;
+      let className = `${ClassName.DEFAULT}`;
+
+      if (id === this._currentSort) {
+        className += ` ${ClassName.CURRENT}`;
+      }
 
       return (
         `${prev}<a
           href="#"
-          class="board__filter"
+          class="${className}"
           data-prop="${id}"
         >
           ${name}
