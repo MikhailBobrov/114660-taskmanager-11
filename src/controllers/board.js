@@ -32,7 +32,6 @@ export default class BoardController {
 
     this._tasksModel.addFilterChangeHandler(this._onFilterChange);
     this._tasksModel.addSortChangeHandler(this._onSortChange);
-    this._tasksModel.addSortChangeHandler(this._onSortChange);
   }
 
   hide() {
