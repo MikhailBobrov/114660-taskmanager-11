@@ -29,21 +29,17 @@ export default class Sort {
     this._tasksModel.setSortType(sortType);
   }
 
-  _onDataChange() {
-    this.render();
-  }
-
   _onSortChange() {
     const newSortType = this._tasksModel.getSortType();
 
     this._currentSortType = newSortType;
+
+    this.render();
   }
 
   render() {
     const oldSortComponent = this._SortComponent;
-    const tasks = this._tasksModel.getAllTasks();
     this._SortComponent = new SortComponent({
-      items: tasks,
       currentSort: this._tasksModel.getSortType()
     });
 
