@@ -29,10 +29,6 @@ export default class Sort {
     this._tasksModel.setSortType(sortType);
   }
 
-  _onDataChange() {
-    this.render();
-  }
-
   _onSortChange() {
     const newSortType = this._tasksModel.getSortType();
 
