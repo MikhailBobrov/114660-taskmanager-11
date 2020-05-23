@@ -1,7 +1,7 @@
 import SortComponent from '../components/sort';
 import {replaceElement, renderElement} from '../helpers';
 
-export default class Sort {
+export default class SortController {
   constructor(container, tasksModel) {
     this._container = container;
     this._tasksModel = tasksModel;
