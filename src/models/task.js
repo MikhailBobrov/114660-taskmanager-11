@@ -1,102 +1,46 @@
-import {FilterType, SortType} from '../constants';
-import {getFilteredTasks, getSortedTasks} from '../helpers';
+
+const checkisDeadline = (isRepeat, date) => {
+  if (isRepeat) {
+    return false;
+  }
+
+  return date && date < new Date();
+};
 
 export default class Task {
-  constructor() {
-    this._tasks = [];
-    this._activeFilterType = FilterType.ALL;
-    this._activeSortType = SortType.DEFAULT;
-    this._dataChangeHandlers = [];
-    this._filterChangeHandlers = [];
-    this._sortChangeHandlers = [];
+  constructor(taskData) {
+    this.id = taskData[`id`];
+    this.description = taskData[`description`];
+    this.dueDate = new Date(taskData[`due_date`]);
+    this.weekDays = taskData[`repeating_days`];
+    this.color = taskData[`color`];
+    this.isRepeat = Object.values(this.weekDays).some((item) => item);
+    this.isFavorite = taskData[`is_favorite`];
+    this.isArchive = taskData[`is_archived`];
+    this.isDeadline = checkisDeadline(this.isRepeat, this.dueDate);
   }
 
-  getTasks() {
-    let tasks = getFilteredTasks(this._tasks, this._activeFilterType);
-    tasks = getSortedTasks(tasks, this._activeSortType);
-    return tasks;
+  toRaw() {
+    return {
+      'id': this.id,
+      'description': this.description,
+      'due_date': this.dueDate.toISOString(),
+      'repeating_days': this.weekDays,
+      'color': this.color,
+      'is_archived': this.isArchive,
+      'is_favorite': this.isFavorite
+    };
   }
 
-  getTasksQuantity() {
-    return this.getTasks().length;
+  static parseTask(taskData) {
+    return new Task(taskData);
   }
 
-  getAllTasks() {
-    return this._tasks;
+  static parseTasks(tasksData) {
+    return tasksData.map(Task.parseTask);
   }
 
-  setTasks(tasks) {
-    this._tasks = tasks;
-  }
-
-  setFilterType(filterType) {
-    this._activeFilterType = filterType;
-    this.setSortType(SortType.DEFAULT);
-
-    this._callHandlers(this._filterChangeHandlers);
-  }
-
-  getFilterType() {
-    return this._activeFilterType;
-  }
-
-  setSortType(sortType) {
-    this._activeSortType = sortType;
-    this._callHandlers(this._sortChangeHandlers);
-  }
-
-  getSortType() {
-    return this._activeSortType;
-  }
-
-  addDataChangeHandler(handler) {
-    this._dataChangeHandlers.push(handler);
-  }
-
-  addFilterChangeHandler(handler) {
-    this._filterChangeHandlers.push(handler);
-  }
-
-  addSortChangeHandler(handler) {
-    this._sortChangeHandlers.push(handler);
-  }
-
-  updateTask(id, newData) {
-    const taskIndex = this._tasks.findIndex((item) => id === item.id);
-
-    if (taskIndex < 0) {
-      return false;
-    }
-
-    this._tasks[taskIndex] = newData;
-    this._callHandlers(this._dataChangeHandlers);
-
-    return true;
-  }
-
-  addTask(newData) {
-    newData.id = new Date() + Math.random();
-
-    this._tasks.unshift(newData);
-    this._callHandlers(this._dataChangeHandlers);
-
-    return true;
-  }
-
-  removeTask(id) {
-    const taskIndex = this._tasks.findIndex((item) => id === item.id);
-
-    if (taskIndex < 0) {
-      return false;
-    }
-
-    this._tasks = this._tasks.filter((item) => item.id !== id);
-    this._callHandlers(this._dataChangeHandlers);
-
-    return true;
-  }
-
-  _callHandlers(handlers) {
-    handlers.forEach((handler) => handler());
+  static clone(taskData) {
+    return new Task(taskData.toRaw());
   }
 }
