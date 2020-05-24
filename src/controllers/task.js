@@ -1,3 +1,4 @@
+import TaskModel from '../models/task';
 import Card from '../components/card';
 import CardEdit from '../components/card-edit';
 import {renderElement, replaceElement, removeElement} from '../helpers';
@@ -43,11 +44,8 @@ export default class TaskController {
   }
 
   _toggleProp(prop) {
-    const newTaskData = Object.assign(
-        {},
-        this.taskData,
-        {[prop]: !this.taskData[prop]}
-    );
+    const newTaskData = TaskModel.clone(this.taskData);
+    newTaskData[prop] = !newTaskData[prop];
 
     this._updateTask(this.taskData, newTaskData);
   }
@@ -68,9 +66,18 @@ export default class TaskController {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
+  _resetWeekdays(newTaskData) {
+    if (!newTaskData.isRepeat) {
+      newTaskData.weekDays = Object.assign({}, WEEKDAYS);
+    }
+
+    return newTaskData;
+  }
+
   _saveCard(newTaskData) {
+    const taskData = this._resetWeekdays(newTaskData);
     this._replaceEditToCard();
-    this._updateTask(this.taskData, newTaskData);
+    this._updateTask(this.taskData, taskData);
     this._updateBoardOnFormSave();
   }
 

@@ -1,4 +1,3 @@
-const MAX_CARDS = 23;
 const MAX_CARDS_SHOW = 8;
 
 const ColorName = {
@@ -53,8 +52,12 @@ const RenderPosition = {
   END: `end`
 };
 
+const AppState = {
+  LOADING: `loading`,
+  EMPTY: `empty`
+};
+
 export {
-  MAX_CARDS,
   MAX_CARDS_SHOW,
   ColorName,
   WEEKDAYS,
@@ -62,5 +65,6 @@ export {
   FilterType,
   FiltersFlags,
   SortType,
-  RenderPosition
+  RenderPosition,
+  AppState
 };

@@ -2,22 +2,20 @@ import TaskController from './task';
 import SortController from './sort';
 import BoardComponent from '../components/board';
 import MoreBtn from '../components/more-btn';
-import {MAX_CARDS_SHOW, FiltersFlags, FilterType} from '../constants';
+import {MAX_CARDS_SHOW, FiltersFlags, FilterType, AppState} from '../constants';
 import {createElement, renderElement, replaceElement} from '../helpers';
 
 export default class BoardController {
-  constructor(container, tasksModel) {
+  constructor(container, tasksModel, api) {
     this._container = container;
     this._tasksModel = tasksModel;
+    this._api = api;
     this._quantityLoaded = 0;
     this._moreBtn = new MoreBtn();
     this._tasksControllers = [];
     this._isBoardEmpty = false;
 
     this._tasksSection = createElement(`<div class="board__tasks"></div>`);
-    this._emptyBoardElement = createElement(`<p class="board__no-tasks">
-      Click «ADD NEW TASK» in menu to create your first task
-    </p>`);
 
     this._moreBtnClickHandler = this._moreBtnClickHandler.bind(this);
     this._moreBtn.setClickHandler(this._moreBtnClickHandler);
@@ -169,7 +167,11 @@ export default class BoardController {
     return isNeedToUpdateFiltered;
   }
 
-  _updateBoardOnSuccess(oldData, newData) {
+  _updateBoardOnSuccess(isSuccess, oldData, newData) {
+    if (!isSuccess) {
+      return;
+    }
+
     this._isNeedToUpdateFiltered = this._checkIsNeedToUpdateFiltered(oldData, newData);
     const index = this._tasksControllers.findIndex((item) => item.taskData.id === oldData.id);
 
@@ -194,20 +196,25 @@ export default class BoardController {
     if (!newData) {
       // remove task
       isSuccess = this._tasksModel.removeTask(oldData.id);
+
+      this._updateBoardOnSuccess(isSuccess, oldData, newData);
+
     } else if (!oldData.id) {
       // add task
+
       isSuccess = this._tasksModel.addTask(newData);
       this._resetNewTask();
+
+      this._updateBoardOnSuccess(isSuccess, oldData, newData);
     } else {
       // update task
-      isSuccess = this._tasksModel.updateTask(oldData.id, newData);
-    }
+      this._api.updateTask(oldData.id, newData)
+        .then((taskModel) => {
+          isSuccess = this._tasksModel.updateTask(oldData.id, taskModel);
 
-    if (!isSuccess) {
-      return;
+          this._updateBoardOnSuccess(isSuccess, oldData, newData);
+        });
     }
-
-    this._updateBoardOnSuccess(oldData, newData);
   }
 
   _updateBoardOnFormSave() {
@@ -228,18 +235,28 @@ export default class BoardController {
     this._tasksControllers = this._renderTasks(quantity);
   }
 
-  render() {
+  _getEmptyBoardElement(state) {
+    let text = `Click «ADD NEW TASK» in menu to create your first task`;
+
+    if (state === AppState.LOADING) {
+      text = `Loading...`;
+    }
+
+    return createElement(`<p class="board__no-tasks">${text}</p>`);
+  }
+
+  render({state} = {}) {
     const oldBoardComponent = this._boardComponent;
     this._boardComponent = new BoardComponent();
     const boardElement = this._boardComponent.getElement();
     this._sortController = new SortController(boardElement, this._tasksModel);
+    this._emptyBoardElement = this._getEmptyBoardElement(state);
 
     this._sortController.render();
 
     if (this._tasksModel.getTasksQuantity() > 0) {
-      this._isBoardEmpty = false;
       this._tasksControllers = this._renderTasks();
-      this._emptyBoardElement.hidden = true;
+      this._isBoardEmpty = false;
     } else {
       this._isBoardEmpty = true;
       this._sortController.hide();
