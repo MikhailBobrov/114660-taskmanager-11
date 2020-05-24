@@ -1,5 +1,5 @@
 import {getRandomBool} from '../helpers';
-import {ColorsNames, WEEKDAYS} from '../constants';
+import {ColorName, WEEKDAYS} from '../constants';
 import {DESCRIPTIONS} from './constants';
 
 const WEEK = 7;
@@ -36,7 +36,7 @@ const getCardsData = (quantity) => {
 
     const id = Date.now() + Math.random();
     const description = getRandomItem(DESCRIPTIONS);
-    const color = getRandomItem(Object.values(ColorsNames));
+    const color = getRandomItem(Object.values(ColorName));
     const dueDate = isRepeat ? null : getRandomDate();
     const weekDays = getWeekDays(isRepeat);
     let isDeadline = false;
