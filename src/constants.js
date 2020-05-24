@@ -1,7 +1,7 @@
 const MAX_CARDS = 23;
 const MAX_CARDS_SHOW = 8;
 
-const ColorsNames = {
+const ColorName = {
   BLACK: `black`,
   YELLOW: `yellow`,
   BLUE: `blue`,
@@ -48,19 +48,19 @@ const SortType = {
   DATE_DOWN: `dateDown`
 };
 
-const RenderPositions = {
+const RenderPosition = {
   BEGIN: `begin`,
   END: `end`
 };
 
 export {
-  ColorsNames,
   MAX_CARDS,
   MAX_CARDS_SHOW,
+  ColorName,
   WEEKDAYS,
   TaskFlag,
   FilterType,
   FiltersFlags,
   SortType,
-  RenderPositions
+  RenderPosition
 };

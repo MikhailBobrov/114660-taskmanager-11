@@ -1,14 +1,14 @@
 import Card from '../components/card';
 import CardEdit from '../components/card-edit';
 import {renderElement, replaceElement, removeElement} from '../helpers';
-import {ColorsNames, WEEKDAYS, RenderPositions} from '../constants';
+import {ColorName, WEEKDAYS, RenderPosition} from '../constants';
 
 const EMPTY_TASK_DATA = {
   id: null,
   description: ``,
   dueDate: ``,
   weekDays: Object.assign({}, WEEKDAYS),
-  color: ColorsNames.BLACK,
+  color: ColorName.BLACK,
   isRepeat: false,
   isFavorite: false,
   isArchive: false,
@@ -101,13 +101,13 @@ export default class TaskController {
   }
 
   render(taskData) {
-    let renderPosition = RenderPositions.END;
+    let renderPosition = RenderPosition.END;
     let isCreate = false;
 
     if (!taskData) {
       isCreate = true;
       taskData = Object.assign({}, EMPTY_TASK_DATA);
-      renderPosition = RenderPositions.BEGIN;
+      renderPosition = RenderPosition.BEGIN;
     }
 
     this.taskData = taskData;
