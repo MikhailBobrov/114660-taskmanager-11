@@ -1,4 +1,4 @@
-export {getDate, getTime} from './getDateTime';
+export {getDate, getTime, getPeriod} from './getDateTime';
 export {createElement} from './createElement';
 export {renderElement} from './renderElement';
 export {replaceElement} from './replaceElement';
@@ -7,5 +7,8 @@ export {getClass} from './getClass';
 export {getRandomBool} from './getRandomBool';
 export {getTodayTasks, getOverdueTasks, getFilteredTasks} from './filter';
 export {getSortedTasks} from './sort';
+export {getSimpleHandler} from './getSimpleHandler';
 export {getHandlerWithProp} from './getHandlerWithProp';
 export {getHandlerWithValue} from './getHandlerWithValue';
+export {getTasksQuantityByColor, getTasksQuantityByDay, getArchivedTasksBetweenFromTo, getDaysBetweenFromTo} from './statistic';
+export {getPlurals} from './getPlurals';

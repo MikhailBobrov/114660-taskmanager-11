@@ -1,13 +1,11 @@
 import TasksModel from "./models/tasks";
 
+import MenuController from './controllers/menu';
 import FilterController from './controllers/filter';
 import BoardController from './controllers/board';
-
-import Menu from './components/menu';
+import StatisticController from './controllers/statistic';
 
 import {getCardsData} from './mocks/cards';
-
-import {renderElement} from './helpers';
 
 import {MAX_CARDS} from './constants';
 
@@ -19,13 +17,45 @@ const cardsData = getCardsData(MAX_CARDS);
 const tasksModel = new TasksModel();
 tasksModel.setTasks(cardsData);
 
-const menuComponent = new Menu();
+const menuController = new MenuController(controlElem, tasksModel);
+const statisticController = new StatisticController(mainElem, tasksModel);
 const boardController = new BoardController(mainElem, tasksModel);
 const filterController = new FilterController(mainElem, tasksModel);
+let statsIsHidden = true;
 
-renderElement(controlElem, menuComponent);
-
+menuController.render();
 filterController.render();
+statisticController.render();
+statisticController.hide();
 boardController.render();
 
-menuComponent.setAddNewTaskClickHandler(boardController.addNewTask);
+const switchToStatistic = () => {
+  if (!statsIsHidden) {
+    return;
+  }
+
+  boardController.hide();
+  statisticController.show();
+  statsIsHidden = false;
+};
+
+const switchToTasks = () => {
+  if (statsIsHidden) {
+    return;
+  }
+
+  boardController.show();
+  statisticController.hide();
+  menuController.reset();
+  statsIsHidden = true;
+};
+
+menuController.setAddNewTaskClickHandler(() => {
+  switchToTasks();
+  boardController.addNewTask();
+});
+
+menuController.setTasksClickHandler(switchToTasks);
+menuController.setStatisticClickHandler(switchToStatistic);
+
+filterController.setFilterItemClickHandler(switchToTasks);

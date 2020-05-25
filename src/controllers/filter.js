@@ -15,6 +15,11 @@ export default class FilterController {
     this._tasksModel.addFilterChangeHandler(this._onFilterChange);
   }
 
+  setFilterItemClickHandler(handler) {
+    this._filterComponent.setFilterItemClickHandler(handler);
+    this._filterItemClickHandler = handler;
+  }
+
   _setFilterType(filterType) {
     if (this._currentFilterType === filterType) {
       return;
@@ -23,15 +28,20 @@ export default class FilterController {
     this._tasksModel.setFilterType(filterType);
   }
 
-  _onDataChange() {
+  _update() {
     this.render();
+    this.setFilterItemClickHandler(this._filterItemClickHandler);
+  }
+
+  _onDataChange() {
+    this._update();
   }
 
   _onFilterChange() {
     const newFilterType = this._tasksModel.getFilterType();
 
     this._currentFilterType = newFilterType;
-    this.render();
+    this._update();
   }
 
   render() {
@@ -42,7 +52,7 @@ export default class FilterController {
       currentFilter: this._tasksModel.getFilterType()
     });
 
-    this._filterComponent.setFilterItemClickHandler(this._setFilterType);
+    this._filterComponent.setFilterItemClickHandlerWithValue(this._setFilterType);
 
     if (oldFilterComponent) {
       replaceElement(oldFilterComponent, this._filterComponent);

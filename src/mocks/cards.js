@@ -2,7 +2,7 @@ import {getRandomBool} from '../helpers';
 import {ColorName, WEEKDAYS} from '../constants';
 import {DESCRIPTIONS} from './constants';
 
-const WEEK = 7;
+const PERIOD_IN_DAYS = 7;
 
 const getRandomItem = (list) => {
   return list[Math.floor(Math.random() * list.length)];
@@ -11,7 +11,7 @@ const getRandomItem = (list) => {
 const getRandomDate = () => {
   const now = new Date();
   const direction = getRandomBool() ? 1 : -1;
-  const offset = Math.floor(Math.random() * WEEK);
+  const offset = Math.floor(Math.random() * PERIOD_IN_DAYS);
 
   now.setDate(now.getDate() + offset * direction);
 

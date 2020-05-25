@@ -1,6 +1,6 @@
-import AbstractComponent from './abstract-component';
+import AbstractSmartComponent from './abstract-smart-component';
 
-export default class Menu extends AbstractComponent {
+export default class Menu extends AbstractSmartComponent {
   constructor() {
     super();
 
@@ -10,8 +10,9 @@ export default class Menu extends AbstractComponent {
         name: `+ ADD NEW TASK`,
       },
       {
-        id: `task`,
-        name: `TASKS`
+        id: `tasks`,
+        name: `TASKS`,
+        isDefault: true
       },
       {
         id: `statistic`,
@@ -24,11 +25,36 @@ export default class Menu extends AbstractComponent {
     const control = document.getElementById(`control__new-task`);
 
     control.addEventListener(`click`, handler);
+
+    this._addNewTaskClickHandler = handler;
+  }
+
+  setTasksClickHandler(handler) {
+    const control = document.getElementById(`control__tasks`);
+
+    control.addEventListener(`click`, handler);
+
+    this._tasksClickHandler = handler;
+  }
+
+  setStatisticClickHandler(handler) {
+    const control = document.getElementById(`control__statistic`);
+
+    control.addEventListener(`click`, handler);
+
+    this._statisticClickHandler = handler;
+  }
+
+  _recoveryListeners() {
+    this.setAddNewTaskClickHandler(this._addNewTaskClickHandler);
+    this.setTasksClickHandler(this._tasksClickHandler);
+    this.setStatisticClickHandler(this._statisticClickHandler);
   }
 
   _getItems() {
     return this._itemsData.reduce((prev, item) => {
-      const {id, name} = item;
+      const {id, name, isDefault} = item;
+      const checkedAttr = isDefault ? `checked` : ``;
 
       return (
         `${prev}<input
@@ -36,6 +62,7 @@ export default class Menu extends AbstractComponent {
           name="control"
           id="control__${id}"
           class="control__input visually-hidden"
+          ${checkedAttr}
         />
         <label
           for="control__${id}"

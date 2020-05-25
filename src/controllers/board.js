@@ -31,7 +31,15 @@ export default class BoardController {
 
     this._tasksModel.addFilterChangeHandler(this._onFilterChange);
     this._tasksModel.addSortChangeHandler(this._onSortChange);
-    this._tasksModel.addSortChangeHandler(this._onSortChange);
+  }
+
+  hide() {
+    this._boardComponent.hide();
+    this._resetBoard();
+  }
+
+  show() {
+    this._boardComponent.show();
   }
 
   _onViewChange() {
@@ -94,6 +102,10 @@ export default class BoardController {
 
     this._newTaskController.destroy();
     this._newTaskController = null;
+  }
+
+  _resetBoard() {
+    this._tasksModel.setFilterType(FilterType.ALL);
   }
 
   _loadMore() {
