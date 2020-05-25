@@ -163,16 +163,10 @@ export default class BoardController {
 
     if (index > -1 && newData) {
       this._tasksControllers[index].render(newData);
-    } else {
-      this._updateBoard(this._quantityLoaded);
     }
 
     if (this._isNeedToUpdateFiltered) {
-      const openedControllers = this._tasksControllers.filter((item) => item.isCardEditOpened);
-
-      if (openedControllers.length === 0) {
-        this._updateBoard(this._quantityLoaded);
-      }
+      this._updateBoard(this._quantityLoaded);
     }
   }
 

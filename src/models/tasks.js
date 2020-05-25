@@ -1,7 +1,7 @@
 import {FilterType, SortType} from '../constants';
 import {getFilteredTasks, getSortedTasks} from '../helpers';
 
-export default class Task {
+export default class Tasks {
   constructor() {
     this._tasks = [];
     this._activeFilterType = FilterType.ALL;
@@ -75,7 +75,7 @@ export default class Task {
   }
 
   addTask(newData) {
-    newData.id = new Date() + Math.random();
+    newData.id = Date.now() + Math.random();
 
     this._tasks.unshift(newData);
     this._callHandlers(this._dataChangeHandlers);

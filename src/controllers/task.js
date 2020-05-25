@@ -21,7 +21,6 @@ export default class TaskController {
     this._resetNewTask = resetNewTask;
     this._updateBoardOnFormSave = updateBoardOnFormSave;
     this._onViewChange = onViewChange;
-    this.isCardEditOpened = false;
 
     this._toggleProp = this._toggleProp.bind(this);
     this._replaceCardToEdit = this._replaceCardToEdit.bind(this);
@@ -33,7 +32,6 @@ export default class TaskController {
 
   setDefaultView() {
     this._cardEditComponent.reset(this.taskData);
-    this.isCardEditOpened = false;
     this._replaceEditToCard();
   }
 
@@ -56,14 +54,12 @@ export default class TaskController {
     this._onViewChange();
     replaceElement(this._cardComponent, this._cardEditComponent);
     this._setCardEditComponentHandlers();
-    this.isCardEditOpened = true;
 
     document.addEventListener(`keydown`, this._onEscKeyDown);
   }
 
   _replaceEditToCard() {
     replaceElement(this._cardEditComponent, this._cardComponent);
-    this.isCardEditOpened = false;
 
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
