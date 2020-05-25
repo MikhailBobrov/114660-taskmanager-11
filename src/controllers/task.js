@@ -75,7 +75,7 @@ export default class TaskController {
   _saveCard(newTaskData) {
     const taskData = this._resetDatesData(newTaskData);
     this._replaceEditToCard();
-    this._updateTask(this.taskData, newTaskData);
+    this._updateTask(this.taskData, taskData);
   }
 
   _deleteCard() {
