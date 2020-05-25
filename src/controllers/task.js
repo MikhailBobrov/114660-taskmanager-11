@@ -15,11 +15,10 @@ const EMPTY_TASK_DATA = {
   isDeadline: false,
 };
 export default class TaskController {
-  constructor(container, updateTask, resetNewTask, updateBoardOnFormSave, onViewChange) {
+  constructor(container, updateTask, resetNewTask, onViewChange) {
     this._container = container;
     this._updateTask = updateTask;
     this._resetNewTask = resetNewTask;
-    this._updateBoardOnFormSave = updateBoardOnFormSave;
     this._onViewChange = onViewChange;
 
     this._toggleProp = this._toggleProp.bind(this);
@@ -67,7 +66,6 @@ export default class TaskController {
   _saveCard(newTaskData) {
     this._replaceEditToCard();
     this._updateTask(this.taskData, newTaskData);
-    this._updateBoardOnFormSave();
   }
 
   _deleteCard() {

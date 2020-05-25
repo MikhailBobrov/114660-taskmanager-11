@@ -26,7 +26,6 @@ export default class BoardController {
     this._onFilterChange = this._onFilterChange.bind(this);
     this._onSortChange = this._onSortChange.bind(this);
     this._updateTask = this._updateTask.bind(this);
-    this._updateBoardOnFormSave = this._updateBoardOnFormSave.bind(this);
     this.addNewTask = this.addNewTask.bind(this);
     this._resetNewTask = this._resetNewTask.bind(this);
 
@@ -62,6 +61,15 @@ export default class BoardController {
     this._loadMore();
   }
 
+  _getTaskController() {
+    return new TaskController(
+        this._tasksSection,
+        this._updateTask,
+        this._resetNewTask,
+        this._onViewChange
+    );
+  }
+
   addNewTask() {
     if (this._newTaskController) {
       return;
@@ -71,13 +79,7 @@ export default class BoardController {
 
     this._tasksModel.setFilterType(FilterType.ALL);
 
-    this._newTaskController = new TaskController(
-        this._tasksSection,
-        this._updateTask,
-        this._resetNewTask,
-        this._updateBoardOnFormSave,
-        this._onViewChange
-    );
+    this._newTaskController = this._getTaskController();
     this._newTaskController.render();
 
     this._tasksControllers.push(this._newTaskController);
@@ -134,13 +136,7 @@ export default class BoardController {
     this._recoverTaskSection(tasks.length);
 
     return tasks.map((taskData) => {
-      const taskController = new TaskController(
-          this._tasksSection,
-          this._updateTask,
-          this._resetNewTask,
-          this._updateBoardOnFormSave,
-          this._onViewChange
-      );
+      const taskController = this._getTaskController();
       taskController.render(taskData);
       return taskController;
     });
@@ -159,13 +155,22 @@ export default class BoardController {
 
   _updateBoardOnSuccess(oldData, newData) {
     this._isNeedToUpdateFiltered = this._checkIsNeedToUpdateFiltered(oldData, newData);
-    const index = this._tasksControllers.findIndex((item) => item.taskData.id === oldData.id);
+    const index = this._tasksControllers.findIndex((item) => {
+      return oldData.id !== null && item.taskData.id === oldData.id;
+    });
 
-    if (index > -1 && newData) {
-      this._tasksControllers[index].render(newData);
+    if (newData) {
+      if (index > -1) {
+        // update task
+        this._tasksControllers[index].render(newData);
+      } else {
+        // add task
+        this._updateBoard(this._quantityLoaded);
+      }
     }
 
     if (this._isNeedToUpdateFiltered) {
+      // update filtered tasks if was updated prop of filter
       this._updateBoard(this._quantityLoaded);
     }
   }
@@ -190,10 +195,6 @@ export default class BoardController {
     }
 
     this._updateBoardOnSuccess(oldData, newData);
-  }
-
-  _updateBoardOnFormSave() {
-    this._updateBoard(this._quantityLoaded);
   }
 
   _removeControllers() {

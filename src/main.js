@@ -1,4 +1,4 @@
-import TasksModel from "./models/task";
+import TasksModel from "./models/tasks";
 
 import FilterController from './controllers/filter';
 import BoardController from './controllers/board';
