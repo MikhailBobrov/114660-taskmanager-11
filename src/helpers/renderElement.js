@@ -1,4 +1,4 @@
-import {RenderPositions} from "../constants";
+import {RenderPosition} from "../constants";
 
 const handleComponent = (target, component, place) => {
   let element = component;
@@ -11,14 +11,14 @@ const handleComponent = (target, component, place) => {
     return;
   }
 
-  if (place === RenderPositions.BEGIN) {
+  if (place === RenderPosition.BEGIN) {
     target.prepend(element);
   } else {
     target.append(element);
   }
 };
 
-export const renderElement = (target, component, place = RenderPositions.END) => {
+export const renderElement = (target, component, place = RenderPosition.END) => {
   if (!Array.isArray(component)) {
     handleComponent(target, component, place);
 

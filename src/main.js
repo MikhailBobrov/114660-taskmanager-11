@@ -1,4 +1,4 @@
-import TasksModel from "./models/task";
+import TasksModel from "./models/tasks";
 
 import MenuController from './controllers/menu';
 import FilterController from './controllers/filter';

@@ -1,27 +1,25 @@
 import Card from '../components/card';
 import CardEdit from '../components/card-edit';
 import {renderElement, replaceElement, removeElement} from '../helpers';
-import {ColorsNames, WEEKDAYS, RenderPositions} from '../constants';
+import {ColorName, WEEKDAYS, RenderPosition} from '../constants';
 
 const EMPTY_TASK_DATA = {
   id: null,
   description: ``,
   dueDate: ``,
   weekDays: Object.assign({}, WEEKDAYS),
-  color: ColorsNames.BLACK,
+  color: ColorName.BLACK,
   isRepeat: false,
   isFavorite: false,
   isArchive: false,
   isDeadline: false,
 };
 export default class TaskController {
-  constructor(container, updateTask, resetNewTask, updateBoardOnFormSave, onViewChange) {
+  constructor(container, updateTask, resetNewTask, onViewChange) {
     this._container = container;
     this._updateTask = updateTask;
     this._resetNewTask = resetNewTask;
-    this._updateBoardOnFormSave = updateBoardOnFormSave;
     this._onViewChange = onViewChange;
-    this.isCardEditOpened = false;
 
     this._toggleProp = this._toggleProp.bind(this);
     this._replaceCardToEdit = this._replaceCardToEdit.bind(this);
@@ -33,7 +31,6 @@ export default class TaskController {
 
   setDefaultView() {
     this._cardEditComponent.reset(this.taskData);
-    this.isCardEditOpened = false;
     this._replaceEditToCard();
   }
 
@@ -56,14 +53,12 @@ export default class TaskController {
     this._onViewChange();
     replaceElement(this._cardComponent, this._cardEditComponent);
     this._setCardEditComponentHandlers();
-    this.isCardEditOpened = true;
 
     document.addEventListener(`keydown`, this._onEscKeyDown);
   }
 
   _replaceEditToCard() {
     replaceElement(this._cardEditComponent, this._cardComponent);
-    this.isCardEditOpened = false;
 
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
@@ -71,7 +66,6 @@ export default class TaskController {
   _saveCard(newTaskData) {
     this._replaceEditToCard();
     this._updateTask(this.taskData, newTaskData);
-    this._updateBoardOnFormSave();
   }
 
   _deleteCard() {
@@ -101,13 +95,13 @@ export default class TaskController {
   }
 
   render(taskData) {
-    let renderPosition = RenderPositions.END;
+    let renderPosition = RenderPosition.END;
     let isCreate = false;
 
     if (!taskData) {
       isCreate = true;
       taskData = Object.assign({}, EMPTY_TASK_DATA);
-      renderPosition = RenderPositions.BEGIN;
+      renderPosition = RenderPosition.BEGIN;
     }
 
     this.taskData = taskData;
