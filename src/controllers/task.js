@@ -15,6 +15,7 @@ const EMPTY_TASK_DATA = {
   isArchive: false,
   isDeadline: false,
 };
+
 export default class TaskController {
   constructor(container, updateTask, resetNewTask, updateBoardOnFormSave, onViewChange) {
     this._container = container;
@@ -115,7 +116,7 @@ export default class TaskController {
 
     if (!taskData) {
       isCreate = true;
-      taskData = Object.assign({}, EMPTY_TASK_DATA);
+      taskData = TaskModel.objectToTask(EMPTY_TASK_DATA);
       renderPosition = RenderPosition.BEGIN;
     }
 

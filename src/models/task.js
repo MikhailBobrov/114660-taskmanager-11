@@ -32,6 +32,20 @@ export default class Task {
     };
   }
 
+  static objectToTask(taskData) {
+    const convertedData = {
+      'id': taskData.id,
+      'description': taskData.description,
+      'due_date': taskData.dueDate ? taskData.dueDate.toISOString() : null,
+      'repeating_days': taskData.weekDays,
+      'color': taskData.color,
+      'is_archived': taskData.isArchive,
+      'is_favorite': taskData.isFavorite
+    };
+
+    return new Task(convertedData);
+  }
+
   static parseTask(taskData) {
     return new Task(taskData);
   }

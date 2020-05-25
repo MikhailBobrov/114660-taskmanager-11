@@ -29,31 +29,6 @@ menuController.render();
 filterController.render();
 boardController.render({state: AppState.LOADING});
 
-api.getTasks()
-  .then((response) => {
-    tasksModel.setTasks(response);
-
-    menuController.render();
-    filterController.render();
-    boardController.render();
-    statisticController.render();
-    statisticController.hide();
-  })
-  .catch((error) => {
-    boardController.render({state: AppState.EMPTY});
-    throw new Error(error);
-  });
-
-const switchToStatistic = () => {
-  if (!statsIsHidden) {
-    return;
-  }
-
-  boardController.hide();
-  statisticController.show();
-  statsIsHidden = false;
-};
-
 const switchToTasks = () => {
   if (statsIsHidden) {
     return;
@@ -65,12 +40,41 @@ const switchToTasks = () => {
   statsIsHidden = true;
 };
 
-menuController.setAddNewTaskClickHandler(() => {
-  switchToTasks();
-  boardController.addNewTask();
-});
+const switchToStatistic = () => {
+  if (!statsIsHidden) {
+    return;
+  }
 
-menuController.setTasksClickHandler(switchToTasks);
-menuController.setStatisticClickHandler(switchToStatistic);
+  boardController.hide();
+  statisticController.show();
+  statsIsHidden = false;
+};
 
-filterController.setFilterItemClickHandler(switchToTasks);
+const addEvents = () => {
+  menuController.setAddNewTaskClickHandler(() => {
+    switchToTasks();
+    boardController.addNewTask();
+  });
+
+  menuController.setTasksClickHandler(switchToTasks);
+  menuController.setStatisticClickHandler(switchToStatistic);
+
+  filterController.setFilterItemClickHandler(switchToTasks);
+};
+
+api.getTasks()
+  .then((response) => {
+    tasksModel.setTasks(response);
+
+    menuController.render();
+    filterController.render();
+    boardController.render();
+    statisticController.render();
+    statisticController.hide();
+
+    addEvents();
+  })
+  .catch((error) => {
+    boardController.render({state: AppState.EMPTY});
+    throw new Error(error);
+  });
