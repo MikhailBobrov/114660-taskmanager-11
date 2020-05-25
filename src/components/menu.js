@@ -20,6 +20,12 @@ export default class Menu extends AbstractComponent {
     ];
   }
 
+  setAddNewTaskClickHandler(handler) {
+    const control = document.getElementById(`control__new-task`);
+
+    control.addEventListener(`click`, handler);
+  }
+
   _getItems() {
     return this._itemsData.reduce((prev, item) => {
       const {id, name} = item;

@@ -29,6 +29,10 @@ body {
   font-family: "HelveticaNeueCyr", Arial, sans-serif;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 .container {
   width: 960px;
   padding: 0 20px;
@@ -153,6 +157,10 @@ body {
   outline: none;
   text-decoration: none;
   color: #000;
+}
+
+.board__filter--current {
+  font-weight: 500;
 }
 
 .board__filter:hover,

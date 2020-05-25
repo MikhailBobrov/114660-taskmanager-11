@@ -1,14 +1,15 @@
 import AbstractComponent from '../abstract-component';
 import DeadlineInput from './deadline-input';
 import WeekDays from './weekdays';
-import {getDate, getTime, createElement, renderElement, getHandlerWithProp} from '../../helpers';
-import {TaskFlags} from '../../constants';
+import {getDate, getTime, createElement, renderElement} from '../../helpers';
+import {TaskFlag} from '../../constants';
 
 export default class DateControls extends AbstractComponent {
   constructor(taskData, params) {
     super();
 
     const {dueDate, isDeadline, isRepeat} = taskData;
+    this._dueDate = dueDate;
     this._isDeadline = isDeadline;
     this._dateIsShown = params.dateIsShown;
     this._isRepeat = isRepeat;
@@ -19,13 +20,25 @@ export default class DateControls extends AbstractComponent {
   }
 
   setRepeatClickHandler(handler) {
-    const clickHandler = getHandlerWithProp(`.card__repeat-toggle`, handler);
-    this.getElement().addEventListener(`click`, clickHandler);
+    const control = this.getElement().querySelector(`.card__repeat-toggle`);
+    control.addEventListener(`click`, handler);
   }
 
   setDateClickHandler(handler) {
     const control = this.getElement().querySelector(`.card__date-deadline-toggle`);
     control.addEventListener(`click`, handler);
+  }
+
+  setDueDateChangeHandler(handler) {
+    const control = this.getElement().querySelector(`.card__date`);
+
+    if (!control) {
+      return;
+    }
+
+    control.addEventListener(`change`, () => {
+      handler(control.value);
+    });
   }
 
   setWeekDaysControlsClickHandler(handler) {
@@ -54,13 +67,13 @@ export default class DateControls extends AbstractComponent {
     const element = createElement(this._getTmpl());
     const deadlineBtn = this._getBtnElement({
       id: `date-deadline`,
-      prop: TaskFlags.DATE_IS_SHOWN,
+      prop: TaskFlag.DATE_IS_SHOWN,
       state: this._getToggleStatus(this._dateIsShown),
       text: `date`
     });
     const repeatBtn = this._getBtnElement({
       id: `repeat`,
-      prop: TaskFlags.IS_REPEAT,
+      prop: TaskFlag.IS_REPEAT,
       state: this._getToggleStatus(this._isRepeat),
       text: `repeat`
     });

@@ -4,11 +4,31 @@ export default class FormControls extends AbstractSmartComponent {
   constructor(taskData) {
     super();
 
+    this._taskData = taskData;
     this._isDateCorrect = this._checkDate(taskData);
     this._isRepeatCorrect = this._checkRepeat(taskData);
     this._isTextCorrect = taskData.description !== ``;
 
     this._isEnabled = this._checkIsEnabled();
+  }
+
+  setSubmitClickHandler(handler) {
+    const control = this.getElement().querySelector(`.card__save`);
+
+    control.addEventListener(`click`, (event) => {
+      event.preventDefault();
+      handler(this._taskData);
+    });
+
+    this._submitClickHandler = handler;
+  }
+
+  setDeleteClickHandler(handler) {
+    const control = this.getElement().querySelector(`.card__delete`);
+
+    control.addEventListener(`click`, handler);
+
+    this._deleteClickHandler = handler;
   }
 
   setFormControlsEnabledState({isTextCorrect}) {
@@ -22,7 +42,8 @@ export default class FormControls extends AbstractSmartComponent {
   }
 
   _recoveryListeners() {
-    // Will be done in the next task
+    this.setDeleteClickHandler(this._deleteClickHandler);
+    this.setSubmitClickHandler(this._submitClickHandler);
   }
 
   _checkDate({isRepeat, dueDate}) {

@@ -5,5 +5,7 @@ export {replaceElement} from './replaceElement';
 export {removeElement} from './removeElement';
 export {getClass} from './getClass';
 export {getRandomBool} from './getRandomBool';
+export {getTodayTasks, getOverdueTasks, getFilteredTasks} from './filter';
+export {getSortedTasks} from './sort';
 export {getHandlerWithProp} from './getHandlerWithProp';
 export {getHandlerWithValue} from './getHandlerWithValue';

@@ -1,6 +1,6 @@
-import AbstractComponent from './abstract-component';
+import AbstractSmartComponent from './abstract-smart-component';
 
-export default class MoreBtn extends AbstractComponent {
+export default class MoreBtn extends AbstractSmartComponent {
   setClickHandler(handler) {
     this.getElement().addEventListener(`click`, handler);
   }

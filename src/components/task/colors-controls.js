@@ -1,6 +1,6 @@
 import AbstractComponent from '../abstract-component';
 import {getHandlerWithValue} from '../../helpers';
-import {COLORS_NAMES} from '../../constants';
+import {ColorName} from '../../constants';
 
 export default class ColorsControls extends AbstractComponent {
   constructor({color}) {
@@ -35,7 +35,7 @@ export default class ColorsControls extends AbstractComponent {
   }
 
   _getTmpl() {
-    const colorsMarkupList = COLORS_NAMES.map((color) => {
+    const colorsMarkupList = Object.values(ColorName).map((color) => {
       return this._getColorMarkup(color);
     });
 

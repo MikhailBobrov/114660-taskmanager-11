@@ -3,7 +3,6 @@ import TextControl from './task/text-control';
 import SettingsControls from './task/settings-controls';
 import FormControls from './task/form-controls';
 import {createElement, renderElement} from '../helpers';
-import {TaskFlags} from '../constants';
 
 export default class CardEdit extends Task {
   constructor(taskData) {
@@ -13,24 +12,25 @@ export default class CardEdit extends Task {
     this._taskData = this._copyTaskData(taskData);
     this._isCardChanged = false;
 
-    this._toggleProp = this._toggleProp.bind(this);
+    this._toggleRepeat = this._toggleRepeat.bind(this);
     this._toggleDate = this._toggleDate.bind(this);
     this._toggleWeekDay = this._toggleWeekDay.bind(this);
     this._changeColor = this._changeColor.bind(this);
+    this._changeDueDate = this._changeDueDate.bind(this);
     this._saveText = this._saveText.bind(this);
 
-    this._submitHandler = null;
+    this._submitClickHandler = null;
+    this._deleteClickHandler = null;
   }
 
-  setSubmitHandler(handler) {
-    const form = this.getElement().querySelector(`form`);
+  setSubmitClickHandler(handler) {
+    this._formControls.setSubmitClickHandler(handler);
+    this._submitClickHandler = handler;
+  }
 
-    form.addEventListener(`submit`, () => {
-      handler(this._taskData);
-      this._isCardChanged = false;
-    });
-
-    this._submitHandler = handler;
+  setDeleteClickHandler(handler) {
+    this._formControls.setDeleteClickHandler(handler);
+    this._deleteClickHandler = handler;
   }
 
   reset(taskData) {
@@ -61,8 +61,9 @@ export default class CardEdit extends Task {
     return localTaskData;
   }
 
-  _toggleProp(prop) {
-    this._taskData[prop] = !this._taskData[prop];
+  _toggleRepeat() {
+    this._taskData.isRepeat = !this._taskData.isRepeat;
+    this._taskData.isDeadline = this._getIsDeadline();
     this._isCardChanged = true;
     this.rerender();
   }
@@ -70,7 +71,7 @@ export default class CardEdit extends Task {
   _toggleDate() {
     this._dateIsShown = !this._dateIsShown;
     this._isCardChanged = true;
-    this._toggleProp(TaskFlags.IS_REPEAT);
+    this._toggleRepeat();
   }
 
   _toggleWeekDay(value) {
@@ -85,6 +86,17 @@ export default class CardEdit extends Task {
     this.rerender();
   }
 
+  _getIsDeadline() {
+    return !this._taskData.isRepeat && this._taskData.dueDate < new Date();
+  }
+
+  _changeDueDate(date) {
+    this._taskData.dueDate = new Date(date);
+    this._taskData.isDeadline = this._getIsDeadline();
+    this._isCardChanged = true;
+    this.rerender();
+  }
+
   _saveText(text) {
     this._taskData.description = text;
     this._isCardChanged = true;
@@ -92,7 +104,8 @@ export default class CardEdit extends Task {
   }
 
   _recoveryListeners() {
-    this.setSubmitHandler(this._submitHandler);
+    this.setSubmitClickHandler(this._submitClickHandler);
+    this.setDeleteClickHandler(this._deleteClickHandler);
   }
 
   _createElement() {
@@ -111,10 +124,11 @@ export default class CardEdit extends Task {
       this._formControls
     ]);
 
-    this._settingsControls.setRepeatClickHandler(this._toggleProp);
+    this._settingsControls.setRepeatClickHandler(this._toggleRepeat);
     this._settingsControls.setDateClickHandler(this._toggleDate);
     this._settingsControls.setWeekDaysControlsClickHandler(this._toggleWeekDay);
     this._settingsControls.setColorsClickHandler(this._changeColor);
+    this._settingsControls.setDueDateChangeHandler(this._changeDueDate);
     this._textControl.setTextInputHandler(this._saveText);
 
     return element;

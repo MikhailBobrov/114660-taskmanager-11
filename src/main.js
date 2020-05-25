@@ -1,25 +1,31 @@
-import {MAX_CARDS} from './constants';
+import TasksModel from "./models/tasks";
 
-import Menu from './components/menu';
-import Filter from './components/filter';
+import FilterController from './controllers/filter';
 import BoardController from './controllers/board';
 
+import Menu from './components/menu';
+
 import {getCardsData} from './mocks/cards';
-import {getFilterItems} from './mocks/filter';
 
 import {renderElement} from './helpers';
+
+import {MAX_CARDS} from './constants';
 
 const controlElem = document.querySelector(`.control`);
 const mainElem = document.querySelector(`.main`);
 
 const cardsData = getCardsData(MAX_CARDS);
-const filterItems = getFilterItems(cardsData);
 
-const menu = new Menu();
-const filter = new Filter({items: filterItems, currentFilter: `all`});
-const boardController = new BoardController(mainElem);
+const tasksModel = new TasksModel();
+tasksModel.setTasks(cardsData);
 
-renderElement(controlElem, menu);
-renderElement(mainElem, filter);
+const menuComponent = new Menu();
+const boardController = new BoardController(mainElem, tasksModel);
+const filterController = new FilterController(mainElem, tasksModel);
 
-boardController.render(cardsData);
+renderElement(controlElem, menuComponent);
+
+filterController.render();
+boardController.render();
+
+menuComponent.setAddNewTaskClickHandler(boardController.addNewTask);

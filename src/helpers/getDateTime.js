@@ -1,4 +1,4 @@
-import {MONTH_NAMES} from '../constants';
+import moment from 'moment';
 
 const isDate = (date) => {
   return date instanceof Date;
@@ -9,10 +9,7 @@ const getDate = (date) => {
     return ``;
   }
 
-  const day = date.getDate();
-  const monthNum = date.getMonth();
-
-  return `${day} ${MONTH_NAMES[monthNum]}`;
+  return moment(date).format(`D MMMM`);
 };
 
 const getTime = (date) => {
@@ -20,14 +17,7 @@ const getTime = (date) => {
     return ``;
   }
 
-  const timeParts = [
-    date.getHours(),
-    date.getMinutes()
-  ];
-
-  return timeParts
-    .map((item) => item < 10 ? `0${item}` : item)
-    .join(`:`);
+  return moment(date).format(`H:MM`);
 };
 
 export {

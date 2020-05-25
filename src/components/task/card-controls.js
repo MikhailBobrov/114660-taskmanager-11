@@ -1,6 +1,6 @@
 import AbstractComponent from '../abstract-component';
 import {getHandlerWithProp} from '../../helpers';
-import {TaskFlags} from '../../constants';
+import {TaskFlag} from '../../constants';
 
 const ClassName = {
   DEFAULT: `card__btn`,
@@ -14,11 +14,11 @@ const CONTROLS_DATA = [
   },
   {
     name: `archive`,
-    prop: TaskFlags.IS_ARCHIVE
+    prop: TaskFlag.IS_ARCHIVE
   },
   {
     name: `favorites`,
-    prop: TaskFlags.IS_FAVORITE
+    prop: TaskFlag.IS_FAVORITE
   }
 ];
 
