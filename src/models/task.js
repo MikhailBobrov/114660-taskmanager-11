@@ -11,7 +11,7 @@ export default class Task {
   constructor(taskData) {
     this.id = taskData[`id`];
     this.description = taskData[`description`];
-    this.dueDate = new Date(taskData[`due_date`]);
+    this.dueDate = taskData[`due_date`] ? new Date(taskData[`due_date`]) : null;
     this.weekDays = taskData[`repeating_days`];
     this.color = taskData[`color`];
     this.isRepeat = Object.values(this.weekDays).some((item) => item);
@@ -24,7 +24,7 @@ export default class Task {
     return {
       'id': this.id,
       'description': this.description,
-      'due_date': this.dueDate.toISOString(),
+      'due_date': this.dueDate ? this.dueDate.toISOString() : null,
       'repeating_days': this.weekDays,
       'color': this.color,
       'is_archived': this.isArchive,

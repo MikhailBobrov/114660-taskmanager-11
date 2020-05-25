@@ -66,16 +66,18 @@ export default class TaskController {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
-  _resetWeekdays(newTaskData) {
+  _resetDatesData(newTaskData) {
     if (!newTaskData.isRepeat) {
       newTaskData.weekDays = Object.assign({}, WEEKDAYS);
+    } else {
+      newTaskData.dueDate = null;
     }
 
     return newTaskData;
   }
 
   _saveCard(newTaskData) {
-    const taskData = this._resetWeekdays(newTaskData);
+    const taskData = this._resetDatesData(newTaskData);
     this._replaceEditToCard();
     this._updateTask(this.taskData, taskData);
     this._updateBoardOnFormSave();
