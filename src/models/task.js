@@ -1,4 +1,3 @@
-
 const checkisDeadline = (isRepeat, date) => {
   if (isRepeat) {
     return false;
