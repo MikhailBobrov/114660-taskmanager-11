@@ -27,13 +27,13 @@ const connectionObserver = new ConnectionObserver();
 
 const tasksModel = new TasksModel();
 
-const controlElem = document.querySelector(`.control`);
-const mainElem = document.querySelector(`.main`);
+const controlElement = document.querySelector(`.control`);
+const mainElement = document.querySelector(`.main`);
 
-const menuController = new MenuController(controlElem, tasksModel);
-const statisticController = new StatisticController(mainElem, tasksModel);
-const boardController = new BoardController(mainElem, tasksModel, apiWithProvider);
-const filterController = new FilterController(mainElem, tasksModel);
+const menuController = new MenuController(controlElement, tasksModel);
+const statisticController = new StatisticController(mainElement, tasksModel);
+const boardController = new BoardController(mainElement, tasksModel, apiWithProvider);
+const filterController = new FilterController(mainElement, tasksModel);
 let statsIsHidden = true;
 
 menuController.render();
