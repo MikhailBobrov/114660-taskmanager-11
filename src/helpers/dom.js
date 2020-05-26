@@ -1,5 +1,21 @@
 import {RenderPosition} from "../constants";
 
+const templateElem = document.createElement(`template`);
+
+export const createElement = (str) => {
+  if (!str) {
+    return null;
+  }
+
+  templateElem.innerHTML = str;
+  return templateElem.content.firstElementChild;
+};
+
+export const removeElement = (component) => {
+  component.getElement().remove();
+  component.removeElement();
+};
+
 const handleComponent = (target, component, place) => {
   let element = component;
 
@@ -31,3 +47,12 @@ export const renderElement = (target, component, place = RenderPosition.END) => 
     handleComponent(target, item, place);
   }
 };
+
+export const replaceElement = (componentFrom, componentTo) => {
+  if (!componentFrom && !componentTo) {
+    return;
+  }
+
+  componentFrom.getElement().replaceWith(componentTo.getElement());
+};
+
