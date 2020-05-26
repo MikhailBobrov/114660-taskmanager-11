@@ -44,12 +44,7 @@ export default class FormControls extends AbstractSmartComponent {
     this.rerender();
   }
 
-  freeze() {
-    this._saveControlElement.innerHTML = SaveButtonText.WAITING;
-    this._deleteControlElement.innerHTML = DeleteButtonText.WAITING;
-  }
-
-  unfreeze() {
+  resetText() {
     this._saveControlElement.innerHTML = SaveButtonText.DEFAULT;
     this._deleteControlElement.innerHTML = DeleteButtonText.DEFAULT;
   }
@@ -86,6 +81,14 @@ export default class FormControls extends AbstractSmartComponent {
 
     this._saveControlElement = element.querySelector(`.card__save`);
     this._deleteControlElement = element.querySelector(`.card__delete`);
+
+    this._saveControlElement.addEventListener(`click`, () => {
+      this._saveControlElement.innerHTML = SaveButtonText.WAITING;
+    });
+
+    this._deleteControlElement.addEventListener(`click`, () => {
+      this._deleteControlElement.innerHTML = DeleteButtonText.WAITING;
+    });
 
     return element;
   }
