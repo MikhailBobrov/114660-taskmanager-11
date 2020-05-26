@@ -1,3 +1,4 @@
+import TaskModel from '../models/task';
 import Task from './task';
 import TextControl from './task/text-control';
 import SettingsControls from './task/settings-controls';
@@ -48,17 +49,7 @@ export default class CardEdit extends Task {
   }
 
   _copyTaskData(taskData) {
-    const localTaskData = Object.assign(
-        {},
-        taskData
-    );
-
-    localTaskData.weekDays = Object.assign(
-        {},
-        localTaskData.weekDays
-    );
-
-    return localTaskData;
+    return TaskModel.clone(taskData);
   }
 
   _toggleRepeat() {

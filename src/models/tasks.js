@@ -75,7 +75,7 @@ export default class Tasks {
   }
 
   addTask(newData) {
-    newData.id = Date.now() + Math.random();
+    newData.id = new Date() + Math.random();
 
     this._tasks.unshift(newData);
     this._callHandlers(this._dataChangeHandlers);

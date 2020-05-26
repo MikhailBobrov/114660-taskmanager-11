@@ -1,3 +1,4 @@
+import TaskModel from '../models/task';
 import Card from '../components/card';
 import CardEdit from '../components/card-edit';
 import {renderElement, replaceElement, removeElement} from '../helpers';
@@ -14,6 +15,7 @@ const EMPTY_TASK_DATA = {
   isArchive: false,
   isDeadline: false,
 };
+
 export default class TaskController {
   constructor(container, updateTask, resetNewTask, onViewChange) {
     this._container = container;
@@ -40,11 +42,8 @@ export default class TaskController {
   }
 
   _toggleProp(prop) {
-    const newTaskData = Object.assign(
-        {},
-        this.taskData,
-        {[prop]: !this.taskData[prop]}
-    );
+    const newTaskData = TaskModel.clone(this.taskData);
+    newTaskData[prop] = !newTaskData[prop];
 
     this._updateTask(this.taskData, newTaskData);
   }
@@ -63,9 +62,20 @@ export default class TaskController {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
+  _resetDatesData(newTaskData) {
+    if (!newTaskData.isRepeat) {
+      newTaskData.weekDays = Object.assign({}, WEEKDAYS);
+    } else {
+      newTaskData.dueDate = null;
+    }
+
+    return newTaskData;
+  }
+
   _saveCard(newTaskData) {
+    const taskData = this._resetDatesData(newTaskData);
     this._replaceEditToCard();
-    this._updateTask(this.taskData, newTaskData);
+    this._updateTask(this.taskData, taskData);
   }
 
   _deleteCard() {
@@ -100,7 +110,7 @@ export default class TaskController {
 
     if (!taskData) {
       isCreate = true;
-      taskData = Object.assign({}, EMPTY_TASK_DATA);
+      taskData = TaskModel.objectToTask(EMPTY_TASK_DATA);
       renderPosition = RenderPosition.BEGIN;
     }
 
