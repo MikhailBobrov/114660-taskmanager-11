@@ -1,5 +1,3 @@
-import TaskModel from './models/task';
-
 const checkStatus = (response) => {
   if (response.ok) {
     return response;
@@ -18,10 +16,7 @@ export default class API {
 
   getTasks() {
     return this._load({url: `tasks`})
-      .then((response) => response.json())
-      .then((tasksJson) => {
-        return TaskModel.parseTasks(tasksJson);
-      });
+      .then((response) => response.json());
   }
 
   updateTask(taskId, taskData) {
@@ -31,8 +26,7 @@ export default class API {
       method: `PUT`,
       body: JSON.stringify(taskData.toRaw()),
     })
-      .then((response) => response.json())
-      .then(TaskModel.parseTask);
+      .then((response) => response.json());
   }
 
   addTask(taskData) {
@@ -42,8 +36,7 @@ export default class API {
       method: `POST`,
       body: JSON.stringify(taskData.toRaw()),
     })
-      .then((response) => response.json())
-      .then(TaskModel.parseTask);
+      .then((response) => response.json());
   }
 
   deleteTask(taskId) {
@@ -51,6 +44,16 @@ export default class API {
       url: `tasks/${taskId}`,
       method: `DELETE`,
     });
+  }
+
+  sync(tasks) {
+    return this._load({
+      url: `tasks/sync`,
+      headers: new Headers(CONTENT_TYPE_HEADER),
+      method: `POST`,
+      body: JSON.stringify(tasks),
+    })
+      .then((response) => response.json());
   }
 
   _load({url, method = `GET`, body = null, headers = new Headers()}) {

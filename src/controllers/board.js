@@ -20,6 +20,7 @@ export default class BoardController {
     this._moreBtnClickHandler = this._moreBtnClickHandler.bind(this);
     this._moreBtn.setClickHandler(this._moreBtnClickHandler);
 
+    this.render = this.render.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
     this._onSortChange = this._onSortChange.bind(this);
@@ -55,12 +56,12 @@ export default class BoardController {
 
   _onFilterChange() {
     this._resetNewTask();
-    this._updateBoard();
+    this.updateBoard();
   }
 
   _onSortChange() {
     this._resetNewTask();
-    this._updateBoard();
+    this.updateBoard();
   }
 
   _moreBtnClickHandler() {
@@ -181,13 +182,13 @@ export default class BoardController {
         this._tasksControllers[index].render(newData);
       } else {
         // add task
-        this._updateBoard(this._quantityLoaded);
+        this.updateBoard(this._quantityLoaded);
       }
     }
 
     if (this._isNeedToUpdateFiltered) {
       // update filtered tasks if was updated prop of filter
-      this._updateBoard(this._quantityLoaded);
+      this.updateBoard(this._quantityLoaded);
     }
   }
 
@@ -199,7 +200,7 @@ export default class BoardController {
     this._tasksControllers = [];
   }
 
-  _updateBoard(quantity) {
+  updateBoard(quantity) {
     this._removeControllers();
     this._quantityLoaded = 0;
     this._tasksControllers = this._renderTasks(quantity);

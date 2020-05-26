@@ -1,6 +1,9 @@
 import TasksModel from "./models/tasks";
 
 import API from './api';
+import Provider from './api/provider';
+import Store from './api/store';
+import ConnectionObserver from './connection-observer';
 
 import MenuController from './controllers/menu';
 import FilterController from './controllers/filter';
@@ -9,19 +12,27 @@ import StatisticController from './controllers/statistic';
 
 import {AppState} from './constants';
 
-const controlElem = document.querySelector(`.control`);
-const mainElem = document.querySelector(`.main`);
-
-const tasksModel = new TasksModel();
+const STORE_PREFIX = `taskmanager-localstorage`;
+const STORE_VER = `v1`;
+const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
+const OFFLINE_TEXT = ` [offline]`;
 
 const END_POINT = `https://11.ecmascript.pages.academy/task-manager`;
 const AUTHORIZATION = `Basic iasuaiusdiuaoiu9`;
 
 const api = new API(END_POINT, AUTHORIZATION);
+const store = new Store(STORE_NAME, window.localStorage);
+const apiWithProvider = new Provider(api, store);
+const connectionObserver = new ConnectionObserver();
+
+const tasksModel = new TasksModel();
+
+const controlElem = document.querySelector(`.control`);
+const mainElem = document.querySelector(`.main`);
 
 const menuController = new MenuController(controlElem, tasksModel);
 const statisticController = new StatisticController(mainElem, tasksModel);
-const boardController = new BoardController(mainElem, tasksModel, api);
+const boardController = new BoardController(mainElem, tasksModel, apiWithProvider);
 const filterController = new FilterController(mainElem, tasksModel);
 let statsIsHidden = true;
 
@@ -62,7 +73,7 @@ const addEvents = () => {
   filterController.setFilterItemClickHandler(switchToTasks);
 };
 
-api.getTasks()
+apiWithProvider.getTasks()
   .then((response) => {
     tasksModel.setTasks(response);
 
@@ -78,3 +89,27 @@ api.getTasks()
     boardController.render({state: AppState.EMPTY});
     throw new Error(error);
   });
+
+// Online/offline handlers
+connectionObserver.addOfflineHandler(() => {
+  document.title += OFFLINE_TEXT;
+});
+
+connectionObserver.addOnlineHandler(() => {
+  document.title = document.title.replace(OFFLINE_TEXT, ``);
+
+  apiWithProvider.sync();
+});
+
+apiWithProvider.addSyncHandler((tasks) => {
+  // Update tasks on page or we can't
+  // delete offline task with fake id
+  tasksModel.setTasks(tasks);
+
+  boardController.updateBoard();
+});
+
+// ServiceWorker
+window.addEventListener(`load`, () => {
+  navigator.serviceWorker.register(`./sw.js`);
+});
