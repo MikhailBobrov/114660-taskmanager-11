@@ -44,16 +44,10 @@ export default class CardEdit extends Task {
     this.rerender();
   }
 
-  freeze() {
-    super.freeze();
-
-    this._formControls.freeze();
-  }
-
   unfreeze() {
     super.unfreeze();
 
-    this._formControls.unfreeze();
+    this._formControls.resetText();
   }
 
   _setFormControlsEnabledState(params) {

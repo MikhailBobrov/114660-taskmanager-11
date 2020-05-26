@@ -22,6 +22,12 @@ export default class Card extends Task {
     this._cardControls.setEditBtnHandler(handler);
   }
 
+  unfreeze() {
+    super.unfreeze();
+
+    this._cardControls.resetText();
+  }
+
   _createElement() {
     const element = createElement(this._getTmpl());
     this._innerElement = element.querySelector(`.card__inner`);

@@ -1,11 +1,23 @@
 import AbstractComponent from '../abstract-component';
-import {getHandlerWithProp} from '../../helpers';
+import {getHandlerWithProp, createElement} from '../../helpers';
 import {TaskFlag} from '../../constants';
 
 const ClassName = {
   DEFAULT: `card__btn`,
   DISABLED: `card__btn--disabled`,
-  EDIT: `card__btn--edit`
+  EDIT: `card__btn--edit`,
+  ARCHIVE: `card__btn--archive`,
+  FAVORITES: `card__btn--favorites`,
+};
+
+const ArchiveButtonText = {
+  DEFAULT: `Archive`,
+  WAITING: `Archiving...`
+};
+
+const FavoritesButtonText = {
+  DEFAULT: `Favorites`,
+  WAITING: `Favoriting...`
 };
 
 const CONTROLS_DATA = [
@@ -39,6 +51,11 @@ export default class CardControls extends AbstractComponent {
     control.addEventListener(`click`, handler);
   }
 
+  resetText() {
+    this._archiveControlElement.innerHTML = ArchiveButtonText.DEFAULT;
+    this._favoritesControlElement.innerHTML = FavoritesButtonText.DEFAULT;
+  }
+
   _getControls() {
     return CONTROLS_DATA.reduce((prev, item) => {
       const {name, prop} = item;
@@ -57,6 +74,23 @@ export default class CardControls extends AbstractComponent {
           ${name}
         </button>`;
     }, ``);
+  }
+
+  _createElement() {
+    const element = createElement(this._getTmpl());
+
+    this._archiveControlElement = element.querySelector(`.${ClassName.ARCHIVE}`);
+    this._favoritesControlElement = element.querySelector(`.${ClassName.FAVORITES}`);
+
+    this._archiveControlElement.addEventListener(`click`, () => {
+      this._archiveControlElement.innerHTML = ArchiveButtonText.WAITING;
+    });
+
+    this._favoritesControlElement.addEventListener(`click`, () => {
+      this._favoritesControlElement.innerHTML = FavoritesButtonText.WAITING;
+    });
+
+    return element;
   }
 
   _getTmpl() {
