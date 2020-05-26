@@ -32,9 +32,25 @@ export default class API {
       body: JSON.stringify(taskData.toRaw()),
     })
       .then((response) => response.json())
-      .then((taskJson) => {
-        return TaskModel.parseTask(taskJson);
-      });
+      .then(TaskModel.parseTask);
+  }
+
+  addTask(taskData) {
+    return this._load({
+      url: `tasks/`,
+      headers: new Headers(CONTENT_TYPE_HEADER),
+      method: `POST`,
+      body: JSON.stringify(taskData.toRaw()),
+    })
+      .then((response) => response.json())
+      .then(TaskModel.parseTask);
+  }
+
+  deleteTask(taskId) {
+    return this._load({
+      url: `tasks/${taskId}`,
+      method: `DELETE`,
+    });
   }
 
   _load({url, method = `GET`, body = null, headers = new Headers()}) {

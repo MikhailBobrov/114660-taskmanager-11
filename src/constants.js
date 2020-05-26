@@ -57,6 +57,13 @@ const AppState = {
   EMPTY: `empty`
 };
 
+const ClassName = {
+  REQUIRED: `state-required`,
+  ERROR: `state-error`,
+  SHAKE: `shake`,
+  DISABLED: `state-disabled`,
+};
+
 export {
   MAX_CARDS_SHOW,
   ColorName,
@@ -66,5 +73,6 @@ export {
   FiltersFlags,
   SortType,
   RenderPosition,
-  AppState
+  AppState,
+  ClassName
 };

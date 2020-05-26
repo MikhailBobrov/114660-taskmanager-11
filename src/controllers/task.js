@@ -17,11 +17,14 @@ const EMPTY_TASK_DATA = {
 };
 
 export default class TaskController {
-  constructor(container, updateTask, resetNewTask, onViewChange) {
+  constructor(container, tasksModel, api, updateBoardOnSuccess, resetNewTask, onViewChange) {
     this._container = container;
-    this._updateTask = updateTask;
+    this._tasksModel = tasksModel;
+    this._api = api;
     this._resetNewTask = resetNewTask;
+    this._updateBoardOnSuccess = updateBoardOnSuccess;
     this._onViewChange = onViewChange;
+    this._isCardOpened = false;
 
     this._toggleProp = this._toggleProp.bind(this);
     this._replaceCardToEdit = this._replaceCardToEdit.bind(this);
@@ -34,6 +37,7 @@ export default class TaskController {
   setDefaultView() {
     this._cardEditComponent.reset(this.taskData);
     this._replaceEditToCard();
+    this._isCardOpened = false;
   }
 
   destroy() {
@@ -52,12 +56,14 @@ export default class TaskController {
     this._onViewChange();
     replaceElement(this._cardComponent, this._cardEditComponent);
     this._setCardEditComponentHandlers();
+    this._isCardOpened = true;
 
     document.addEventListener(`keydown`, this._onEscKeyDown);
   }
 
   _replaceEditToCard() {
     replaceElement(this._cardEditComponent, this._cardComponent);
+    this._isCardOpened = false;
 
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
@@ -74,12 +80,84 @@ export default class TaskController {
 
   _saveCard(newTaskData) {
     const taskData = this._resetDatesData(newTaskData);
-    this._replaceEditToCard();
     this._updateTask(this.taskData, taskData);
   }
 
   _deleteCard() {
+    if (!this.taskData.id) {
+      this._resetNewTask();
+      return;
+    }
+
     this._updateTask(this.taskData, null);
+  }
+
+  _freezeCard() {
+    if (this._isCardOpened) {
+      this._cardEditComponent.freeze();
+      return;
+    }
+
+    this._cardComponent.freeze();
+  }
+
+  _unFreezeCard() {
+    if (this._isCardOpened) {
+      this._cardEditComponent.unfreeze();
+      return;
+    }
+
+    this._cardComponent.unfreeze();
+  }
+
+  _updateTask(oldData, newData) {
+    let isSuccess = false;
+    this._freezeCard();
+
+    if (!newData) {
+      // remove task
+      this._api.deleteTask(oldData.id)
+        .then(() => {
+          isSuccess = this._tasksModel.removeTask(oldData.id);
+
+          this._updateBoardOnSuccess(isSuccess, oldData);
+        })
+        .catch(() => {
+          this._cardEditComponent.highlightOnError();
+          this._unFreezeCard();
+        });
+    } else if (!oldData.id) {
+      // add task
+      this._api.addTask(newData)
+        .then((taskModel) => {
+          isSuccess = this._tasksModel.addTask(taskModel);
+          this._resetNewTask();
+
+          this._updateBoardOnSuccess(isSuccess, oldData, taskModel);
+        })
+        .catch(() => {
+          this._cardEditComponent.highlightOnError();
+          this._unFreezeCard();
+        });
+    } else {
+      // update task
+      this._api.updateTask(oldData.id, newData)
+        .then((taskModel) => {
+          isSuccess = this._tasksModel.updateTask(oldData.id, taskModel);
+
+          this._replaceEditToCard();
+          this._updateBoardOnSuccess(isSuccess, oldData, taskModel);
+        })
+        .catch(() => {
+          if (this._isCardOpened) {
+            this._cardEditComponent.highlightOnError();
+          } else {
+            this._cardComponent.highlightOnError();
+          }
+
+          this._unFreezeCard();
+        });
+    }
   }
 
   _setCardComponentHandlers() {

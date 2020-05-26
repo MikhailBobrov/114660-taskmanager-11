@@ -24,9 +24,9 @@ export default class Card extends Task {
 
   _createElement() {
     const element = createElement(this._getTmpl());
-    const innerElement = element.querySelector(`.card__inner`);
+    this._innerElement = element.querySelector(`.card__inner`);
 
-    renderElement(innerElement, [
+    renderElement(this._innerElement, [
       this._cardControls,
       this._getColorbarElement(),
       this._text,

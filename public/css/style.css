@@ -59,6 +59,24 @@ body {
   animation: shake 0.6s;
 }
 
+.state-error,
+.state-required {
+  outline: 2px solid red !important;
+  border-color: red !important
+}
+
+.state-disabled::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: #FFF;
+  opacity: .5;
+}
+
 .container {
   width: 960px;
   padding: 0 20px;

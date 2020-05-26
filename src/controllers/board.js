@@ -23,7 +23,7 @@ export default class BoardController {
     this._onViewChange = this._onViewChange.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
     this._onSortChange = this._onSortChange.bind(this);
-    this._updateTask = this._updateTask.bind(this);
+    this._updateBoardOnSuccess = this._updateBoardOnSuccess.bind(this);
     this.addNewTask = this.addNewTask.bind(this);
     this._resetNewTask = this._resetNewTask.bind(this);
 
@@ -70,7 +70,9 @@ export default class BoardController {
   _getTaskController() {
     return new TaskController(
         this._tasksSection,
-        this._updateTask,
+        this._tasksModel,
+        this._api,
+        this._updateBoardOnSuccess,
         this._resetNewTask,
         this._onViewChange
     );
@@ -163,7 +165,7 @@ export default class BoardController {
     return isNeedToUpdateFiltered;
   }
 
-  _updateBoardOnSuccess(isSuccess, oldData, newData) {
+  _updateBoardOnSuccess(isSuccess, oldData, newData = null) {
     if (!isSuccess) {
       return;
     }
@@ -186,33 +188,6 @@ export default class BoardController {
     if (this._isNeedToUpdateFiltered) {
       // update filtered tasks if was updated prop of filter
       this._updateBoard(this._quantityLoaded);
-    }
-  }
-
-  _updateTask(oldData, newData) {
-    let isSuccess = false;
-
-    if (!newData) {
-      // remove task
-      isSuccess = this._tasksModel.removeTask(oldData.id);
-
-      this._updateBoardOnSuccess(isSuccess, oldData, newData);
-
-    } else if (!oldData.id) {
-      // add task
-
-      isSuccess = this._tasksModel.addTask(newData);
-      this._resetNewTask();
-
-      this._updateBoardOnSuccess(isSuccess, oldData, newData);
-    } else {
-      // update task
-      this._api.updateTask(oldData.id, newData)
-        .then((taskModel) => {
-          isSuccess = this._tasksModel.updateTask(oldData.id, taskModel);
-
-          this._updateBoardOnSuccess(isSuccess, oldData, newData);
-        });
     }
   }
 

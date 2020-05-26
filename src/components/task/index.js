@@ -1,5 +1,6 @@
 import AbstractSmartComponent from '../abstract-smart-component';
-import {getClass, createElement} from '../../helpers';
+import {getClass, createElement, shake} from '../../helpers';
+import {ClassName} from '../../constants';
 
 export default class Task extends AbstractSmartComponent {
   constructor({isEdit} = {}) {
@@ -10,6 +11,46 @@ export default class Task extends AbstractSmartComponent {
     if (new.target === Task) {
       throw new Error(`Task is not allowed as a constructor`);
     }
+  }
+
+  highlightOnError() {
+    const innerElement = this._getInnerElement();
+    shake(innerElement);
+
+    if (this._isEdit) {
+      innerElement.classList.add(ClassName.ERROR);
+    }
+  }
+
+  freeze() {
+    const innerElement = this._getInnerElement();
+    innerElement.classList.add(ClassName.DISABLED);
+
+    this._getInputs().forEach((input) => {
+      input.disabled = true;
+    });
+  }
+
+  unfreeze() {
+    const innerElement = this._getInnerElement();
+    innerElement.classList.remove(ClassName.DISABLED);
+
+    this._getInputs().forEach((input) => {
+      input.disabled = false;
+    });
+  }
+
+  _getInnerElement() {
+    if (this._innerElement) {
+      return this._innerElement;
+    }
+
+    return this.getElement().querySelector(`.card__inner`);
+  }
+
+  _getInputs() {
+    const innerElement = this._getInnerElement();
+    return innerElement.querySelectorAll(`input, button, textarea`);
   }
 
   _getMods() {

@@ -44,6 +44,18 @@ export default class CardEdit extends Task {
     this.rerender();
   }
 
+  freeze() {
+    super.freeze();
+
+    this._formControls.freeze();
+  }
+
+  unfreeze() {
+    super.unfreeze();
+
+    this._formControls.unfreeze();
+  }
+
   _setFormControlsEnabledState(params) {
     this._formControls.setFormControlsEnabledState(params);
   }
@@ -101,14 +113,14 @@ export default class CardEdit extends Task {
 
   _createElement() {
     const element = createElement(this._getTmpl());
-    const innerElement = element.querySelector(`.card__inner`);
+    this._innerElement = element.querySelector(`.card__inner`);
 
     this._dateIsShown = !this._taskData.isRepeat;
     this._textControl = new TextControl(this._taskData);
     this._settingsControls = new SettingsControls(this._taskData, {dateIsShown: this._dateIsShown});
     this._formControls = new FormControls(this._taskData);
 
-    renderElement(innerElement, [
+    renderElement(this._innerElement, [
       this._getColorbarElement(),
       this._textControl,
       this._settingsControls,

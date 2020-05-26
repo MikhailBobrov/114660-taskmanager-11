@@ -1,4 +1,15 @@
 import AbstractSmartComponent from '../abstract-smart-component';
+import {createElement} from '../../helpers';
+
+const DeleteButtonText = {
+  DEFAULT: `Delete`,
+  WAITING: `Deleting...`
+};
+
+const SaveButtonText = {
+  DEFAULT: `Save`,
+  WAITING: `Saving...`
+};
 
 export default class FormControls extends AbstractSmartComponent {
   constructor(taskData) {
@@ -13,9 +24,7 @@ export default class FormControls extends AbstractSmartComponent {
   }
 
   setSubmitClickHandler(handler) {
-    const control = this.getElement().querySelector(`.card__save`);
-
-    control.addEventListener(`click`, (event) => {
+    this._saveControlElement.addEventListener(`click`, (event) => {
       event.preventDefault();
       handler(this._taskData);
     });
@@ -24,9 +33,7 @@ export default class FormControls extends AbstractSmartComponent {
   }
 
   setDeleteClickHandler(handler) {
-    const control = this.getElement().querySelector(`.card__delete`);
-
-    control.addEventListener(`click`, handler);
+    this._deleteControlElement.addEventListener(`click`, handler);
 
     this._deleteClickHandler = handler;
   }
@@ -35,6 +42,16 @@ export default class FormControls extends AbstractSmartComponent {
     this._isTextCorrect = isTextCorrect;
     this._isEnabled = this._checkIsEnabled();
     this.rerender();
+  }
+
+  freeze() {
+    this._saveControlElement.innerHTML = SaveButtonText.WAITING;
+    this._deleteControlElement.innerHTML = DeleteButtonText.WAITING;
+  }
+
+  unfreeze() {
+    this._saveControlElement.innerHTML = SaveButtonText.DEFAULT;
+    this._deleteControlElement.innerHTML = DeleteButtonText.DEFAULT;
   }
 
   _checkIsEnabled() {
@@ -64,14 +81,27 @@ export default class FormControls extends AbstractSmartComponent {
     return isRepeat && hasWeekdays;
   }
 
+  _createElement() {
+    const element = createElement(this._getTmpl());
+
+    this._saveControlElement = element.querySelector(`.card__save`);
+    this._deleteControlElement = element.querySelector(`.card__delete`);
+
+    return element;
+  }
+
   _getTmpl() {
     const disabledAttr = !this._isEnabled ? `disabled` : ``;
 
     return (
       `<div class="card__status-btns">
-        <button class="card__save" type="submit" ${disabledAttr}>save</button>
+        <button class="card__save" type="submit" ${disabledAttr}>
+          ${SaveButtonText.DEFAULT}
+        </button>
 
-        <button class="card__delete" type="button">delete</button>
+        <button class="card__delete" type="button">
+          ${DeleteButtonText.DEFAULT}
+        </button>
       </div>`
     );
   }
