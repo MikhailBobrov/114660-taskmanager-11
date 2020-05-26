@@ -28,13 +28,13 @@ export default class Statistic extends AbstractSmartComponent {
   }
 
   renderPieChart() {
-    const canvasColors = this.getElement().querySelector(`.statistic__colors`);
+    const canvasElement = this.getElement().querySelector(`.statistic__colors`);
     const colorsData = getTasksQuantityByColor(this._tasks);
     const labels = Object.keys(colorsData);
     const data = Object.values(colorsData);
     const backgroundColor = labels.map((color) => COLORS_HEX[color]);
 
-    return new Chart(canvasColors, {
+    return new Chart(canvasElement, {
       type: `pie`,
       data: {
         datasets: [{
@@ -49,12 +49,12 @@ export default class Statistic extends AbstractSmartComponent {
   }
 
   renderLineChart() {
-    const canvasColors = this.getElement().querySelector(`.statistic__days`);
+    const canvasElement = this.getElement().querySelector(`.statistic__days`);
     const daysData = getTasksQuantityByDay(this._days, this._tasks);
     const labels = Object.keys(daysData);
     const data = Object.values(daysData);
 
-    return new Chart(canvasColors, {
+    return new Chart(canvasElement, {
       plugins: [ChartDataLabels],
       type: `line`,
       data: {
